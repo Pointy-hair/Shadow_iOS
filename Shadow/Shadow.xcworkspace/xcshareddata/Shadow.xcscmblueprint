@@ -1,16 +1,16 @@
 {
-  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "c7a255d7-9d78-e54a-b5c5-3fed673ff8f7++1130",
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "A6958CF6688775AED4F0AE195F93311347FB7D7D",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
-    "c7a255d7-9d78-e54a-b5c5-3fed673ff8f7++1130" : {
+    "A6958CF6688775AED4F0AE195F93311347FB7D7D" : {
 
     }
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "c7a255d7-9d78-e54a-b5c5-3fed673ff8f7++1130" : 9223372036854775807
+    "A6958CF6688775AED4F0AE195F93311347FB7D7D" : 9223372036854775807
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F1E6359A-F3FF-4CFF-A71B-DF5A53C25663",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "c7a255d7-9d78-e54a-b5c5-3fed673ff8f7++1130" : "Shadow_iOS\/"
+    "A6958CF6688775AED4F0AE195F93311347FB7D7D" : "Shadow_iOS\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Shadow",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -19,7 +19,7 @@
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "svn:\/\/10.8.18.47\/CreativeCrew",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "c7a255d7-9d78-e54a-b5c5-3fed673ff8f7++1130"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A6958CF6688775AED4F0AE195F93311347FB7D7D"
     }
   ]
 }
