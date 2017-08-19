@@ -1,0 +1,1896 @@
+//
+//  CustomSearchViewController.swift
+//  Shadow
+//
+//  Created by Atinderjit Kaur on 03/07/17.
+//  Copyright © 2017 Atinderjit Kaur. All rights reserved.
+//
+
+import UIKit
+
+class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate {
+    
+    @IBOutlet weak var view_BehindSearchView: UIView!                //Custom View
+    @IBOutlet weak var tblview_AllSearchResult: UITableView!
+    @IBOutlet weak var view_CollectionView: UIView!                 // View behind collection view
+    @IBOutlet weak var customCollectionView: UICollectionView!      //Custom Collection View
+    @IBOutlet weak var kHeightTopView: NSLayoutConstraint!          // Height of top view i.e. behind navigation bar
+    @IBOutlet weak var view_BehindProfile: UIView!                  //These are the views of only UI(white views)
+    @IBOutlet weak var view_BehindBio: UIView!
+    
+    
+    @IBOutlet weak var btn_HorizontalView: UIButton!               //Outlets of buttons
+    @IBOutlet weak var btn_VerticalView: UIButton!
+    fileprivate  var pageIndex : Int = 0                           //Pagination Parameters
+    fileprivate var pageSize : Int = 0
+    var pointNow : CGPoint?
+    var isFetching:Bool =  false
+    var bool_Search : Bool = false                          //This param for the cell for row at collection view to set data for first time.
+    var bool_LastResultSearch : Bool = false                //When the pagination gives no data at last
+    
+    var searchBar = UISearchBar()                              //Making secondary Searchbar
+    var barBtn_Search: UIBarButtonItem?
+    var str_searchText: NSString?
+    var arr_SearchData : NSMutableArray = NSMutableArray()
+    var linkForOpenWebsite : String?                        //On collection view to open link of facebook, instagram and twitter etc.
+    
+    fileprivate var dicUrl: NSMutableDictionary = NSMutableDictionary()     //For social icons
+    let array_URL = ["facebookUrl","linkedInUrl","instagramUrl","googlePlusUrl","gitHubUrl","twitterUrl"]
+    
+    @IBOutlet weak var btn_FilterLocation: UIButton!           //For Location filter
+    @IBOutlet weak var img_DropDrown: UIImageView!
+    
+    @IBOutlet weak var view_Black: UIView!                     //For Location filter UI
+    @IBOutlet weak var view_PopUp: UIView!
+    @IBOutlet weak var custom_slider: UISlider!
+    @IBOutlet weak var btn_Apply: UIButton!
+    @IBOutlet weak var btn_Cancel: UIButton!
+    @IBOutlet weak var lbl_Filter: UILabel!
+    
+    @IBOutlet weak var ktopToggleBtn: NSLayoutConstraint!
+    
+    var str_radiusInMiles : String?
+    
+    //MARK: Views default functions
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        showSearchBar()    //Custom search bar
+        
+        let searchTextField:UITextField = searchBar.subviews[0].subviews.last as! UITextField         //Custom Designs for search bar
+        
+        searchTextField.layer.cornerRadius = 8
+        searchTextField.textAlignment = NSTextAlignment.left
+        let image:UIImage = UIImage(named: "customsearch")!
+        let imageView:UIImageView = UIImageView.init(image: image)
+        searchTextField.leftView = imageView
+        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search",
+                                                                   attributes: [NSForegroundColorAttributeName: UIColor.white])
+        searchTextField.leftViewMode = UITextFieldViewMode.always
+        searchTextField.rightView = nil
+        searchTextField.backgroundColor = UIColor.init(red: 144.0/255.0, green: 20.0/255.0, blue: 151.0/255.0, alpha: 1.0)
+        self.searchBar.endEditing(true)
+
+     
+        
+        tblview_AllSearchResult.tableFooterView = UIView()  //Set table extra rows eliminate
+        
+        str_radiusInMiles = "10000"    //Set default miles on start
+        btn_FilterLocation.setTitle("Select distance", for: .normal)
+        
+        self.automaticallyAdjustsScrollViewInsets = false
+        
+        
+        if bool_LocationFilter == true {   //Check if location filter is selected then hit location api
+            
+            
+            kHeightTopView.constant = 78
+            btn_FilterLocation.isHidden = false
+            img_DropDrown.isHidden = false
+            self.GetSearchDataAccordingToLocation()
+            
+        }
+            
+        else if  bool_CompanySchoolTrends == true {  //Check if company,school,trends and occupation filter is selected then hit location api
+            kHeightTopView.constant = 64
+            ktopToggleBtn.constant = 19
+            btn_FilterLocation.isHidden = true
+            img_DropDrown.isHidden = true
+            self.GetOnlyCompanyData()
+            
+        }
+            
+        else {   //Check if no filter applies
+            
+            kHeightTopView.constant = 64
+            ktopToggleBtn.constant = 19
+            btn_FilterLocation.isHidden = true
+            img_DropDrown.isHidden = true
+            self.getSearchData()
+        }
+        
+
+        
+    }
+  override func viewDidAppear(_ animated: Bool) {
+    
+    self.navigationController?.setNavigationBarHidden(true, animated: false)
+    self.navigationItem.setHidesBackButton(true, animated:true)
+    self.tabBarController?.tabBar.isHidden = true
+    //self.tabBarController?.tabBar.isTranslucent = true
+    
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        
+        self.bool_Search = true           //When we come back from view full profile.
+        bool_UserIdComingFromSearch = false
+        dic_DataOfProfileForOtherUser.removeAllObjects()
+        
+        
+        
+        SetButtonCustomAttributes(btn_Cancel)    //Designs changes of the location filter pop up
+        SetButtonCustomAttributes(btn_Apply)
+        
+        
+        custom_slider.addTarget(self, action: #selector(adjustLabelForSlider), for: .valueChanged)  //Custom slider on location filter action
+        tblview_AllSearchResult.keyboardDismissMode = UIScrollViewKeyboardDismissMode.onDrag        //Hide keyboard on uitableview dragging
+        tblview_AllSearchResult.keyboardDismissMode = UIScrollViewKeyboardDismissMode.interactive
+        
+    }
+    
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        bool_LastResultSearch = false
+        bool_Occupation = false
+        
+    }
+    
+    //MARK: Custom Functions
+    
+    //MARK: Action of slider
+    func adjustLabelForSlider(_ sender: UISlider) {
+        
+        let trackRect : CGRect = sender.trackRect(forBounds: sender.bounds)
+        let thumbRect : CGRect = sender.thumbRect(forBounds: sender.bounds, trackRect: trackRect, value: sender.value)
+        lbl_Filter.center = CGPoint(x: thumbRect.origin.x + sender.frame.origin.x + 5, y: sender.frame.origin.y - 7)
+        
+        let currentValue = Int(sender.value)
+        lbl_Filter.text = "\(currentValue)"
+        
+    }
+    
+    
+    
+    // MARK: Tap gesture to hide keyboard
+    func handle_Tap(_ sender: UITapGestureRecognizer) {
+        
+        self.view.endEditing(true)
+        view_Black.isHidden = true
+        view_PopUp.isHidden = true
+        
+        
+    }
+    
+    
+    //MARK: Custom ShowSearchBar
+    func showSearchBar() {
+        
+        let btn_back = UIButton(type: .custom)    // Custom back button
+
+        if bool_LocationFilter == true {
+            
+            searchBar.frame = CGRect(x: 40, y: self.view_BehindSearchView.frame.origin.y + 10, width: self.view_BehindSearchView.frame.width - 140, height: 45)
+            
+            let btn_back = UIButton(type: .custom)    // Custom back button
+            btn_back.frame = CGRect(x: 0, y: 12, width: 42, height: 42)
+            btn_back.setImage(UIImage(named:"back-new"), for: .normal)
+            _ = UIBarButtonItem(customView: btn_back)
+            btn_back.addTarget(self, action: #selector(self.PopView), for: .touchUpInside)
+            view_BehindSearchView.addSubview(btn_back)
+
+            
+            if Global.DeviceType.IS_IPHONE_6  {  //Check of frame of search bar
+                searchBar.frame = CGRect(x: 40, y: self.view_BehindSearchView.frame.origin.y + 10, width: self.view_BehindSearchView.frame.width - 80, height: 45)
+            }
+            
+            else if  Global.DeviceType.IS_IPHONE_6P {
+                
+                 searchBar.frame = CGRect(x: 40, y: self.view_BehindSearchView.frame.origin.y + 10, width: self.view_BehindSearchView.frame.width - 50, height: 45)
+            }
+            
+        }
+        else{
+            
+            searchBar.frame = CGRect(x: 40, y: self.view_BehindSearchView.frame.origin.y + 18, width: self.view_BehindSearchView.frame.width - 140, height: 45)
+            
+            btn_back.frame = CGRect(x: 0, y: 20, width: 42, height: 42)
+            btn_back.setImage(UIImage(named:"back-new"), for: .normal)
+            _ = UIBarButtonItem(customView: btn_back)
+            btn_back.addTarget(self, action: #selector(self.PopView), for: .touchUpInside)
+            view_BehindSearchView.addSubview(btn_back)
+            
+            if Global.DeviceType.IS_IPHONE_6 {  //Check of frame of search bar
+                searchBar.frame = CGRect(x: 40, y: self.view_BehindSearchView.frame.origin.y + 18, width: self.view_BehindSearchView.frame.width - 80, height: 45)
+            }
+            
+            else if  Global.DeviceType.IS_IPHONE_6P {
+                
+                searchBar.frame = CGRect(x: 40, y: self.view_BehindSearchView.frame.origin.y + 18, width: self.view_BehindSearchView.frame.width - 50, height: 45)
+            }
+        }
+        
+        searchBar.backgroundImage = UIImage()
+        searchBar.returnKeyType = .done
+        searchBar.delegate = self
+        
+        if let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as? UITextField,
+            let glassIconView = textFieldInsideSearchBar.leftView as? UIImageView {
+            
+            //Magnifying glass
+            glassIconView.image = glassIconView.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            glassIconView.tintColor = UIColor.white
+
+            textFieldInsideSearchBar.layer.borderColor = UIColor.clear.cgColor
+            textFieldInsideSearchBar.layer.cornerRadius = 6.0
+            textFieldInsideSearchBar.layer.borderWidth = 1.0
+            
+        }
+        
+        view_BehindSearchView.addSubview(searchBar)
+        self.searchBar.alpha = 1
+    }
+    
+    //Action of back icon near to search
+    func PopView() {
+        _ = self.navigationController?.popViewController(animated: true)
+        bool_AllTypeOfSearches = false
+        bool_LocationFilter = false
+        bool_CompanySchoolTrends = false
+        arr_SearchData.removeAllObjects()
+    }
+    
+    
+    func SetWebViewUrl (index:Int) {
+        
+        let tempArray = self.dicUrl.allKeys as! [String]
+        
+        if tempArray.count > 0 {
+            
+            let socialStr:String = tempArray[index]
+            
+            switch socialStr {
+            case "facebookUrl":
+                
+                linkForOpenWebsite = self.dicUrl.value(forKey: "facebookUrl") as? String
+                break
+            case "linkedInUrl":
+                
+                linkForOpenWebsite = self.dicUrl.value(forKey: "linkedInUrl") as? String
+                break
+                
+            case "twitterUrl":
+                
+                linkForOpenWebsite = self.dicUrl.value(forKey: "twitterUrl") as? String
+                break
+                
+            case "googlePlusUrl":
+                
+                linkForOpenWebsite = self.dicUrl.value(forKey: "googlePlusUrl") as? String
+                break
+                
+                
+            case "instagramUrl":
+                linkForOpenWebsite = self.dicUrl.value(forKey: "instagramUrl") as? String
+                break
+                
+            case "gitHubUrl":
+                linkForOpenWebsite = self.dicUrl.value(forKey: "gitHubUrl") as? String
+                
+            default: break
+                
+            }
+        }
+        
+        
+        
+        
+        if linkForOpenWebsite != nil && linkForOpenWebsite != ""{
+            if let checkURL = NSURL(string: linkForOpenWebsite!) {
+                
+                if  UIApplication.shared.openURL(checkURL as URL){
+                    print("URL Successfully Opened")
+                }
+                else {
+                    self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+                }
+            }
+            else {
+                
+                self.showAlert(Message:"Invalid URL. Unable to open in browser.", vc: self)
+            }
+        }
+        else {
+            self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+        }
+        
+    }
+    
+    
+    //MARK: Api to search the data from all options
+    func getSearchData() {
+        
+        if self.checkInternetConnection()
+        {
+            
+            if str_searchText  == "" ||  str_searchText  == nil
+            {
+                
+                DispatchQueue.main.async {
+                    self.pleaseWait()
+                }
+            }
+            isFetching = false
+            
+            let dic:NSMutableDictionary = NSMutableDictionary()
+            dic.setValue(SavedPreferences.value(forKey: Global.macros.kUserId)as! NSNumber, forKey: Global.macros.kUserId)
+            dic.setValue(str_searchText, forKey: "searchKeyword") //string for search
+            dic.setValue(pageIndex, forKey: "pageIndex")   //pageIndex
+            dic.setValue( 10, forKey: "pageSize")    //pageSize
+            
+            print(dic)
+            ProfileAPI.sharedInstance.AllSearchData(dict: dic, completion: {(response) in
+                let status = (response).value(forKey: Global.macros.KStatus)as! NSNumber
+                self.isFetching = true
+                
+                switch status
+                {
+                case 200:
+                    self.clearAllNotice()
+                    self.arr_SearchData.addObjects(from: (response.value(forKey: "data") as? NSArray as! [Any]))
+                    self.bool_LastResultSearch = true
+                    if self.arr_SearchData.count == 0 {
+                        self.bool_LastResultSearch = false
+                    }
+                    DispatchQueue.main.async {
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                    }
+                    
+                case 210:
+                    
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.bool_LastResultSearch = false
+                        self.showAlert(Message: str_messageInWrongCeredentials!, vc: self)
+                    }
+                    
+                case 400:
+                    
+                    self.clearAllNotice()
+                    DispatchQueue.main.async {
+                        self.bool_LastResultSearch = false
+                        self.bool_Search = true
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                        self.showAlert(Message: "No more data to show.", vc: self)
+                        
+                        
+                    }
+                    
+                case 401 :
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.AlertSessionExpire()
+                    }
+                    
+                    
+                case 500:
+                    
+                    self.clearAllNotice()
+                    self.arr_SearchData.removeAllObjects()
+                    DispatchQueue.main.async {
+                        self.bool_LastResultSearch = false
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                    }
+                    
+                default:
+                    break
+                }
+                
+                
+            }, errorBlock: {(err) in
+                DispatchQueue.main.async {
+                    self.bool_LastResultSearch = false
+                    self.clearAllNotice()
+                    self.showAlert(Message:(err?.localizedDescription)!, vc: self)
+                }
+            })
+        }
+        else
+        {
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+            
+        }
+    }
+    
+    //MARK: Api to search the data from location
+    
+    func GetSearchDataAccordingToLocation() {
+        
+        if self.checkInternetConnection()
+        {
+            if str_searchText  == "" ||  str_searchText  == nil
+            {
+                DispatchQueue.main.async {
+                    self.pleaseWait()
+                }
+            }
+            isFetching = false
+            let dic:NSMutableDictionary = NSMutableDictionary()
+            dic.setValue(SavedPreferences.value(forKey: Global.macros.kUserId)as! NSNumber, forKey: Global.macros.kUserId)
+            dic.setValue(str_searchText, forKey: "searchKeyword")
+            dic.setValue(str_radiusInMiles, forKey: "radiusInMiles")
+            dic.setValue(myCurrentLat, forKey: "latitude")
+            dic.setValue(myCurrentLong, forKey: "longitude")
+            dic.setValue(0, forKey: "searchType")
+            dic.setValue(pageIndex, forKey: "pageIndex")   //pageIndex
+            dic.setValue( 10, forKey: "pageSize")          //pageSize
+            
+            print(dic)
+            
+            ProfileAPI.sharedInstance.AllSearchDataAsLocation(dict: dic, completion: {(response) in
+                let status = (response).value(forKey: Global.macros.KStatus)as! NSNumber
+                self.isFetching = true
+                switch status
+                {
+                case 200:
+                    self.clearAllNotice()
+                    self.arr_SearchData.addObjects(from: (response.value(forKey: "data") as? NSArray as! [Any]))
+                    print(self.arr_SearchData)
+                    self.bool_LastResultSearch = true
+                    if self.arr_SearchData.count == 0 {
+                        self.bool_LastResultSearch = false
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                    }
+                    
+                case 210:
+                    
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.bool_LastResultSearch = false
+                        self.showAlert(Message: str_messageInWrongCeredentials!, vc: self)
+                    }
+                    
+                case 400:
+                    
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.bool_LastResultSearch = false
+                        self.bool_Search = true
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                        self.showAlert(Message: "No more data to show.", vc: self)
+                    }
+                    
+                case 401 :
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.AlertSessionExpire()
+                    }
+                    
+                    
+                case 500:
+                    
+                    self.arr_SearchData.removeAllObjects()
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.bool_LastResultSearch = false
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                        
+                    }
+                    
+                default:
+                    break
+                }
+                
+                
+            }, errorBlock: {(err) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.bool_LastResultSearch = false
+                    self.showAlert(Message:(err?.localizedDescription)!, vc: self)
+                }
+            })
+        }
+        else
+        {
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+        }
+    }
+    
+    //MARK: Api to search the data from Company,school,trends and occupation
+    
+    
+    func GetOnlyCompanyData() {
+        
+        if self.checkInternetConnection()
+        {
+            if str_searchText  == "" ||  str_searchText  == nil
+            {
+                DispatchQueue.main.async {
+                    self.pleaseWait()
+                }
+            }
+            isFetching = false
+            let dic:NSMutableDictionary = NSMutableDictionary()
+            dic.setValue(SavedPreferences.value(forKey: Global.macros.kUserId)as! NSNumber, forKey: Global.macros.kUserId)
+            dic.setValue(ratingType, forKey: "ratingType")
+            dic.setValue(str_searchText, forKey: "searchKeyword")
+            dic.setValue(0, forKey: "searchType")
+            dic.setValue(pageIndex, forKey: "pageIndex")   //pageIndex
+            dic.setValue( 10, forKey: "pageSize")    //pageSize
+            
+            print(dic)
+            
+            ProfileAPI.sharedInstance.getAllTypeTopRatingListbyType(dict: dic, completion: {(response) in
+                let status = (response).value(forKey: Global.macros.KStatus)as! NSNumber
+                self.isFetching = true
+                switch status
+                {
+                case 200:
+                    self.clearAllNotice()
+                    self.arr_SearchData.addObjects(from: (response.value(forKey: "data") as? NSArray as! [Any]))
+                    print(self.arr_SearchData)
+                    self.bool_LastResultSearch = true
+                    if self.arr_SearchData.count == 0 {
+                        self.bool_LastResultSearch = false
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                    }
+                    
+                case 210:
+                    
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.bool_LastResultSearch = false
+                       self.showAlert(Message: str_messageInWrongCeredentials!, vc: self)
+                    }
+                    
+                case 400:
+                    
+                    DispatchQueue.main.async {
+                        self.bool_Search = true
+                        self.clearAllNotice()
+                        self.bool_LastResultSearch = false
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                      //  self.showAlert(Message: "No data to show.", vc: self)
+                    }
+                    
+                case 401 :
+                    
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.AlertSessionExpire()
+                    }
+                    
+                case 500:
+                    
+                    self.arr_SearchData.removeAllObjects()
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.bool_LastResultSearch = false
+                        self.tblview_AllSearchResult.reloadData()
+                        self.customCollectionView.reloadData()
+                        
+                    }
+                    
+                default:
+                    break
+                }
+                
+                
+            }, errorBlock: {(err) in
+                DispatchQueue.main.async {
+                    
+                    self.clearAllNotice()
+                    self.bool_LastResultSearch = false
+                    self.showAlert(Message:(err?.localizedDescription)!, vc: self)
+                    
+                }
+            })
+        }
+            
+        else
+        {
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+            
+        }
+        
+    }
+    
+    
+    //MARK: Action of Buttons
+    
+    @IBAction func Action_ListView(_ sender: UIButton) {
+        
+        btn_HorizontalView.setImage(UIImage(named: "three-dot-icon"), for: .normal)
+        btn_VerticalView.setImage(UIImage(named: "purpleHor"), for: .normal)
+        
+        tblview_AllSearchResult.isHidden = false
+        view_CollectionView.isHidden = true
+        searchBar.isHidden = false
+        
+        if bool_LocationFilter == true {
+            
+            btn_FilterLocation.isHidden = false
+            img_DropDrown.isHidden = false
+            
+        }
+        else {
+            
+            btn_FilterLocation.isHidden = true
+            img_DropDrown.isHidden = true
+            
+        }
+        
+    }
+    
+    
+    @IBAction func Action_HorizontalView(_ sender: Any) {
+        
+        if bool_Occupation == false {
+            
+            if arr_SearchData.count > 0 {
+                
+               
+                if (btn_HorizontalView.currentImage?.isEqual(UIImage(named: "three-dot-icon")))! {
+                    
+                    //do something here
+                    btn_HorizontalView.setImage(UIImage(named: "grayHorizontalLines"), for: .normal)
+                    self.scrollViewDidEndDecelerating(customCollectionView)
+                    tblview_AllSearchResult.isHidden = true
+                    view_CollectionView.isHidden = false
+                    searchBar.resignFirstResponder()
+                    
+                }
+                
+                else {
+                    
+                    btn_HorizontalView.setImage(UIImage(named: "three-dot-icon"), for: .normal)
+                    tblview_AllSearchResult.isHidden = false
+                    view_CollectionView.isHidden = true
+                    searchBar.isHidden = false
+                    
+                    if bool_LocationFilter == true {
+                        
+                        btn_FilterLocation.isHidden = false
+                        img_DropDrown.isHidden = false
+                        
+                    }
+                    else {
+                        
+                        btn_FilterLocation.isHidden = true
+                        img_DropDrown.isHidden = true
+                        
+                    }
+                    
+                }
+                
+                
+//                btn_HorizontalView.setImage(UIImage(named:  "purpleDots"), for: .normal)
+//                btn_VerticalView.setImage(UIImage(named:  "grayHorizontalLines"), for: .normal)
+//                
+//                self.scrollViewDidEndDecelerating(customCollectionView)
+//                
+//                tblview_AllSearchResult.isHidden = true
+//                view_CollectionView.isHidden = false
+//                searchBar.resignFirstResponder()
+                
+            }
+            else {
+                
+                
+                self.showAlert(Message: "No data found.", vc: self)
+                
+            }
+            
+        }
+            
+        else {
+            self.showAlert(Message: "Coming Soon.", vc: self)
+            
+        }
+        
+    }
+    
+    
+    
+    //MARK: - Button Actions
+    
+    @IBAction func Action_Messaging(_ sender: UIButton) {
+        
+        self.showAlert(Message: "Coming Soon", vc: self)
+        
+    }
+    
+    
+    
+    @IBAction func Action_RequestNotification(_ sender: UIButton) {
+        
+        self.showAlert(Message: "Coming Soon", vc: self)
+        
+    }
+    
+    @IBAction func Action_Video(_ sender: UIButton) {
+        print("atinder")
+        
+        if video_url != nil {
+            
+            bool_PlayFromProfile = true
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Upload_Video") as! UploadViewController
+            _ = self.navigationController?.pushViewController(vc, animated: true)
+            
+        }
+            
+        else{
+            
+            
+            self.showAlert(Message: "No video to play yet.", vc: self)
+            
+        }
+        
+        
+    }
+    
+    @IBAction func Action_OpenSocialSite1(_ sender: UIButton) {
+        linkForOpenWebsite = ""
+        SetWebViewUrl (index: 0)
+        
+        
+    }
+    
+    @IBAction func Action_OpenSocialSite2(_ sender: UIButton) {
+        linkForOpenWebsite = ""
+        
+        SetWebViewUrl (index: 1)
+        
+        
+    }
+    
+    @IBAction func Action_OpenSocialSite3(_ sender: UIButton) {
+        linkForOpenWebsite = ""
+        SetWebViewUrl (index: 2)
+        
+    }
+    
+    
+    
+    @IBAction func Action_ViewFullProfile(_ sender: UIButton) {
+        
+        bool_UserIdComingFromSearch = true
+        let dict_Temp = (arr_SearchData[sender.tag] as! NSDictionary)["userDTO"] as? NSDictionary
+        
+        userIdFromSearch = dict_Temp?.value(forKey: "userId") as? NSNumber
+        let str_role = dict_Temp?.value(forKey: "role") as? String
+        dic_DataOfProfileForOtherUser = NSMutableDictionary()
+        dic_DataOfProfileForOtherUser = (arr_SearchData[sender.tag] as! NSDictionary).mutableCopy() as! NSMutableDictionary
+        
+        
+        if str_role == "USER" {
+
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC
+            _ = self.navigationController?.pushViewController(vc, animated: true)
+            
+            
+        }
+        else {
+            
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
+            
+            _ = self.navigationController?.pushViewController(vc, animated: true)
+            
+            
+        }
+        
+    }
+    
+    
+    
+    @IBAction func ActionSelectLocationFilter(_ sender: Any) {
+        self.view.endEditing(true)
+        
+        view_Black.isHidden = false
+        view_PopUp.isHidden = false
+        
+    }
+    
+    
+    
+    @IBAction func Action_Slider(_ sender: UISlider) {
+        
+        let currentValue = Int(sender.value)
+        str_radiusInMiles = "\(currentValue)"
+        
+    }
+    
+    
+    
+    
+    @IBAction func Action_FilterLocationApply(_ sender: Any) {
+        
+        btn_FilterLocation.setTitle(str_radiusInMiles! + " " + "MILES", for: .normal)
+        view_Black.isHidden = true
+        view_PopUp.isHidden = true
+        self.view.endEditing(true)
+        GetSearchDataAccordingToLocation()
+        
+    }
+    
+    
+    @IBAction func Action_Cancel(_ sender: Any) {
+        self.view.endEditing(true)
+        view_Black.isHidden = true
+        view_PopUp.isHidden = true
+    }
+    
+    
+    
+    @IBAction func Action_DidSelectRow(_ sender: UIButton) {
+        
+        if bool_Occupation == false {
+            
+            if self.checkInternetConnection()
+            {
+                bool_UserIdComingFromSearch = true
+                print(arr_SearchData [sender.tag] as! NSDictionary)
+                userIdFromSearch = (arr_SearchData[sender.tag] as! NSDictionary)["userId"] as? NSNumber
+                let dict_Temp = (arr_SearchData[sender.tag] as! NSDictionary)["userDTO"] as? NSDictionary
+                let str_role = dict_Temp?.value(forKey: "role") as? String
+                dic_DataOfProfileForOtherUser = (arr_SearchData[sender.tag] as! NSDictionary).mutableCopy() as! NSMutableDictionary
+                
+                if str_role == "USER" {
+                    
+                    let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC
+                    _ = self.navigationController?.pushViewController(vc, animated: true)
+                    vc.extendedLayoutIncludesOpaqueBars = true
+                    self.tabBarController?.tabBar.isTranslucent = false
+                    self.navigationController?.navigationBar.isTranslucent = false
+                    //arr_SearchData.removeAllObjects()
+
+                }
+                else {
+                    
+                    let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
+                    _ = self.navigationController?.pushViewController(vc, animated: true)
+                    vc.extendedLayoutIncludesOpaqueBars = true
+                    self.tabBarController?.tabBar.isTranslucent = false
+                    self.navigationController?.navigationBar.isTranslucent = false
+
+                  //arr_SearchData.removeAllObjects()
+
+                }
+            }
+                
+            else{
+                self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+            }
+            
+        }
+        else {
+            self.showAlert(Message: "Coming Soon.", vc: self)
+            
+        }
+    }
+    
+    
+    @IBAction func Action_OpenUrl(_ sender: UIButton) {
+        
+        let str_role = ((self.arr_SearchData[(sender.tag)] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "role") as? String
+        let url:String?
+        if str_role == "COMPANY"{
+            url = ((self.arr_SearchData[(sender.tag)] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "companyUrl") as? String
+        }else{
+            url = ((self.arr_SearchData[(sender.tag)] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "schoolUrl") as? String
+        }
+        
+        if url != nil && url != ""{
+            if let checkURL = NSURL(string: url!) {
+                
+                if  UIApplication.shared.openURL(checkURL as URL){
+                    print("URL Successfully Opened")
+                }
+                else {
+                    self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+                }
+            }
+            else {
+                
+                self.showAlert(Message:"Invalid URL. Unable to open in browser.", vc: self)
+            }
+        }
+        else {
+            self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+        }
+        
+    }
+    
+    
+    //MARK:Scroll View Delegate Methods and Pagination
+    
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        pointNow = scrollView.contentOffset
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        //Custom indexpath and cell formation
+        let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
+        if indexPath != nil {
+            let cell = self.customCollectionView.cellForItem(at: indexPath!) as? CustomCollectionViewCell
+            if cell != nil {
+                
+                if scrollView == self.tblview_AllSearchResult {       //Pagination for tableview
+                    
+                    print(scrollView.contentOffset.y)
+                    if (scrollView.contentOffset.y<(pointNow?.y)!) {
+                        print("down")
+                    } else if (scrollView.contentOffset.y>(pointNow?.y)!) {
+                        
+                        if isFetching {
+                            self.pageIndex = self.pageIndex + 1
+                            isFetching = true
+                            DispatchQueue.global(qos: .background).async {
+                                
+                                self.bool_Search = true
+                                if bool_AllTypeOfSearches == true {
+                                    self.getSearchData()
+                                }
+                                else if bool_LocationFilter == true {
+                                    self.GetSearchDataAccordingToLocation()
+                                }
+                                    
+                                else if bool_CompanySchoolTrends == true {
+                                    self.GetOnlyCompanyData()
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                else {
+                    
+                    if (indexPath?.row)!  == self.arr_SearchData.count - 1 {   //Pagination for scrollView
+                        
+                        print(scrollView.contentOffset.x)
+                        print(arr_SearchData.count)
+                        
+                        if pointNow != nil {
+                            if (scrollView.contentOffset.x<(pointNow?.x)!) {
+                                print("down")
+                            } else if (scrollView.contentOffset.x>(pointNow?.x)!) {
+                                if isFetching {
+                                    self.pageIndex = self.pageIndex + 1
+                                    isFetching = true
+                                    DispatchQueue.global(qos: .background).async {
+                                        self.bool_Search = true
+                                        if bool_AllTypeOfSearches == true {
+                                            self.getSearchData()
+                                        }
+                                        else if bool_LocationFilter == true {
+                                            self.GetSearchDataAccordingToLocation()
+                                        }
+                                        else if bool_CompanySchoolTrends == true {
+                                            self.GetOnlyCompanyData()
+                                        }
+                                    }
+                                }
+                            }
+                                
+                            else {
+                                self.bool_Search = true
+                                self.tblview_AllSearchResult.reloadData()
+                                self.customCollectionView.reloadData()
+                            }
+                        }
+                        else {
+                            self.bool_Search = true
+                            self.tblview_AllSearchResult.reloadData()
+                            self.customCollectionView.reloadData()
+                            
+                        }
+    
+                    }
+                    else {                                                    //Set data for UICollectionView when end declarating calls
+                        DispatchQueue.main.async {
+                            
+                            cell?.btn_ViewFullProfile.tag = (indexPath?.row)!
+                            cell?.btn_PlayVideo.tag = (indexPath?.row)!
+                            cell?.btn_SocialSite1.tag = (indexPath?.row)!
+                            cell?.btn_SocialSite2.tag = (indexPath?.row)!
+                            cell?.btn_SocialSite3.tag = (indexPath?.row)!
+                            cell?.btn_OpenUrl.tag = (indexPath?.row)!
+                            
+                            if self.arr_SearchData.count > 0 {
+                                self.dicUrl.removeAllObjects()
+                                if (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] != nil || (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String != "" {
+                                    cell?.lbl_CompanySchoolUserName.text = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String
+                                }
+                                else {
+                                    cell?.lbl_CompanySchoolUserName.text = "NA"
+                                }
+                                
+                            let rating_number = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["avgRating"]!)"  //Set the star images acc. to rating
+                                
+                                let dbl = 2.0
+                                
+                                if  dbl.truncatingRemainder(dividingBy: 1) == 0
+                                {
+                                    cell?.lbl_RatingFloat.text = rating_number + ".0"
+                                    
+                                }
+                                else {
+                                    
+                                    cell?.lbl_RatingFloat.text = rating_number
+                                }
+
+                                
+                                let dict_Temp = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary
+                                let str_role = dict_Temp?.value(forKey: "role") as? String //Getting the role
+                                
+                                
+                                let str_video =  dict_Temp?.value(forKey: "videoUrl") as? String  //Video url to play video
+                                if str_video != nil {
+                                    video_url = NSURL(string: str_video!) as URL?
+                                }
+                                else{
+                                    video_url = nil
+                                }
+                                
+                                
+                         /*       for index in self.array_URL                     //Set urls according to buttons
+                                {
+                                    if ( dict_Temp?[index] != nil && dict_Temp?.value(forKey: index) as? String != "" )
+                                    {
+                                        self.dicUrl.setValue(dict_Temp?.value(forKey: index)!, forKey: index)
+                                    }
+                                }
+                                
+                                print(self.dicUrl)
+                                let tempArray = self.dicUrl.allKeys as! [String]
+                                
+                                if (self.dicUrl.count > 0)
+                                {
+                                    if tempArray.count >= 1 {
+                                        
+                                        cell?.btn_SocialSite1.isHidden = false
+                                        cell?.btn_SocialSite2.isHidden = true
+                                        cell?.btn_SocialSite3.isHidden = true
+                                        cell?.btn_SocialSite1.setImage(UIImage(named:tempArray[0]), for: UIControlState.normal)
+                                        cell?.btn_SocialSite2.setImage(UIImage(), for: UIControlState.normal)
+                                        cell?.btn_SocialSite3.setImage(UIImage(), for: UIControlState.normal)
+                                                                            }
+                                    if tempArray.count >= 2 {
+                                        
+                                        cell?.btn_SocialSite2.isHidden = false
+                                        cell?.btn_SocialSite3.isHidden = true
+                                        
+                                        cell?.btn_SocialSite2.setImage(UIImage(named:tempArray[1]), for: UIControlState.normal)
+                                        cell?.btn_SocialSite3.setImage(UIImage(), for: UIControlState.normal)
+                                        
+                                    }
+                                    if tempArray.count == 3  {
+                                        
+                                        cell?.btn_SocialSite3.isHidden = false
+                                        cell?.btn_SocialSite3.setImage(UIImage(named:tempArray[2] ), for: UIControlState.normal)
+                                        
+                                    }
+                                }
+                                else {
+                                    
+                                    cell?.btn_SocialSite1.isHidden = true
+                                    cell?.btn_SocialSite2.isHidden = true
+                                    cell?.btn_SocialSite3.isHidden = true
+                                    cell?.btn_SocialSite1.setImage(UIImage(), for: UIControlState.normal)
+                                    cell?.btn_SocialSite2.setImage(UIImage(), for: UIControlState.normal)
+                                    cell?.btn_SocialSite3.setImage(UIImage(), for: UIControlState.normal)
+                                    
+                                } */
+                                
+                                if str_role == "USER" {              //For users UI and data Checks
+                                    
+                                    cell?.lbl_Count_NumberOfUsers.isHidden = true
+                                    cell?.lbl_Count_CompanySchoolWithOccupations.isHidden = true
+                                    cell?.lbl_occupation.isHidden = true
+                                    cell?.lbl_attend.isHidden = true
+                                    cell?.view_line.isHidden = true
+                                    cell?.kHeight_BehindDetailView.constant = 58
+                                    
+                                    if dict_Temp?.value(forKey: "companyName") != nil && dict_Temp?.value(forKey: "companyName") as? String != "" {
+                                        let companyName =  dict_Temp?.value(forKey: "companyName") as! String
+                                            cell?.lbl_Location.text = companyName
+                                    }
+                                    else {
+                                        cell?.lbl_Location.text = "NA"
+                                       }
+                                    
+                                    if dict_Temp?.value(forKey: "schoolName") != nil && dict_Temp?.value(forKey: "schoolName") as? String != "" {
+                                        
+                                        let schoolName = dict_Temp?.value(forKey: "schoolName") as! String
+                                         cell?.lbl_Url.text = schoolName
+                                            
+                                    }
+                                        
+                                    else {
+                                        cell?.lbl_Url.text = "NA"
+                                     }
+                                }
+                                else{                        //For Company and school UI and data Checks
+                                    
+                                    cell?.lbl_Count_NumberOfUsers.isHidden = false
+                                    cell?.lbl_Count_CompanySchoolWithOccupations.isHidden = false
+                                    cell?.lbl_occupation.isHidden = false
+                                    cell?.lbl_attend.isHidden = false
+                                    cell?.view_line.isHidden = false
+                                    
+                                    
+                                    cell?.kHeight_BehindDetailView.constant = 118
+                                    
+                                    if dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") != nil {
+                                        cell?.lbl_Count_CompanySchoolWithOccupations.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary)["count"]!)"
+                                    }
+                                    else {
+                                        cell?.lbl_Count_CompanySchoolWithOccupations.text = "0"
+                                    }
+                                    
+                                    if dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations")  != nil {
+                                        
+                                        cell?.lbl_Count_NumberOfUsers.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary)["count"]!)"
+                                    }
+                                        
+                                    else {
+                                        cell?.lbl_Count_NumberOfUsers.text = "0"
+                                    }
+                                    
+                                    if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" {
+                                        cell?.lbl_Location.text = dict_Temp?.value(forKey: "location") as? String
+                                    }
+                                    else {
+                                        cell?.lbl_Location.text = "NA"
+                                    }
+                                    
+                                    
+                                    if str_role == "COMPANY"{                  //Set Company or school url to view
+                                        
+                                        if dict_Temp?.value(forKey: "companyUrl") as? String != nil{
+                                            cell?.lbl_Url.text = dict_Temp?.value(forKey: "companyUrl") as? String
+                                            cell?.btn_OpenUrl.isUserInteractionEnabled = true
+                                        }
+                                        else{
+                                            cell?.lbl_Url.text = "NA"
+                                            cell?.btn_OpenUrl.isUserInteractionEnabled = false
+                                        }
+                                        
+                                    }else{
+                                        
+                                        if dict_Temp?.value(forKey: "schoolUrl") as? String != nil{
+                                            cell?.lbl_Url.text = dict_Temp?.value(forKey: "schoolUrl") as? String
+                                            cell?.btn_OpenUrl.isUserInteractionEnabled = true
+                                            
+                                        }
+                                        else{
+                                            cell?.lbl_Url.text = "NA"
+                                            cell?.btn_OpenUrl.isUserInteractionEnabled = false
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                               
+                                if dict_Temp?.value(forKey: "shadowedByShadowUser") != nil {   //Mutual data set on user, school and company
+                                    cell?.lbl_Count_ShadowersVerified.text = "\((dict_Temp?.value(forKey: "shadowedByShadowUser") as! NSDictionary)["count"]!)"
+                                }
+                                    
+                                else {
+                                    cell?.lbl_Count_ShadowersVerified.text = "0"
+                                }
+                                
+                                if dict_Temp?.value(forKey: "shadowersVerified")  != nil {
+                                    cell?.lbl_Count_ShadowedByShadowUser.text = "\((dict_Temp?.value(forKey: "shadowersVerified") as! NSDictionary)["count"]!)"
+                                }
+                                else {
+                                    
+                                    cell?.lbl_Count_ShadowedByShadowUser.text = "0"
+                                }
+                                
+                                
+                                let str_bio = dict_Temp?.value(forKey: "bio") as? String
+                                
+                                if str_bio == "" || str_bio == nil {
+                                    cell?.lbl_Description.text = "No biography to show..."
+                                }
+                                else {
+                                    cell?.lbl_Description.text = str_bio
+                                }
+                                
+                              
+                                
+                                if (dict_Temp?.value(forKey: "profileImageUrl")as? String) != nil {      // Set Profile ImageUrl
+                                    var profileurl = dict_Temp?.value(forKey: "profileImageUrl") as? String
+                                    profileurl = profileurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                                    
+                                    if profileurl != nil {
+                                        cell?.imgView_ProfilePic.sd_setImage(with: URL(string:profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
+                                    }
+                                }else{
+                                    cell?.imgView_ProfilePic.image = UIImage.init(named: "dummy")
+                                }
+                                self.bool_LastResultSearch = false
+                            }
+                          
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        if scrollView == self.customCollectionView {
+            
+            DispatchQueue.main.async {
+                
+                let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
+                let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+                let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
+                
+                if indexPath != nil {
+                    let cell  = self.customCollectionView.cellForItem(at: indexPath!) as? CustomCollectionViewCell
+                    
+                  //  setting all fields empty or to dummy state
+                    cell?.imgView_Star1.image = UIImage(named: "graystar")
+                    cell?.imgView_Star2.image = UIImage(named: "graystar")
+                    cell?.imgView_Star3.image = UIImage(named: "graystar")
+                    cell?.imgView_Star4.image = UIImage(named: "graystar")
+                    cell?.imgView_Star5.image = UIImage(named: "graystar")
+                    
+                    cell?.imgView_ProfilePic.image = UIImage.init(named: "dummy")
+                    cell?.btn_SocialSite1.isHidden = true
+                    cell?.btn_SocialSite2.isHidden = true
+                    cell?.btn_SocialSite3.isHidden = true
+
+                    cell?.lbl_CompanySchoolUserName.text = ""
+                    cell?.lbl_Location.text = ""
+                    cell?.lbl_Url.text = ""
+                    cell?.lbl_Count_ShadowersVerified.text = "0"
+                    cell?.lbl_Count_ShadowedByShadowUser.text = "0"
+                    cell?.lbl_Count_CompanySchoolWithOccupations.text = "0"
+                    cell?.lbl_Count_NumberOfUsers.text = "0"
+                    cell?.lbl_Description.text = "No biography to show.."
+                }
+                
+            }
+        }
+        
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+}
+
+//MARK: SEARCHBAR METHODS
+
+extension CustomSearchViewController:UISearchBarDelegate{
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        if text == "\n" {
+            self.searchBar.resignFirstResponder()
+            return false
+            
+        }
+        str_searchText = (searchBar.text! as NSString).replacingCharacters(in: range, with: text) as NSString
+        //print(str_searchText!)
+        
+        
+        if ((self.str_searchText?.length)! > 2 ) {
+            if (self.str_searchText?.hasPrefix(" "))! {
+                return false
+            }
+            
+            
+            if bool_AllTypeOfSearches == true {
+                
+                if bool_LastResultSearch == false {
+                    
+                    self.arr_SearchData.removeAllObjects()
+                    pageIndex = 0
+                    DispatchQueue.main.async {
+                        self.bool_Search = true
+                        self.getSearchData()
+                    }
+                    
+                    
+                    
+                }
+                
+            }
+            else if bool_LocationFilter == true {
+                
+                if bool_LastResultSearch == false {
+                    self.arr_SearchData.removeAllObjects()
+                    pageIndex = 0
+                    DispatchQueue.main.async {
+                        self.bool_Search = true
+                        self.GetSearchDataAccordingToLocation()
+                    }
+                }
+            }
+                
+            else if bool_CompanySchoolTrends == true{
+                
+                if bool_LastResultSearch == false {
+                    self.arr_SearchData.removeAllObjects()
+                    pageIndex = 0
+                    DispatchQueue.main.async {
+                        self.bool_Search = true
+                        self.GetOnlyCompanyData()
+                    }
+                }
+            }
+            
+            
+            return self.str_searchText!.length <= 30
+        }
+        else  if ((self.str_searchText?.length)! == 0 ) {
+            
+            self.arr_SearchData.removeAllObjects()
+            
+            if bool_AllTypeOfSearches == true {
+                pageIndex = 0
+                DispatchQueue.main.async {
+                    self.bool_Search = true
+                    self.getSearchData()
+                }
+            }
+                
+            else  if bool_LocationFilter == true {
+                pageIndex = 0
+                DispatchQueue.main.async {
+                    self.bool_Search = true
+                    self.GetSearchDataAccordingToLocation()
+                }
+            }
+                
+            else if bool_CompanySchoolTrends == true{
+                pageIndex = 0
+                DispatchQueue.main.async {
+                    self.bool_Search = true
+                    self.GetOnlyCompanyData()
+                }
+            }
+                
+            else {
+                
+                DispatchQueue.main.async {
+                    
+                    self.tblview_AllSearchResult.reloadData()
+                    self.customCollectionView.reloadData()
+                    
+                    
+                }
+                
+                
+                
+            }
+            
+            
+        }
+        else{
+            self.arr_SearchData.removeAllObjects()
+            DispatchQueue.main.async {
+                
+                self.tblview_AllSearchResult.reloadData()
+                self.customCollectionView.reloadData()
+                
+                
+            }
+            
+        }
+        return self.str_searchText!.length <= 30
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        
+    }
+    
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+        self.searchBar.alpha = 1
+        
+        
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        
+    }
+    
+}
+
+//MARK: - CLASS EXTENSIONS
+extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return arr_SearchData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell_Simple", for: indexPath) as! AllSearchesTableViewCell
+        
+        cell.btn_DidSelectRow.tag = indexPath.row
+        
+        
+        let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["userDTO"] as? NSDictionary
+        let str_role = dict_Temp?.value(forKey: "role") as? String
+        
+        if str_role == "USER" {
+            
+            
+            
+            if dict_Temp?.value(forKey: "companyName") != nil {
+                let companyName =  dict_Temp?.value(forKey: "companyName") as! String
+                
+                if companyName != ""    {
+                    cell.lbl_LocNcom.text = companyName
+                    cell.img_LocNcom.image = UIImage.init(named: "company-icon")
+                }
+                else {
+                    cell.lbl_LocNcom.text  = ""
+                }
+            }
+            else {
+                
+                if dict_Temp?.value(forKey: "schoolName") != nil {
+                    
+                    let schoolName = dict_Temp?.value(forKey: "schoolName") as! String
+                    
+                    if schoolName != ""
+                    {
+                         cell.lbl_LocNcom.text = schoolName
+                        cell.img_LocNcom.image = UIImage.init(named: "company-icon")
+
+                    }
+                    else {
+                         cell.lbl_LocNcom.text = ""
+                    }
+                    
+                }
+                    
+                else {
+                    
+                     cell.lbl_LocNcom.text = ""
+                    
+                    
+                }
+                
+            }
+            
+        }
+        
+        else {
+            
+            if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" {
+                cell.lbl_LocNcom.text = dict_Temp?.value(forKey: "location") as? String
+                cell.img_LocNcom.image = UIImage.init(named: "location-pin")
+            }
+            else {
+                
+                cell.lbl_LocNcom.text = ""
+                cell.img_LocNcom.image = UIImage.init(named: "")
+
+            }
+            
+        }
+        
+        
+
+        
+        if bool_LocationFilter == true {
+            
+            cell.lbl_Time.isHidden = false
+            
+            if self.arr_SearchData.count > 0 {
+                let str_distance = (arr_SearchData[indexPath.row] as! NSDictionary)["distance"] as? NSString
+                
+                if str_distance == "" || str_distance == nil {
+                    cell.lbl_Time.text = "0m"
+                }
+                else {
+                    cell.lbl_Time.text = String(format: "%.0f", str_distance!.floatValue) + " " + "MILES"
+                }
+                
+            }
+        }
+            
+        else {
+            
+            cell.lbl_Time.isHidden = true
+            
+        }
+        
+        
+        if self.arr_SearchData.count > 0 {
+            
+            cell.lbl_Name.text = (arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String
+            let rating_number = "\((arr_SearchData[indexPath.row] as! NSDictionary)["avgRating"]!)"
+            
+            
+            //print(rating_number)
+           
+            let dbl = 2.0
+           if  dbl.truncatingRemainder(dividingBy: 1) == 0
+           {
+            cell.lbl_RatingFloat.text = rating_number + ".0"
+            
+            }
+           else {
+             cell.lbl_RatingFloat.text = rating_number
+            }
+
+           
+            let dict_Temp : NSDictionary?
+            
+            if  bool_Occupation == true {
+                
+                dict_Temp = (arr_SearchData[indexPath.row] as! NSDictionary)["occupationDTO"] as? NSDictionary
+                
+            }
+            else {
+                dict_Temp = (arr_SearchData[indexPath.row] as! NSDictionary)["userDTO"] as? NSDictionary
+                
+            }
+            
+            if dict_Temp?.value(forKey: "profileImageUrl")as? String != nil{
+                var profileurl = dict_Temp?.value(forKey: "profileImageUrl")as? String
+                profileurl = profileurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                
+                if profileurl != nil {
+                    
+                    cell.imgView_Profile.sd_setImage(with: URL(string:profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
+                }
+            }else{
+                cell.imgView_Profile.image = UIImage.init(named: "profile-icon-1")
+            }
+            bool_LastResultSearch = false
+        }
+        return cell
+    }
+    
+    
+    
+}
+
+//MARK : - COLLECTIONVIEW StarFull
+extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)as! CustomCollectionViewCell
+        DispatchQueue.main.async {
+            if self.bool_Search == true {
+                self.bool_Search = false
+                cell.btn_ViewFullProfile.tag = indexPath.row
+                cell.btn_PlayVideo.tag = indexPath.row
+                cell.btn_SocialSite1.tag = indexPath.row
+                cell.btn_SocialSite2.tag = indexPath.row
+                cell.btn_SocialSite3.tag = indexPath.row
+                
+                print(indexPath.row)
+                
+                print("indexPath \(indexPath.row)")
+                if self.arr_SearchData.count > 0 {
+                    
+                    self.dicUrl.removeAllObjects()
+                    
+                    if (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] != nil || (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String != "" {
+                        cell.lbl_CompanySchoolUserName.text = (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String
+                        
+                    }
+                    else {
+                        
+                        cell.lbl_CompanySchoolUserName.text = "NA"
+                        
+                    }
+                    let rating_number = "\((self.arr_SearchData[indexPath.row] as! NSDictionary)["avgRating"]!)"
+                   
+                    let dbl = 2.0
+
+                    if  dbl.truncatingRemainder(dividingBy: 1) == 0
+                    {
+                      cell.lbl_RatingFloat.text = rating_number + ".0"
+                        
+                    }
+                    else {
+                       cell.lbl_RatingFloat.text = rating_number
+                    }
+
+                    
+                    let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["userDTO"] as? NSDictionary
+                    let str_role = dict_Temp?.value(forKey: "role") as? String
+                    
+                    
+                    let str_video =  dict_Temp?.value(forKey: "videoUrl") as? String
+                    if str_video != nil {
+                        video_url = NSURL(string: str_video!) as URL?
+                    }
+                    else {
+                        video_url = nil
+                    }
+                    
+                    
+             /*       for index in self.array_URL
+                    {
+                        
+                        if ( dict_Temp?[index] != nil && dict_Temp?.value(forKey: index) as? String != "" )
+                        {
+                            self.dicUrl.setValue(dict_Temp?.value(forKey: index)!, forKey: index)
+                        }
+                        
+                    }
+                    
+                    print(self.dicUrl)
+                    let tempArray = self.dicUrl.allKeys as! [String]
+                    
+                    if (self.dicUrl.count > 0)
+                    {
+                        if tempArray.count >= 1 {
+                            
+                            cell.btn_SocialSite1.isHidden = false
+                            cell.btn_SocialSite2.isHidden = true
+                            cell.btn_SocialSite3.isHidden = true
+                            cell.btn_SocialSite1.setImage(UIImage(named:tempArray[0]), for: UIControlState.normal)
+                            cell.btn_SocialSite2.setImage(UIImage(), for: UIControlState.normal)
+                            cell.btn_SocialSite3.setImage(UIImage(), for: UIControlState.normal)
+                            
+                            
+                        }
+                        if tempArray.count >= 2 {
+                            
+                            cell.btn_SocialSite2.isHidden = false
+                            cell.btn_SocialSite3.isHidden = true
+                            
+                            cell.btn_SocialSite2.setImage(UIImage(named:tempArray[1]), for: UIControlState.normal)
+                            cell.btn_SocialSite3.setImage(UIImage(), for: UIControlState.normal)
+                            
+                        }
+                        if tempArray.count == 3  {
+                            
+                            cell.btn_SocialSite3.isHidden = false
+                            cell.btn_SocialSite3.setImage(UIImage(named:tempArray[2] ), for: UIControlState.normal)
+                            
+                        }
+                    }
+                    else {
+                        
+                        cell.btn_SocialSite1.isHidden = true
+                        cell.btn_SocialSite2.isHidden = true
+                        cell.btn_SocialSite3.isHidden = true
+                        cell.btn_SocialSite1.setImage(UIImage(), for: UIControlState.normal)
+                        cell.btn_SocialSite2.setImage(UIImage(), for: UIControlState.normal)
+                        cell.btn_SocialSite3.setImage(UIImage(), for: UIControlState.normal)
+                        
+                    } */
+                    
+                    if str_role == "USER" {
+                        
+                        
+                        cell.lbl_Count_NumberOfUsers.isHidden = true
+                        cell.lbl_Count_NumberOfUsers.isHidden = true
+                        cell.lbl_occupation.isHidden = true
+                        cell.lbl_attend.isHidden = true
+                        cell.view_line.isHidden = true
+                        
+                        cell.kHeight_BehindDetailView.constant = 58
+                        
+                        if dict_Temp?.value(forKey: "companyName") != nil {
+                            let companyName =  dict_Temp?.value(forKey: "companyName") as! String
+                            
+                            if companyName != ""                     {
+                                cell.lbl_Location.text = companyName
+                            }
+                            else {
+                                cell.lbl_Location.text = "NA"
+                            }
+                        }
+                        else {
+                            
+                            cell.lbl_Location.text = "NA"
+                            
+                            
+                        }
+                        
+                        if dict_Temp?.value(forKey: "schoolName") != nil {
+                            
+                            let schoolName = dict_Temp?.value(forKey: "schoolName") as! String
+                            
+                            if schoolName != ""
+                            {
+                                cell.lbl_Url.text = schoolName
+                            }
+                            else {
+                                cell.lbl_Url.text = "NA"
+                            }
+                            
+                        }
+                            
+                        else {
+                            
+                            cell.lbl_Url.text = "NA"
+                            
+                            
+                        }
+                        
+                    }
+                    else{
+                        
+                        cell.lbl_Count_NumberOfUsers.isHidden = false
+                        cell.lbl_Count_NumberOfUsers.isHidden = false
+                        cell.lbl_occupation.isHidden = false
+                        cell.lbl_attend.isHidden = false
+                        cell.view_line.isHidden = false
+                        
+                        cell.kHeight_BehindDetailView.constant = 118
+                        if dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") != nil {
+                            cell.lbl_Count_CompanySchoolWithOccupations.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary)["count"]!)"
+                        }
+                        else {
+                            cell.lbl_Count_CompanySchoolWithOccupations.text = "0"
+                            
+                        }
+                        
+                        if dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations")  != nil {
+                            
+                            cell.lbl_Count_NumberOfUsers.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary)["count"]!)"
+                        }
+                            
+                            
+                        else {
+                            cell.lbl_Count_NumberOfUsers.text = "0"
+                        }
+                        
+                        
+                        if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" {
+                            cell.lbl_Location.text = dict_Temp?.value(forKey: "location") as? String
+                        }
+                        else {
+                            cell.lbl_Location.text = "NA"
+                        }
+                        
+                        if str_role == "COMPANY"{
+                            
+                            if dict_Temp?.value(forKey: "companyUrl") as? String != nil {
+                                cell.lbl_Url.text = dict_Temp?.value(forKey: "companyUrl") as? String
+                                cell.btn_OpenUrl.isUserInteractionEnabled = true
+                                
+                            }
+                            else{
+                                cell.lbl_Url.text = "NA"
+                                
+                                cell.btn_OpenUrl.isUserInteractionEnabled = false
+                            }
+                            
+                        }else{
+                            
+                            if dict_Temp?.value(forKey: "schoolUrl") as? String != nil{
+                                cell.lbl_Url.text = dict_Temp?.value(forKey: "schoolUrl") as? String
+                                cell.btn_OpenUrl.isUserInteractionEnabled = true
+                                
+                            }
+                            else{
+                                cell.lbl_Url.text = "NA"
+                                cell.btn_OpenUrl.isUserInteractionEnabled = false
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    if dict_Temp?.value(forKey: "shadowedByShadowUser") != nil {
+                        cell.lbl_Count_ShadowersVerified.text = "\((dict_Temp?.value(forKey: "shadowedByShadowUser") as! NSDictionary)["count"]!)"
+                    }
+                        
+                    else {
+                        cell.lbl_Count_ShadowersVerified.text = "0"
+                        
+                    }
+                    
+                    if dict_Temp?.value(forKey: "shadowersVerified") != nil {
+                        cell.lbl_Count_ShadowedByShadowUser.text = "\((dict_Temp?.value(forKey: "shadowersVerified") as! NSDictionary)["count"]!)"
+                    }
+                    else {
+                        
+                        cell.lbl_Count_ShadowedByShadowUser.text = "0"
+                    }
+                    
+                    let str_bio = dict_Temp?.value(forKey: "bio") as? String
+                    
+                    if str_bio == "" || str_bio == nil {
+                        cell.lbl_Description.text = "No biography to show..."
+                    }
+                    else {
+                        cell.lbl_Description.text = str_bio
+                    }
+                    
+                    //  profileImageUrl
+                    if (dict_Temp?.value(forKey: "profileImageUrl")as? String) != nil {
+                        var profileurl = dict_Temp?.value(forKey: "profileImageUrl") as? String
+                        profileurl = profileurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                        
+                        if profileurl != nil {
+                            cell.imgView_ProfilePic.sd_setImage(with: URL(string:profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
+                        }
+                    }else{
+                        cell.imgView_ProfilePic.image = UIImage.init(named: "dummy")
+                    }
+                    self.bool_LastResultSearch = false
+                    
+                }
+            }
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: self.view.frame.size.width - 16, height: self.view.frame.size.height + 180)
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arr_SearchData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+        
+    }
+    
+}
+
+

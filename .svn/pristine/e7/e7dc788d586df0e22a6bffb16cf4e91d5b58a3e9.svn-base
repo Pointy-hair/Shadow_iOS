@@ -1,0 +1,858 @@
+//
+//  ComapanySchoolViewController.swift
+//  Shadow
+//
+//  Created by Atinderjit Kaur on 28/06/17.
+//  Copyright © 2017 Atinderjit Kaur. All rights reserved.
+//
+
+import UIKit
+
+
+
+class ComapanySchoolViewController: UIViewController{
+    
+    
+    
+    @IBOutlet var k_Constraint_LblLocTop: NSLayoutConstraint!
+    @IBOutlet var k_Constraint_imgViewLocTop: NSLayoutConstraint!
+    @IBOutlet var imgView_Url: UIImageView!
+    @IBOutlet var imgView_Location: UIImageView!
+    
+    @IBOutlet var lbl_Rating: UILabel!
+    @IBOutlet var lbl_RatingCount: UILabel!
+    @IBOutlet var k_Constraint_ViewDescriptionHeight: NSLayoutConstraint!
+    @IBOutlet var menuButton: UIBarButtonItem!
+    @IBOutlet var Scroll_View: UIScrollView!
+    @IBOutlet var imgView_ProfilePic: UIImageView!
+    @IBOutlet var btn_SocialSite1: UIButton!
+    @IBOutlet var btn_SocialSite2: UIButton!
+    @IBOutlet var btn_SocialSite3: UIButton!
+    @IBOutlet var lbl_company_schoolName: UILabel!
+    @IBOutlet var lbl_company_schoolLocation: UILabel!
+    @IBOutlet var lbl_company_schoolUrl: UILabel!
+    @IBOutlet var lbl_CountverifiedShadowers: UILabel!
+    @IBOutlet var lbl_CountshadowedYou: UILabel!
+    @IBOutlet var lbl_Count_cmpnyschool_withthesesoccupation: UILabel!
+    @IBOutlet var lbl_Count_Users: UILabel!
+    @IBOutlet var lbl_title__cmpnyschool_withthesesoccupation: UILabel!
+    @IBOutlet var lbl_title_Users: UILabel!
+    @IBOutlet var lbl_description: UILabel!
+    @IBOutlet var lbl_Placeholder_description: UILabel!
+    @IBOutlet var lbl_NoOccupationYet: UILabel!
+    @IBOutlet var collection_View: UICollectionView!
+    @IBOutlet weak var view_BehindProfile: UIView!
+    @IBOutlet weak var view_BehindNumValues: UIView!
+    @IBOutlet weak var view_BehindDescription: UIView!
+    @IBOutlet weak var view_BehindOccupation: UIView!
+    
+    
+    //MARK: - Variables
+    var linkForOpenWebsite : String?
+    var rating_number  : String?
+    fileprivate var user_IdMyProfile :NSNumber?
+    fileprivate var item1 = UIBarButtonItem()
+    fileprivate var array_UserOccupations:NSMutableArray = NSMutableArray()
+    fileprivate var array_User_SocialSites:NSMutableArray = NSMutableArray()
+    var dicUrl: NSMutableDictionary = NSMutableDictionary()
+    let array_URL = ["facebookUrl","linkedInUrl","instagramUrl","googlePlusUrl","gitHubUrl","twitterUrl"]
+    
+    var imageView1 : UIImageView?
+    var imageView2 : UIImageView?
+    var imageView3 : UIImageView?
+    var imageView4 : UIImageView?
+    var imageView5 : UIImageView?
+    
+    //MARK: - View default methods
+    override func viewDidLayoutSubviews() {
+        
+        Scroll_View.contentSize = CGSize.init(width: view.frame.size.width, height:  950)
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        DispatchQueue.main.async {
+            
+            //giving border to Profile image
+            self.imgView_ProfilePic.layer.cornerRadius = 60.0
+            self.imgView_ProfilePic.clipsToBounds = true
+            
+            //Calling toggle of side bar button
+            if self.revealViewController() != nil {
+                
+                //self.revealViewController().panGestureRecognizer().isEnabled = false
+                self.menuButton.target = self.revealViewController()
+                self.menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            }
+            
+            
+            //setting border to custom views(Boundaries)
+            self.customView(view: self.view_BehindProfile)
+            self.customView(view: self.view_BehindNumValues)
+            self.customView(view: self.view_BehindOccupation)
+            self.customView(view: self.view_BehindDescription)
+            
+        }
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationItem.setHidesBackButton(false, animated:true)
+        
+        dicUrl.removeAllObjects()
+        ratingview_ratingNumber = ""
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+       // self.custom_StarView ()
+        
+        lbl_Rating.attributedText =  self.changeColorOfStrng()
+
+        
+        if bool_UserIdComingFromSearch == true {            //if coming from search view
+            
+            DispatchQueue.main.async {
+                
+                self.navigationController?.setNavigationBarHidden(false, animated: false)
+                self.navigationItem.setHidesBackButton(false, animated:true)
+                self.CreateNavigationBackBarButton()        //Create custom back button
+                self.tabBarController?.tabBar.isHidden = true
+                
+                
+                let btn2 = UIButton(type: .custom)
+                btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
+                btn2.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 25, height: 25)
+                btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
+                let item2 = UIBarButtonItem(customView: btn2)
+                
+                let btn3 = UIButton(type: .custom)
+                btn3.setImage(UIImage(named: "shadow-icon-1"), for: .normal)
+                btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
+                btn3.addTarget(self, action: #selector(self.shadowBtnPressed), for: .touchUpInside)
+                let item3 = UIBarButtonItem(customView: btn3)
+                
+                self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
+                
+                self.user_IdMyProfile = userIdFromSearch
+                DispatchQueue.global(qos: .background).async {
+                    
+                    self.GetCompanySchoolProfile()
+                    
+                }
+            }
+        }
+        else {
+            
+            DispatchQueue.main.async {
+                
+                self.tabBarController?.tabBar.isHidden = false
+                self.navigationController?.setNavigationBarHidden(false, animated: false)
+                self.navigationItem.setHidesBackButton(false, animated:true)
+                
+                
+                let btn2 = UIButton(type: .custom)
+                btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
+                btn2.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 25, height: 25)
+                btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
+                let item2 = UIBarButtonItem(customView: btn2)
+                
+                let btn3 = UIButton(type: .custom)
+                btn3.setImage(UIImage(named: "notifications-button"), for: .normal)
+                btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
+                btn3.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
+                let item3 = UIBarButtonItem(customView: btn3)
+                
+                
+                
+//                let btn3 = UIButton(type: .custom)
+//                btn3.setImage(UIImage(named: "shadow-icon-1"), for: .normal)
+//                btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
+//                btn3.addTarget(self, action: #selector(self.shadowBtnPressed), for: .touchUpInside)
+//                let item3 = UIBarButtonItem(customView: btn3)
+                
+                
+                
+                //Right items
+                self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
+                
+                
+                self.user_IdMyProfile = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+                
+                DispatchQueue.global(qos: .background).async {
+                    
+                    self.GetCompanySchoolProfile()
+                    
+                }
+            }
+        }
+    }
+    
+    //MARK: - Functions
+    
+    func SetRatingView (Number:String) {
+        
+        switch Number {
+            
+        case "0":
+            imageView1?.image = UIImage(named: "StarEmpty")
+            imageView2?.image = UIImage(named: "StarEmpty")
+            imageView3?.image = UIImage(named: "StarEmpty")
+            imageView4?.image = UIImage(named: "StarEmpty")
+            imageView5?.image = UIImage(named: "StarEmpty")
+            
+        case "1":
+            imageView1?.image = UIImage(named: "StarFull")
+            imageView2?.image = UIImage(named: "StarEmpty")
+            imageView3?.image = UIImage(named: "StarEmpty")
+            imageView4?.image = UIImage(named: "StarEmpty")
+            imageView5?.image = UIImage(named: "StarEmpty")
+            
+        case "2":
+            imageView1?.image = UIImage(named: "StarFull")
+            imageView2?.image = UIImage(named: "StarFull")
+            imageView3?.image = UIImage(named: "StarEmpty")
+            imageView4?.image = UIImage(named: "StarEmpty")
+            imageView5?.image = UIImage(named: "StarEmpty")
+            
+        case "3":
+            imageView1?.image = UIImage(named: "StarFull")
+            imageView2?.image = UIImage(named: "StarFull")
+            imageView3?.image = UIImage(named: "StarFull")
+            imageView4?.image = UIImage(named: "StarEmpty")
+            imageView5?.image = UIImage(named: "StarEmpty")
+            
+        case "4":
+            imageView1?.image = UIImage(named: "StarFull")
+            imageView2?.image = UIImage(named: "StarFull")
+            imageView3?.image = UIImage(named: "StarFull")
+            imageView4?.image = UIImage(named: "StarFull")
+            imageView5?.image = UIImage(named: "StarEmpty")
+            
+        case "5":
+            imageView1?.image = UIImage(named: "StarFull")
+            imageView2?.image = UIImage(named: "StarFull")
+            imageView3?.image = UIImage(named: "StarFull")
+            imageView4?.image = UIImage(named: "StarFull")
+            imageView5?.image = UIImage(named: "StarFull")
+            
+        default:
+            break
+        }
+    }
+    
+    // Rating stars on navigation bar
+    func custom_StarView () {
+        
+        let view_stars = UIView()
+        view_stars.frame = CGRect(x: 0, y: 10, width: 110, height: 25)
+        view_stars.backgroundColor = UIColor.clear
+        self.view.addSubview(view_stars)
+        
+        let imageName = "StarEmpty"
+        let image = UIImage(named: imageName)
+        imageView1 = UIImageView(image: image!)
+        imageView1?.frame = CGRect(x: 5, y: 0, width: 20, height: 20)
+        
+        imageView2 = UIImageView(image: image!)
+        imageView2?.frame = CGRect(x: 25, y: 0, width: 20, height: 20)
+        
+        imageView3 = UIImageView(image: image!)
+        imageView3?.frame = CGRect(x: 45, y: 0, width: 20, height: 20)
+        
+        
+        imageView4 = UIImageView(image: image!)
+        imageView4?.frame = CGRect(x: 65, y: 0, width: 20, height: 20)
+        
+        
+        imageView5 = UIImageView(image: image!)
+        imageView5?.frame = CGRect(x: 85, y: 0, width: 20, height: 20)
+        
+        let btn_actionRating = UIButton(type: .custom)
+        btn_actionRating.frame = CGRect(x: 0, y: 0, width: 110, height: 25)
+        btn_actionRating.addTarget(self, action: #selector(ratingBtnPressed), for: .touchUpInside)
+        
+        view_stars.addSubview(imageView1!)
+        view_stars.addSubview(imageView2!)
+        view_stars.addSubview(imageView3!)
+        view_stars.addSubview(imageView4!)
+        view_stars.addSubview(imageView5!)
+        view_stars.addSubview(btn_actionRating)
+        
+        self.navigationItem.titleView = view_stars
+        
+    }
+    
+    func ratingBtnPressed(sender: AnyObject){
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        
+        
+        
+    }
+    
+    func customView(view : UIView) {
+        
+        view.layer.cornerRadius = 4
+        view.clipsToBounds = true
+        view.layer.borderColor = UIColor.init(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 0.5).cgColor
+        view.layer.borderWidth = 1.0
+        
+    }
+    
+    
+    func notificationBtnPressed(sender: AnyObject){
+        self.showAlert(Message: "Coming Soon", vc: self)
+    }
+    
+    func chatBtnPressed(sender: AnyObject){
+        self.showAlert(Message: "Coming Soon", vc: self)
+    }
+    
+    func shadowBtnPressed(sender: AnyObject){
+        self.showAlert(Message: "Coming Soon", vc: self)
+    }
+    
+    //    func editProfileBtnPressed(sender: AnyObject){
+    //
+    //        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "editView") as! EditProfileViewController
+    //        vc.dict_Url = self.dicUrl
+    //        // vc.dict_user_Info = self.dict_user_Info
+    //        _ = self.navigationController?.pushViewController(vc, animated: true)
+    //    }
+    
+    func menuBtnPressed(sender: AnyObject){
+        
+        let dict = NSMutableDictionary()
+        let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+        dict.setValue(user_Id, forKey: Global.macros.kUserId)
+        
+        
+        let TitleString = NSAttributedString(string: "Shadow", attributes: [
+            NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+            NSForegroundColorAttributeName : Global.macros.themeColor
+            ])
+        let MessageString = NSAttributedString(string: "Are you sure you want to log Out?", attributes: [
+            NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+            NSForegroundColorAttributeName : Global.macros.themeColor
+            ])
+        
+        DispatchQueue.main.async {
+            self.clearAllNotice()
+            
+            let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction.init(title: "Yes", style: .default, handler: { (alert) in
+                
+                if self.checkInternetConnection()
+                {
+                    DispatchQueue.main.async {
+                        self.pleaseWait()
+                    }
+                    AuthenticationAPI.sharedInstance.LogOut(dict: dict, completion: {(response) in
+                        
+                        DispatchQueue.main.async {
+                            self.clearAllNotice()
+                            
+                            
+                            bool_fromMobile = false
+                            bool_NotVerified = false
+                            bool_LocationFilter = false
+                            bool_PlayFromProfile = false
+                            bool_AllTypeOfSearches = false
+                            bool_CompanySchoolTrends = false
+                            bool_fromVerificationMobile = false
+                            bool_UserIdComingFromSearch = false
+                            video_url = nil
+                            
+                            SavedPreferences.set(nil, forKey: "user_verified")
+                            SavedPreferences.set(nil, forKey: "sessionToken")
+                            SavedPreferences.removeObject(forKey: Global.macros.kUserId)
+                            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Login")
+                            Global.macros.kAppDelegate.window?.rootViewController = vc
+                            
+                        }
+                    }, errorBlock: {(err) in
+                        DispatchQueue.main.async {
+                            self.clearAllNotice()
+                            self.showAlert(Message: Global.macros.kError, vc: self)
+                        }
+                    })
+                }
+                else{
+                    
+                    self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+                }
+            }))
+            
+            alert.addAction(UIAlertAction.init(title: "No", style: .default, handler:nil))
+            alert.view.layer.cornerRadius = 10.0
+            alert.view.clipsToBounds = true
+            alert.view.backgroundColor = UIColor.white
+            alert.view.tintColor = Global.macros.themeColor
+            
+            alert.setValue(TitleString, forKey: "attributedTitle")
+            alert.setValue(MessageString, forKey: "attributedMessage")
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+    }
+    
+    
+    func GetCompanySchoolProfile()
+    {
+        let dict =  NSMutableDictionary()
+        dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId)as! NSNumber, forKey: Global.macros.kUserId)
+        dict.setValue(user_IdMyProfile, forKey: "otherUserId")
+        
+        
+        if self.checkInternetConnection()
+        {
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            ProfileAPI.sharedInstance.RetrieveUserProfile(dict: dict, completion: { (response) in
+                
+                switch response.0
+                {
+                case 200:
+                    DispatchQueue.main.async {
+                        
+                        dict_userInfo = response.1
+                        
+                        let str =  (response.1).value(forKey: "videoUrl") as? String
+                        if str != nil {
+                            video_url = NSURL(string: str!) as URL?
+                        }
+                        
+                        //if coming from search class
+                        if bool_UserIdComingFromSearch == true{
+                            
+                            let r = (response.1).value(forKey: Global.macros.krole) as? String
+                            //  if it is company
+                            if r == "COMPANY"{
+                                
+                                //setting name of company
+                                if (response.1).value(forKey: Global.macros.kcompanyName) as? String != nil {
+                                    
+                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalizingFirstLetter()
+                                    
+                                    
+                                }
+                                
+                                
+                                //setting rating number
+                                ratingview_name = (response.1).value(forKey: Global.macros.kcompanyName) as? String
+                                
+                                
+                                //setting company url
+                                if (response.1).value(forKey: Global.macros.kCompanyURL) as? String != nil &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != ""{
+                                    
+                                    self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kCompanyURL) as? String
+                                     self.k_Constraint_ViewDescriptionHeight.constant = 197
+                                }
+                                else {
+                                    
+                                     self.k_Constraint_ViewDescriptionHeight.constant = 155
+                                   // self.lbl_company_schoolUrl.text = "NA"
+                                }
+                                
+                                
+                            }else{//coming from search if it is school
+                                
+                                if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kschoolName) as? String != "" {
+                                    
+                                    
+                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalizingFirstLetter()
+
+                                }
+                                
+                                //getting school ratin gto send to next view
+                                ratingview_name = (response.1).value(forKey: Global.macros.kschoolName) as? String
+                                
+                                
+                                //setting school url
+                                if (response.1).value(forKey: Global.macros.kSchoolURL) as? String != nil && (response.1).value(forKey: Global.macros.kSchoolURL) as? String != "" {
+                                    
+                                    self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kSchoolURL) as? String
+                                     self.k_Constraint_ViewDescriptionHeight.constant = 197
+                                }
+                                    
+                                else {
+                                     self.k_Constraint_ViewDescriptionHeight.constant = 155
+                                    
+                                }
+                            }
+                        }
+                            
+                        else{ //opening direct profile
+                            
+                            // if company
+                            if SavedPreferences.value(forKey: Global.macros.krole) as? String == "COMPANY"{
+                                
+                                // setting company name on direct profile
+                                if (response.1).value(forKey: Global.macros.kcompanyName) as? String != nil {
+                                    
+                                self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalizingFirstLetter()
+                                
+                                }
+                                
+                                //setting company url on direct profile
+                                if (response.1).value(forKey: Global.macros.kCompanyURL) as? String != nil &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != ""{
+                                    
+                                    
+                                    self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kCompanyURL) as? String
+                                    self.k_Constraint_ViewDescriptionHeight.constant = 197
+
+                                }
+                                else {
+                                    
+                                    self.k_Constraint_ViewDescriptionHeight.constant = 155
+                                }
+                            }
+                            else{
+                                
+                                // setting school name on direct profile
+                                if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kschoolName) as? String != "" {
+                                    
+                                    
+                                     self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalizingFirstLetter()
+                                }
+                                
+                                
+                                //setting school url on direct profile
+                                if (response.1).value(forKey: Global.macros.kSchoolURL) as? String != nil && (response.1).value(forKey: Global.macros.kSchoolURL) as? String != "" {
+                                    
+                                    self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kSchoolURL) as? String
+                                     self.k_Constraint_ViewDescriptionHeight.constant = 197
+                                }
+                                    
+                                else {
+                                     self.k_Constraint_ViewDescriptionHeight.constant = 155
+                                }
+                            }
+                        }
+                        
+                        
+                        
+                        self.rating_number = "\((response.1).value(forKey: "avgRating")!)"
+                        self.lbl_RatingCount.text = self.rating_number
+                        
+                       // self.SetRatingView (Number:self.rating_number!)
+                        // ratingview_name = (response.1).value(forKey: Global.macros.kcompanyName) as? String
+                        
+                        
+                        
+//                        let rating_number = "\((response.1).value(forKey: "avgRating")!)"
+//                        self.SetRatingView (Number:rating_number)
+                        
+                        
+                        
+                        //  profileImageUrl
+                        var profileurl = (response.1).value(forKey: "profileImageUrl")as? String
+                        profileurl = profileurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                        ratingview_imgurl = profileurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                        
+                        if profileurl != nil {
+                            self.imgView_ProfilePic.sd_setImage(with: URL(string:profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
+                        }
+                        
+                        
+                        for index in self.array_URL
+                        {
+                            
+                            if (response.1[index] != nil && response.1.value(forKey: index) as? String != "")
+                            {
+                                self.dicUrl.setValue((response.1).value(forKey: index)!, forKey: index)
+                            }
+                            
+                        }
+                        
+//                        let tempArray = self.dicUrl.allKeys as! [String]
+//                        
+//                        if (self.dicUrl.count > 0)
+//                        {
+//                            if tempArray.count >= 1 {
+//                                
+//                                self.btn_SocialSite1.isHidden = false
+//                                self.btn_SocialSite2.isHidden = true
+//                                self.btn_SocialSite3.isHidden = true
+//                                self.btn_SocialSite1.setImage(UIImage(named:tempArray[0]), for: UIControlState.normal)
+//                                
+//                                
+//                            }
+//                            if tempArray.count >= 2 {
+//                                
+//                                self.btn_SocialSite2.isHidden = false
+//                                self.btn_SocialSite3.isHidden = true
+//                                self.btn_SocialSite2.setImage(UIImage(named:tempArray[1]), for: UIControlState.normal)
+//                                
+//                            }
+//                            if tempArray.count == 3  {
+//                                
+//                                self.btn_SocialSite3.isHidden = false
+//                                self.btn_SocialSite3.setImage(UIImage(named:tempArray[2] ), for: UIControlState.normal)
+//                                
+//                            }
+//                            
+//                            
+//                        }
+//                        else{
+//                            
+//                            self.btn_SocialSite1.isHidden = true
+//                            self.btn_SocialSite2.isHidden = true
+//                            self.btn_SocialSite3.isHidden = true
+//                        }
+                        
+                        if (response.1).value(forKey: Global.macros.klocation) as? String != "" && (response.1).value(forKey: Global.macros.klocation) != nil {
+                            
+                            self.lbl_company_schoolLocation.text = (response.1).value(forKey: Global.macros.klocation) as? String
+                        }
+                            
+                            
+                        else {
+                            self.lbl_company_schoolLocation.text = "NA"
+                            
+                        }
+                        
+                        self.lbl_Count_cmpnyschool_withthesesoccupation.text = (((response.1).value(forKey: Global.macros.kschoolCompanyWithTheseOccupations) as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
+                        
+                        self.lbl_Count_Users.text = (((response.1).value(forKey: Global.macros.kschoolCompanyWithTheseUsers) as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
+                        
+                        if (response.1).value(forKey: Global.macros.kbio) as? String
+                            != nil {
+                            
+                            self.lbl_description.text = "\((response.1).value(forKey: Global.macros.kbio) as! String)"
+                            self.lbl_Placeholder_description.isHidden = true
+                        }
+                        else{
+                            self.lbl_Placeholder_description.isHidden = false
+                        }
+                        
+                        //getting occupations of company or school
+                        let tmp_arr_occ = (response.1.value(forKey: Global.macros.koccupation) as? NSArray)?.mutableCopy() as! NSMutableArray
+                        
+                        for value in tmp_arr_occ{
+                            
+                            let name_interest = (value as! NSDictionary).value(forKey: "name") as? String
+                            let dict = NSMutableDictionary()
+                            dict.setValue(name_interest, forKey: "name")
+                            if self.array_UserOccupations.contains(dict) {
+                                break
+                            }
+                            else{
+                                self.array_UserOccupations.add(dict)
+                                
+                            }
+                        }
+                        
+                        if self.array_UserOccupations.count > 0{
+                            self.collection_View.isHidden = false
+                             self.lbl_NoOccupationYet.isHidden = true
+                            self.collection_View.reloadData()
+                        }
+                        else{
+                            self.lbl_NoOccupationYet.isHidden = false
+                            self.collection_View.isHidden = true
+                        }
+                        
+                    }
+                case 401:
+                    self.AlertSessionExpire()
+                    
+                default:
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                    break
+                    
+                }
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                }
+            }, errorBlock: {(err) in
+                
+                DispatchQueue.main.async
+                    {
+                        self.clearAllNotice()
+                        self.showAlert(Message: Global.macros.kError ,vc: self)
+                }
+            })
+        }
+        else{
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+            
+        }
+    }
+    
+    
+    func ArrayOfPhotos(data:Data)->(NSArray)
+    {
+        
+        
+        let photos:NSMutableArray = NSMutableArray()
+        let photo:NYTExamplePhoto = NYTExamplePhoto()
+        photo.imageData = data
+        photos.add(photo)
+        return photos
+        /*NSMutableArray *photos = [NSMutableArray array];
+         
+         NYTExamplePhoto *photo = [[NYTExamplePhoto alloc] init];
+         photo.imageData = data;
+         [photos addObject:photo];
+         return photos;*/
+    }
+    
+    func SetWebViewUrl (index:Int) {
+        
+        let tempArray = self.dicUrl.allKeys as! [String]
+        let socialStr:String = tempArray[index]
+        
+        switch socialStr {
+        case "facebookUrl":
+            linkForOpenWebsite = self.dicUrl.value(forKey: "facebookUrl") as? String
+        case "linkedInUrl":
+            linkForOpenWebsite = self.dicUrl.value(forKey: "linkedInUrl") as? String
+            
+        case "twitterUrl":
+            linkForOpenWebsite = self.dicUrl.value(forKey: "twitterUrl") as? String
+            
+        case "googlePlusUrl":
+            linkForOpenWebsite = self.dicUrl.value(forKey: "googlePlusUrl") as? String
+            
+            
+        case "instagramUrl":
+            linkForOpenWebsite = self.dicUrl.value(forKey: "instagramUrl") as? String
+            
+        case "gitHubUrl":
+            linkForOpenWebsite = self.dicUrl.value(forKey: "gitHubUrl") as? String
+            
+        default: break
+            
+        }
+        
+        if let checkURL = NSURL(string: linkForOpenWebsite!) {
+            if  UIApplication.shared.openURL(checkURL as URL){
+                print("URL Successfully Opened")
+                linkForOpenWebsite = ""
+            }
+            else {
+                print("Invalid URL")
+            }
+            
+        } else {
+            print("Invalid URL")
+        }
+        
+    }
+    
+    
+    //MARK: - Button Actions
+    @IBAction func Action_OpenCompaniesSchoolList(_ sender: UIButton) {
+        
+    }
+    
+    
+    @IBAction func Open_ProfileImage(_ sender: UIButton) {
+        
+        let imgdata = UIImageJPEGRepresentation(imgView_ProfilePic.image!, 0.5)
+        let photos = self.ArrayOfPhotos(data: imgdata!)
+        let vc: NYTPhotosViewController = NYTPhotosViewController(photos: photos as? [NYTPhoto])
+        vc.rightBarButtonItem = nil
+        self.present(vc, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func PlayVideo(_ sender: Any) {
+        
+        if video_url != nil {
+            bool_PlayFromProfile = true
+            DispatchQueue.main.async {
+                
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Upload_Video") as! UploadViewController
+                _ = self.navigationController?.present(vc, animated: true, completion: nil)
+            }
+        }
+        else {
+            
+            self.showAlert(Message: "No video to play yet.", vc: self)
+            
+        }
+    }
+    
+    @IBAction func ActionSocialMedia1(_ sender: UIButton) {
+        
+        SetWebViewUrl (index: 0)
+    }
+    
+    @IBAction func ActionSocialMedia2(_ sender: UIButton) {
+        
+        SetWebViewUrl (index: 1)
+    }
+    
+    @IBAction func ActionSocialMedia3(_ sender: UIButton) {
+        
+        SetWebViewUrl (index: 2)
+    }
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    /* override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     
+     
+     }*/
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+}
+
+//MARK: - Class Extensions
+
+extension ComapanySchoolViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        layout.minimumInteritemSpacing = 5
+        layout.minimumLineSpacing = 8
+        let size:CGSize?
+        if Global.DeviceType.IS_IPHONE_6 || Global.DeviceType.IS_IPHONE_6P{
+            size = CGSize(width: ((collectionView.frame.width/3 - 5) ), height: 45)
+        }
+        else{
+            size = CGSize(width: ((collectionView.frame.width/2 - 5) ), height: 45)
+            
+        }
+        return size!
+        
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "skill", for: indexPath)as! SkillsNInterestCollectionViewCell
+        
+        if array_UserOccupations.count > 0 {
+            
+            cell.lbl_Skill.text = (array_UserOccupations[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
+        }
+        return cell
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return array_UserOccupations.count
+    }
+}

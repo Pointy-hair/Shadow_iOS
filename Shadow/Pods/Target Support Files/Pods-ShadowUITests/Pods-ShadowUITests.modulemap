@@ -1,0 +1,6 @@
+framework module Pods_ShadowUITests {
+  umbrella header "Pods-ShadowUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
