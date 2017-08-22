@@ -3283,7 +3283,7 @@
                                                         <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NKi-cm-4LE">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="NKi-cm-4LE">
                                                         <rect key="frame" x="14" y="40" width="20" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="20" id="oDp-7K-nGp"/>
@@ -3300,7 +3300,7 @@
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GY9-uy-y46">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unchecked" translatesAutoresizingMaskIntoConstraints="NO" id="GY9-uy-y46">
                                                         <rect key="frame" x="14" y="72" width="20" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="20" id="2Tf-2z-QoF"/>
@@ -8378,6 +8378,7 @@
         <image name="three-dot-icon" width="20" height="20"/>
         <image name="three-horizontal-lines" width="20" height="20"/>
         <image name="twitter" width="64" height="64"/>
+        <image name="unchecked" width="17" height="17"/>
         <image name="url_icon" width="30" height="30"/>
         <image name="video-camera" width="30" height="30"/>
         <image name="white-icon" width="12" height="25"/>
