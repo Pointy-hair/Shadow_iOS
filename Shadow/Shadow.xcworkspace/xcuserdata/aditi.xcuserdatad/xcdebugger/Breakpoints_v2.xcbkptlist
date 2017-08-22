@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/ProfileVC.swift"
-            timestampString = "524662705.708077"
+            timestampString = "525071810.657902"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "932"
-            endingLineNumber = "932"
+            startingLineNumber = "957"
+            endingLineNumber = "957"
             landmarkName = "Action_openSchoolCompany(_:)"
             landmarkType = "7">
          </BreakpointContent>
