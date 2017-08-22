@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fzx-XX-5se">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fzx-XX-5se">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1624,7 +1624,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Login" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fzx-XX-5se" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="BEC-hO-jfQ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="BEC-hO-jfQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -3672,7 +3672,7 @@
                                                             <action selector="Action_CheckBtnVirtualOption:" destination="ZmT-RL-Apa" eventType="touchUpInside" id="blX-RR-U65"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LyN-sO-Oon">
+                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LyN-sO-Oon">
                                                         <rect key="frame" x="156" y="36" width="211" height="26"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="26" id="R5o-4r-vC9"/>
@@ -3684,7 +3684,7 @@
                                                             <action selector="Action_SelectLocation:" destination="ZmT-RL-Apa" eventType="touchUpInside" id="7ew-1Y-4Jj"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ef-Zz-s2w">
+                                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ef-Zz-s2w">
                                                         <rect key="frame" x="156" y="69" width="211" height="26"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="26" id="pOT-b6-zZJ"/>
@@ -3749,6 +3749,14 @@
                                                             <userDefinedRuntimeAttribute type="color" keyPath="weekdayTextColor">
                                                                 <color key="value" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="adjustsFontSizeToFitContentSize" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="headerTitleTextSize">
+                                                                <real key="value" value="20"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="weekdayTextSize">
+                                                                <real key="value" value="20"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="headerDateFormat" value="MMM YYYY"/>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <outlet property="dataSource" destination="ZmT-RL-Apa" id="EhL-LN-ac6"/>
@@ -3785,7 +3793,6 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="251" id="cl3-qM-mgF"/>
                                                         </constraints>
-                                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                         <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -3793,6 +3800,16 @@
                                                             <outlet property="delegate" destination="ZmT-RL-Apa" id="egl-gs-tvz"/>
                                                         </connections>
                                                     </textView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write something.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5e5-28-PzW">
+                                                        <rect key="frame" x="8" y="35" width="231" height="21"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="21" id="FTi-Cd-Awc"/>
+                                                            <constraint firstAttribute="width" constant="231" id="dMG-95-0Vw"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -3801,7 +3818,9 @@
                                                     <constraint firstItem="yuY-qn-ZWb" firstAttribute="top" secondItem="s9L-i9-dxp" secondAttribute="bottom" constant="6" id="N9S-Ce-Exa"/>
                                                     <constraint firstItem="s9L-i9-dxp" firstAttribute="top" secondItem="uyl-FB-xwc" secondAttribute="top" constant="8" id="Tqq-jn-WIu"/>
                                                     <constraint firstAttribute="height" constant="296" id="cxj-UK-1sJ"/>
+                                                    <constraint firstItem="5e5-28-PzW" firstAttribute="top" secondItem="s9L-i9-dxp" secondAttribute="bottom" constant="6" id="e7Y-Wd-bIS"/>
                                                     <constraint firstAttribute="trailing" secondItem="yuY-qn-ZWb" secondAttribute="trailing" constant="8" id="qmw-EY-KWt"/>
+                                                    <constraint firstItem="5e5-28-PzW" firstAttribute="leading" secondItem="uyl-FB-xwc" secondAttribute="leading" constant="8" id="zcr-Vh-eIL"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -3845,6 +3864,7 @@
                         <outlet property="calender" destination="aGz-U2-Kig" id="8mG-be-Zbe"/>
                         <outlet property="imgView_InPerson" destination="NKi-cm-4LE" id="Bac-rc-U0f"/>
                         <outlet property="imgView_Virtually" destination="GY9-uy-y46" id="2xY-9F-MKp"/>
+                        <outlet property="lbl_MessagePlaceholder" destination="5e5-28-PzW" id="Kob-Cj-CYt"/>
                         <outlet property="txtView_Message" destination="yuY-qn-ZWb" id="nYL-Ea-uwa"/>
                     </connections>
                 </viewController>
@@ -4161,7 +4181,7 @@
                 <navigationController storyboardIdentifier="nav_search" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ejd-y7-dwW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="search-icon" id="YsD-Oz-avm"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="5qb-GU-cdh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="5qb-GU-cdh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6266,7 +6286,7 @@
                 <navigationController storyboardIdentifier="nav_user" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="02d-wM-bUa" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="profile-icon" id="yyE-l9-CMZ"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="zgA-Nb-dPo">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="zgA-Nb-dPo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -7245,7 +7265,7 @@
             <objects>
                 <navigationController storyboardIdentifier="nav_company" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="12O-iG-ttf" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Mgv-uF-W8H">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="Mgv-uF-W8H">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -8622,7 +8642,7 @@
             <objects>
                 <navigationController storyboardIdentifier="nav_editUser" automaticallyAdjustsScrollViewInsets="NO" id="lem-i3-sVN" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="fAb-mz-XcM">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="fAb-mz-XcM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -8644,7 +8664,7 @@
             <objects>
                 <navigationController storyboardIdentifier="nav_editCompany" automaticallyAdjustsScrollViewInsets="NO" id="RaR-7M-zTN" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="tf4-cz-9zi">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="tf4-cz-9zi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -8666,7 +8686,7 @@
             <objects>
                 <navigationController storyboardIdentifier="nav_Notification" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ss4-hJ-Imx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="wgH-Zi-xdL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="wgH-Zi-xdL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -8688,7 +8708,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tpn-H0-yQC" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="X1x-rS-GIS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="X1x-rS-GIS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

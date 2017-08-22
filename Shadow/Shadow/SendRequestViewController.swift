@@ -22,7 +22,6 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     
     @IBOutlet var lbl_MessagePlaceholder: UILabel!
     
-    @IBOutlet var tblView_VirtualWays: UITableView!
     
     var user_Name:String?
     
