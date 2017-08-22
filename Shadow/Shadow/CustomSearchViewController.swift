@@ -153,7 +153,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     override func viewDidDisappear(_ animated: Bool) {
         bool_LastResultSearch = false
         bool_Occupation = false
-        
+
     }
     
     //MARK: Custom Functions
@@ -809,9 +809,13 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         if str_role == "USER" {
             
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC
-            vc.extendedLayoutIncludesOpaqueBars = true
-            self.tabBarController?.tabBar.isTranslucent = false
-            self.navigationController?.navigationBar.isTranslucent = false
+            
+            
+            //self.tabBarController?.tabBar.isHidden = true
+
+          //  vc.extendedLayoutIncludesOpaqueBars = true
+//            self.tabBarController?.tabBar.isTranslucent = false
+         //   self.navigationController?.navigationBar.isTranslucent = false
             _ = self.navigationController?.pushViewController(vc, animated: true)
             
         }
@@ -819,9 +823,9 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         else {
             
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
-            vc.extendedLayoutIncludesOpaqueBars = true
-            self.tabBarController?.tabBar.isTranslucent = false
-            self.navigationController?.navigationBar.isTranslucent = false
+//            vc.extendedLayoutIncludesOpaqueBars = true
+//            self.tabBarController?.tabBar.isTranslucent = false
+//            self.navigationController?.navigationBar.isTranslucent = false
             _ = self.navigationController?.pushViewController(vc, animated: true)
             
         }

@@ -129,8 +129,8 @@ class ProfileVC: UIViewController {
                 self.CreateNavigationBackBarButton() //Create custom back button
                 self.tabBarController?.tabBar.isHidden = true
                 
-                let desiredOffset = CGPoint(x: 0, y: -60)
-                self.scrollbar.setContentOffset(desiredOffset, animated: true)
+//                let desiredOffset = CGPoint(x: 0, y: -60)
+//                self.scrollbar.setContentOffset(desiredOffset, animated: true)
                 
                 self.user_IdMyProfile = userIdFromSearch
                 let btn2 = UIButton(type: .custom)
@@ -142,7 +142,7 @@ class ProfileVC: UIViewController {
                 let btn3 = UIButton(type: .custom)
                 btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
                 btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
-                btn3.addTarget(self, action: #selector(self.shadowBtnPressed), for: .touchUpInside)
+                btn3.addTarget(self, action: #selector(self.Calender_SearchBtnPressed(sender:)), for: .touchUpInside)
                 let item3 = UIBarButtonItem(customView: btn3)
                 
                 self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
@@ -165,12 +165,24 @@ class ProfileVC: UIViewController {
                 
                 let btn4 = UIButton(type: .custom)
                 btn4.setImage(UIImage(named: "notifications-button"), for: .normal)
-                btn4.frame = CGRect(x:self.view.frame.size.width - 50, y: 0, width: 75, height: 25)
+                btn4.frame = CGRect(x:self.view.frame.size.width - 50, y: 0, width: 25, height: 25)
                 btn4.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
                 let item4 = UIBarButtonItem(customView: btn4)
                 
+                
+                let btn3 = UIButton(type: .custom)
+                btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
+                btn3.frame = CGRect(x: self.view.frame.size.width - 75, y: 0, width: 25, height: 25)
+                btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
+                let item3 = UIBarButtonItem(customView: btn3)
+
+                
+                
+                
+                
+                
                 //Right items
-                self.navigationItem.setRightBarButtonItems([item2,item4], animated: true)
+                self.navigationItem.setRightBarButtonItems([item2,item4,item3], animated: true)
  
                  self.user_IdMyProfile = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
               
@@ -732,10 +744,23 @@ class ProfileVC: UIViewController {
         
     }
     
-    func shadowBtnPressed(sender: AnyObject){
-        self.showAlert(Message: "Coming Soon", vc: self)
+    func Calender_SearchBtnPressed(sender: AnyObject){
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "send_request") as! SendRequestViewController
+        
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+
+        
+        
         
     }
+    
+    func calenderBtnPressed(sender: AnyObject){
+        
+        
+    }
+    
+    
     
 //    func editProfileBtnPressed(sender: AnyObject){
 //        
