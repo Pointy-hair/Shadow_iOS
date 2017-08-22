@@ -108,6 +108,7 @@
 		9AC4FF3A1EEFF88A002524DB /* NSBundle+NYTPhotoViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC4FF391EEFF88A002524DB /* NSBundle+NYTPhotoViewer.m */; };
 		9AC4FF3C1EEFFDE2002524DB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AC4FF3B1EEFFDE2002524DB /* Info.plist */; };
 		9AC4FF3E1EF00D1E002524DB /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC4FF3D1EF00D1E002524DB /* NYTExamplePhoto.m */; };
+		9ACF2A721F4BF0D600B37156 /* OccupationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF2A711F4BF0D600B37156 /* OccupationDetailViewController.swift */; };
 		9AD05E821F036D0A0067360D /* ComapanySchoolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD05E811F036D0A0067360D /* ComapanySchoolViewController.swift */; };
 		9AEF84281EF78DD3005DE879 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEF84271EF78DD3005DE879 /* RatingViewController.swift */; };
 		9AEF842A1EF79BCC005DE879 /* RatingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEF84291EF79BCC005DE879 /* RatingTableViewCell.swift */; };
@@ -306,6 +307,7 @@
 		9AC4FF3B1EEFFDE2002524DB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9AC4FF3D1EF00D1E002524DB /* NYTExamplePhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYTExamplePhoto.m; sourceTree = "<group>"; };
 		9AC4FF3F1EF00D23002524DB /* NYTExamplePhoto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NYTExamplePhoto.h; sourceTree = "<group>"; };
+		9ACF2A711F4BF0D600B37156 /* OccupationDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OccupationDetailViewController.swift; sourceTree = "<group>"; };
 		9AD05E811F036D0A0067360D /* ComapanySchoolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComapanySchoolViewController.swift; sourceTree = "<group>"; };
 		9AEF84271EF78DD3005DE879 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
 		9AEF84291EF79BCC005DE879 /* RatingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingTableViewCell.swift; sourceTree = "<group>"; };
@@ -736,6 +738,7 @@
 		9A60983E1F00D97700C901BF /* Search Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9ACF2A701F4BF07600B37156 /* OccupationDetail Classes */,
 				9A6098411F00DFB200C901BF /* AllSearchesTableViewCell.swift */,
 				9A60983F1F00D9BC00C901BF /* SearchViewController.swift */,
 				9A31666C1F0B5FD900882666 /* CustomCollectionViewCell.swift */,
@@ -807,6 +810,14 @@
 				9AC4FF391EEFF88A002524DB /* NSBundle+NYTPhotoViewer.m */,
 			);
 			name = "Resources Loading";
+			sourceTree = "<group>";
+		};
+		9ACF2A701F4BF07600B37156 /* OccupationDetail Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9ACF2A711F4BF0D600B37156 /* OccupationDetailViewController.swift */,
+			);
+			name = "OccupationDetail Classes";
 			sourceTree = "<group>";
 		};
 		9AD05E7F1F036C9E0067360D /* ProfileForUser */ = {
@@ -1161,6 +1172,7 @@
 				494C5A191F0664D7006436F1 /* Actual_SocialSitesTableViewCell.swift in Sources */,
 				9A0E9E1C1F1393720019E3A5 /* SDImageCache.m in Sources */,
 				9AC4FF221EEFF704002524DB /* NYTPhotosDataSource.m in Sources */,
+				9ACF2A721F4BF0D600B37156 /* OccupationDetailViewController.swift in Sources */,
 				9AC4FF201EEFF704002524DB /* NYTPhotoCaptionView.m in Sources */,
 				492AD9201F0A787A00F102CC /* Profile_UserInterestsCollectionViewCell.swift in Sources */,
 				9AC4FF291EEFF704002524DB /* NYTScalingImageView.m in Sources */,
