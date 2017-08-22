@@ -49,24 +49,19 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     //MARK: - Button Actions
     @IBAction func Action_CheckBtnLocation(_ sender: UIButton) {
         
-<<<<<<< HEAD
-=======
         self.imgView_InPerson.image = UIImage.init(named: "checked")
         self.imgView_Virtually.image = UIImage.init(named: "unchecked")
         
         self.btn_SelectLocation.isHidden = false
         self.btn_SelectVirtualOption.isHidden = true
 
->>>>>>> 1326e2c6e7fbd8bba8c96e4d08175699fe1bb710
         
         
     }
     
     @IBAction func Action_CheckBtnVirtualOption(_ sender: UIButton) {
         
-<<<<<<< HEAD
         
-=======
         self.imgView_Virtually.image = UIImage.init(named: "checked")
         self.imgView_InPerson.image = UIImage.init(named: "unchecked")
 
