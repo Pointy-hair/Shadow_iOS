@@ -127,7 +127,7 @@ class ProfileVC: UIViewController {
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.view.endEditing(true)
                 self.CreateNavigationBackBarButton() //Create custom back button
-                self.tabBarController?.tabBar.isHidden = true
+              //  self.tabBarController?.tabBar.isHidden = true
                 
 //                let desiredOffset = CGPoint(x: 0, y: -60)
 //                self.scrollbar.setContentOffset(desiredOffset, animated: true)

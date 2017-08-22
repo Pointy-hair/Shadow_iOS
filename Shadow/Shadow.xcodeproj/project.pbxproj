@@ -1397,10 +1397,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.subversal.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.alacustomer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7111bfea-fd48-4ba0-98b0-83746983c350";
-				PROVISIONING_PROFILE_SPECIFIER = Subversal_development;
+				PROVISIONING_PROFILE = "76626764-736c-4d0c-80ca-4e7304b8f402";
+				PROVISIONING_PROFILE_SPECIFIER = Ala_Customer;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shadow/Shadow-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1427,10 +1427,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.subversal.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.alacustomer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7111bfea-fd48-4ba0-98b0-83746983c350";
-				PROVISIONING_PROFILE_SPECIFIER = Subversal_development;
+				PROVISIONING_PROFILE = "76626764-736c-4d0c-80ca-4e7304b8f402";
+				PROVISIONING_PROFILE_SPECIFIER = Ala_Customer;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shadow/Shadow-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

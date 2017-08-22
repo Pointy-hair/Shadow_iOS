@@ -19,8 +19,8 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     @IBOutlet var btn_SelectVirtualOption: UIButton!
     @IBOutlet var calender: FSCalendar!
     @IBOutlet var txtView_Message: UITextView!
-    
     @IBOutlet var lbl_MessagePlaceholder: UILabel!
+    @IBOutlet var k_Constraint_ScroolViewTop: NSLayoutConstraint!
     
     
     var user_Name:String?
@@ -39,6 +39,12 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             self.btn_SelectVirtualOption.layer.borderWidth = 1.0
             
             self.CreateNavigationBackBarButton()
+            
+            //Adding button to navigation bar
+            
+            
+            
+            
         }
         // Do any additional setup after loading the view.
     }
@@ -148,12 +154,12 @@ extension SendRequestViewController:UITextViewDelegate{
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
-       // lbl_PlaceholderComments.isHidden = true
+        lbl_MessagePlaceholder.isHidden = true
         
         if Global.DeviceType.IS_IPHONE_5{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
-                   // self.k_Constraint_Top_MainView.constant = -20.0
+                    self.k_Constraint_ScroolViewTop.constant = -20.0
                 })
             }
             
@@ -162,7 +168,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_4_OR_LESS{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
-                   // self.k_Constraint_Top_MainView.constant = -40
+                    self.k_Constraint_ScroolViewTop.constant = -40
                 })
             }
         }
@@ -176,7 +182,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if str == ""
         {
             self.txtView_Message.text = ""
-            //lbl_PlaceholderComments.isHidden = false
+            lbl_MessagePlaceholder.isHidden = false
             
         }
         else{
@@ -186,7 +192,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_5{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
-                    //self.k_Constraint_Top_MainView.constant = 0.0
+                    self.k_Constraint_ScroolViewTop.constant = 0.0
                 })
             }
             
@@ -195,7 +201,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_4_OR_LESS{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
-                   // self.k_Constraint_Top_MainView.constant = 0.0
+                    self.k_Constraint_ScroolViewTop.constant = 0.0
                 })
             }
             
