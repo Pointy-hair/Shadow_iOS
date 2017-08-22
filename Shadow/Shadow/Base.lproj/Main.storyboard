@@ -3216,20 +3216,41 @@
                                                     <constraint firstAttribute="height" constant="164" id="Nak-3e-eUN"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QFN-4T-O01">
-                                                <rect key="frame" x="8" y="339" width="359" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QFN-4T-O01">
+                                                <rect key="frame" x="8" y="339" width="359" height="122"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="About Software Engineering" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4fF-HL-tas">
+                                                        <rect key="frame" x="8" y="8" width="343" height="21"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8RA-yg-bHU">
+                                                        <rect key="frame" x="8" y="29" width="343" height="79"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    </textView>
+                                                </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="128" id="eoE-gO-33w"/>
+                                                </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" red="0.97254901960784312" green="0.98039215686274506" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="ji0-mt-NCk" firstAttribute="top" secondItem="zq3-Kd-y32" secondAttribute="top" constant="82" id="KdX-AU-DMN"/>
                                             <constraint firstItem="ji0-mt-NCk" firstAttribute="leading" secondItem="zq3-Kd-y32" secondAttribute="leading" constant="8" id="QK2-pn-uZ7"/>
+                                            <constraint firstAttribute="trailing" secondItem="QFN-4T-O01" secondAttribute="trailing" constant="8" id="SNA-Wd-QCN"/>
                                             <constraint firstAttribute="trailing" secondItem="rK3-kl-zQz" secondAttribute="trailing" constant="33" id="av1-T2-y93"/>
                                             <constraint firstItem="rK3-kl-zQz" firstAttribute="top" secondItem="zq3-Kd-y32" secondAttribute="top" constant="19" id="c5W-h0-AfX"/>
                                             <constraint firstItem="rK3-kl-zQz" firstAttribute="leading" secondItem="zq3-Kd-y32" secondAttribute="leading" constant="33" id="es5-df-Rxy"/>
                                             <constraint firstAttribute="trailing" secondItem="ji0-mt-NCk" secondAttribute="trailing" constant="8" id="fwT-AE-GPg"/>
+                                            <constraint firstItem="QFN-4T-O01" firstAttribute="leading" secondItem="zq3-Kd-y32" secondAttribute="leading" constant="8" id="wJj-ju-4SI"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sq8-Om-Jid">
@@ -3316,6 +3337,7 @@
                                     <constraint firstAttribute="bottom" secondItem="zq3-Kd-y32" secondAttribute="bottom" id="WzQ-gf-YW9"/>
                                     <constraint firstAttribute="trailing" secondItem="Sq8-Om-Jid" secondAttribute="trailing" constant="8" id="XIW-bB-LUN"/>
                                     <constraint firstItem="Sq8-Om-Jid" firstAttribute="leading" secondItem="z8g-OF-rcN" secondAttribute="leading" constant="8" id="XPK-9z-Ll8"/>
+                                    <constraint firstItem="QFN-4T-O01" firstAttribute="top" secondItem="0RX-mK-PLE" secondAttribute="bottom" constant="9" id="chS-WA-X6e"/>
                                     <constraint firstItem="zq3-Kd-y32" firstAttribute="centerY" secondItem="z8g-OF-rcN" secondAttribute="centerY" id="nsy-ao-xPZ"/>
                                 </constraints>
                             </scrollView>
