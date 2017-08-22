@@ -9,6 +9,22 @@
 import UIKit
 
 class OccupationDetailViewController: UIViewController {
+    
+    
+    @IBOutlet weak var lbl_avgRating: UILabel!
+    
+    @IBOutlet weak var lbl_AvgSalary: UILabel!
+    
+    @IBOutlet weak var lbl_GrowthPercentage: UILabel!
+    
+    @IBOutlet weak var lbl_UsersWithThisOccupation: UILabel!
+    
+    @IBOutlet weak var lbl_UserThatShadowedThis: UILabel!
+    
+    @IBOutlet weak var txtfield_Occupation: UITextView!
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
