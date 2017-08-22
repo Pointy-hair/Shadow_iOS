@@ -10,7 +10,9 @@ import UIKit
 
 class SendRequestViewController: UIViewController {
 
+    @IBOutlet var imgView_InPerson: UIImageView!
     @IBOutlet var btn_SelectLocation: UIButton!
+    @IBOutlet var imgView_Virtually: UIImageView!
     @IBOutlet var btn_SelectVirtualOption: UIButton!
     @IBOutlet var calender: FSCalendar!
     @IBOutlet var txtView_Message: UITextView!
@@ -39,9 +41,14 @@ class SendRequestViewController: UIViewController {
     
     
     @IBAction func Action_CheckBtnLocation(_ sender: UIButton) {
+        
+        
+        
     }
     
     @IBAction func Action_CheckBtnVirtualOption(_ sender: UIButton) {
+        
+        
     }
     
 
