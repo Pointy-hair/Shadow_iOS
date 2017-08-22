@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import CoreLocation
+import GooglePlaces
+import GooglePlacePicker
 
-class SendRequestViewController: UIViewController {
+class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerDelegate {
 
     @IBOutlet var imgView_InPerson: UIImageView!
     @IBOutlet var btn_SelectLocation: UIButton!
@@ -17,10 +20,13 @@ class SendRequestViewController: UIViewController {
     @IBOutlet var calender: FSCalendar!
     @IBOutlet var txtView_Message: UITextView!
     
+    var user_Name:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
+            
+            self.navigationItem.title = self.user_Name!
             self.btn_SelectLocation.layer.cornerRadius = 3.0
             self.btn_SelectLocation.layer.borderColor = Global.macros.themeColor_pink.cgColor
             self.btn_SelectLocation.layer.borderWidth = 1.0
@@ -29,6 +35,7 @@ class SendRequestViewController: UIViewController {
             self.btn_SelectVirtualOption.layer.borderColor = Global.macros.themeColor_pink.cgColor
             self.btn_SelectVirtualOption.layer.borderWidth = 1.0
             
+            self.CreateNavigationBackBarButton()
         }
         // Do any additional setup after loading the view.
     }
@@ -39,17 +46,84 @@ class SendRequestViewController: UIViewController {
     }
     
     
-    
+    //MARK: - Button Actions
     @IBAction func Action_CheckBtnLocation(_ sender: UIButton) {
         
+<<<<<<< HEAD
+=======
+        self.imgView_InPerson.image = UIImage.init(named: "checked")
+        self.imgView_Virtually.image = UIImage.init(named: "unchecked")
+        
+        self.btn_SelectLocation.isHidden = false
+        self.btn_SelectVirtualOption.isHidden = true
+
+>>>>>>> 1326e2c6e7fbd8bba8c96e4d08175699fe1bb710
         
         
     }
     
     @IBAction func Action_CheckBtnVirtualOption(_ sender: UIButton) {
         
+<<<<<<< HEAD
+        
+=======
+        self.imgView_Virtually.image = UIImage.init(named: "checked")
+        self.imgView_InPerson.image = UIImage.init(named: "unchecked")
+
+        self.btn_SelectLocation.isHidden = true
+        self.btn_SelectVirtualOption.isHidden = false
+    }
+    
+
+    @IBAction func Action_SelectLocation(_ sender: Any) {
+        
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
         
     }
+    
+    @IBAction func Action_SelectVirtualOption(_ sender: UIButton) {
+        
+        
+    }
+    
+    
+    
+    // MARK: - Delegate GMSAutocompleteViewController
+    // Handle the user's selection.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+        self.btn_SelectLocation.setTitle(place.name, for: .normal)
+        dismiss(animated: true, completion: nil)
+   
+    }
+    
+    
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        //  handle the error.
+        print("Error: ", error.localizedDescription)
+    }
+    
+    // User canceled the operation.
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+>>>>>>> 1326e2c6e7fbd8bba8c96e4d08175699fe1bb710
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
     
 
     /*

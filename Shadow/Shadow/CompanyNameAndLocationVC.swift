@@ -54,6 +54,8 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
         textfield_Location.addTarget(self, action: #selector(self.textFieldDidChange), for: UIControlEvents.editingChanged)
         
     }
+    
+    //MARK:- Functions
     func textFieldDidChange(textField:UITextField)
     {
         
@@ -85,42 +87,6 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
         }
     }
     
-    
-    // Handle the user's selection.
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
-        textfield_Location.text = "\(place.name)"
-        latlong(string: textfield_Location.text!)
-        dismiss(animated: true, completion: nil)
-        
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    
-    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        // TODO: handle the error.
-        print("Error: ", error.localizedDescription)
-    }
-    
-    // User canceled the operation.
-    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    // Turn the network activity indicator on and off again.
-    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-    }
-
-    
     /**
      latlong function is used to get list of countries.
      :params: string-string that has the required text.
@@ -130,7 +96,7 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
         
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(string, completionHandler: {
-
+            
             (placemark,error) -> Void in
             
             if (error != nil) {
@@ -226,9 +192,6 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
         }
     }
     
-
- 
-
     func CheckCompanyNameExist() {
         
         
@@ -251,11 +214,11 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
             case 404:
                 DispatchQueue.main.async
                     {
-                      //  username = self.textfield_Name.text!
-                      //  self.CreateAlert()
-                       self.RegisterWithCompany()
+                        //  username = self.textfield_Name.text!
+                        //  self.CreateAlert()
+                        self.RegisterWithCompany()
                         
-
+                        
                 }
                 
             default:
@@ -272,13 +235,48 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
             
             
         })
-
         
         
+        
+    }
+    
+   // MARK: - Delegate GMSAutocompleteViewController
+    // Handle the user's selection.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+        textfield_Location.text = "\(place.name)"
+        latlong(string: textfield_Location.text!)
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        //  handle the error.
+        print("Error: ", error.localizedDescription)
+    }
+    
+    // User canceled the operation.
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 
     
     
+    //MARK: - Button Actions
     @IBAction func Action_Next(_ sender: UIButton) {
         
         super.viewWillAppear(true)

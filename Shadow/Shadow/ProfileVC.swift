@@ -747,12 +747,9 @@ class ProfileVC: UIViewController {
     func Calender_SearchBtnPressed(sender: AnyObject){
         
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "send_request") as! SendRequestViewController
-        
+        vc.user_Name =  self.navigationItem.title
         _ = self.navigationController?.pushViewController(vc, animated: true)
 
-        
-        
-        
     }
     
     func calenderBtnPressed(sender: AnyObject){
