@@ -13,7 +13,6 @@ var dictionary_user_Info:NSDictionary = NSDictionary()
 
 class UserEditProfileViewController: UIViewController {
     
-    
     @IBOutlet var btn_clear_Search: UIButton!
     @IBOutlet weak var profileDummyImage: UIImageView!
     @IBOutlet var scroll_view: UIScrollView!
@@ -58,6 +57,10 @@ class UserEditProfileViewController: UIViewController {
     @IBOutlet var view_Behind_Occupations: UIView!
     @IBOutlet var view_Behind_Interests: UIView!
     @IBOutlet var btn_Done_Search: UIButton!
+    
+    @IBOutlet weak var kheightViewBehindOccupation: NSLayoutConstraint!
+    
+    @IBOutlet weak var kheightViewBehindInterest: NSLayoutConstraint!
     
     
     @IBOutlet weak var lbl_Counter: UILabel!
@@ -1447,8 +1450,6 @@ extension UserEditProfileViewController:UIImagePickerControllerDelegate,UINaviga
         self.str_profileImage = (NSString(data: resultiamgedata, encoding: String.Encoding.utf8.rawValue) as String?)!
         self.profileDummyImage.isHidden = true
         self.imgView_ProfilePic.image = croppedImage
-    
-        
        _ = self.navigationController?.popViewController(animated: true)
 
     }
@@ -1534,19 +1535,72 @@ extension UserEditProfileViewController:UICollectionViewDataSource,UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
+  
+        
         var count:Int?
         
-        if collectionView == self.CollectionView_Occupation {
+        if collectionView == CollectionView_Occupation{
             
             count = array_UserOccupations.count
-        }
+            if count! <= 2 {
+                self.kheightViewBehindOccupation.constant = 100
+                
+            }
+                
+                
+            else if count == 4 {
+                self.kheightViewBehindOccupation.constant = 150
+                
+            }
+            else {
+                
+                self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(12)
+                
+            }
             
-        else if collectionView == self.collectionview_Interests {
+            if Global.DeviceType.IS_IPHONE_5 {
+                
+                if count == 3 {
+                    self.kheightViewBehindOccupation.constant = 150
+                    
+                }
+                
+                
+            }
             
-            count = array_UserInterests.count
+            
         }
         
+        if collectionView == collectionview_Interests{
+            
+            count = array_UserInterests.count
+            if count! <= 2 {
+                self.kheightViewBehindInterest.constant = 100
+            }
+            else if count == 4 {
+                self.kheightViewBehindInterest.constant = 150
+                
+            }
+            else {
+                self.kheightViewBehindInterest.constant = CGFloat(count! * 32) + CGFloat(10)
+                
+            }
+            
+            if Global.DeviceType.IS_IPHONE_5 {
+                
+                if count == 3 {
+                    self.kheightViewBehindInterest.constant = 150
+                    
+                }
+                
+                
+            }
+            
+        }
+        self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindOccupation.constant + self.kheightViewBehindInterest.constant + 15)
+        
         return count!
+
     }
     
     

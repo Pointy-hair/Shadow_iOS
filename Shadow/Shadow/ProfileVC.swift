@@ -1095,7 +1095,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
             }
             else {
                 
-                self.kheightViewBehindSkill.constant = CGFloat(count! * 32) //+ CGFloat(15)
+                self.kheightViewBehindSkill.constant = CGFloat(count! * 32) + CGFloat(10)
 
             }
             
@@ -1123,7 +1123,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
 
             }
             else {
-                self.kheightViewBehindInterest.constant = CGFloat(count! * 32) //+ CGFloat(10)
+                self.kheightViewBehindInterest.constant = CGFloat(count! * 32) + CGFloat(10)
 
             }
             

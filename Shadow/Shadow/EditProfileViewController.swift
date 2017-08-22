@@ -50,6 +50,9 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
     @IBOutlet var k_Constraint_ViewTxtview_Top: NSLayoutConstraint!
     @IBOutlet weak var lbl_Counter: UILabel!
     
+    
+    @IBOutlet weak var kheightViewBehindOccupation: NSLayoutConstraint!
+    
     //MARK: - Variables
     fileprivate var arrsearchActualOccupation : NSMutableArray = NSMutableArray()
     fileprivate var temp_arrOccupation : NSMutableArray = NSMutableArray()
@@ -95,7 +98,7 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
     
     override func viewDidLayoutSubviews() {
         
-        scroll_view.contentSize = CGSize.init(width: view.frame.size.width, height:  800)
+       // scroll_view.contentSize = CGSize.init(width: view.frame.size.width, height:  800)
     }
     
     
@@ -1641,11 +1644,44 @@ extension EditProfileViewController:UICollectionViewDataSource,UICollectionViewD
             
             cell.lbl_Occupationname.text = (array_UserOccupations[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
         }
+       
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return array_UserOccupations.count
+        
+        var count:Int?
+        count = array_UserOccupations.count
+        
+        if count! <= 2 {
+            self.kheightViewBehindOccupation.constant = 100
+            
+        }
+            
+            
+        else if count == 4 {
+            self.kheightViewBehindOccupation.constant = 160
+            
+        }
+        else {
+            
+            self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(18)
+            
+        }
+        
+        if Global.DeviceType.IS_IPHONE_5 {
+            
+            if count == 3 {
+                self.kheightViewBehindOccupation.constant = 160
+                
+            }
+            
+        }
+        
+        
+        self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindOccupation.constant  + 60)
+         return count!
+
     }
     
     
