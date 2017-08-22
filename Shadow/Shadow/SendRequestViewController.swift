@@ -41,8 +41,15 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             self.CreateNavigationBackBarButton()
             
             //Adding button to navigation bar
-            
-            
+            let btn2 = UIButton(type: .custom)
+            btn2.setTitle("Send", for: .normal)
+          //  btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
+            btn2.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
+         //   btn2.addTarget(self, action: #selector(), for: .touchUpInside)
+            let item2 = UIBarButtonItem(customView: btn2)
+            //Right items
+            self.navigationItem.setRightBarButtonItems([item2], animated: true)
+
             
             
         }
@@ -159,7 +166,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_5{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
-                    self.k_Constraint_ScroolViewTop.constant = -20.0
+                    self.k_Constraint_ScroolViewTop.constant = 120.0
                 })
             }
             
@@ -168,7 +175,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_4_OR_LESS{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
-                    self.k_Constraint_ScroolViewTop.constant = -40
+                    self.k_Constraint_ScroolViewTop.constant = -150
                 })
             }
         }

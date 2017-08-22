@@ -108,13 +108,9 @@ class ProfileVC: UIViewController {
             self.customView(view: self.view_BehindInterest)
             self.customView(view: self.view_BehindDescription)
 
-            
         }
-        
     }
-    
    
-    
     override func viewWillAppear(_ animated: Bool) {
         
         
