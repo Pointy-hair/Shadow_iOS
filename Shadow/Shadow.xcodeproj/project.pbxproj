@@ -44,6 +44,7 @@
 		499BC74F1F46B59F00159B58 /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 499BC7411F46B59F00159B58 /* FSCalendarStickyHeader.m */; };
 		499BC7801F46FEC500159B58 /* SendRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499BC77F1F46FEC500159B58 /* SendRequestViewController.swift */; };
 		499BC7821F471A5E00159B58 /* RequestDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499BC7811F471A5E00159B58 /* RequestDetailsViewController.swift */; };
+		49F46D1D1F4C324800E490EE /* VirtualWaysTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F46D1C1F4C324800E490EE /* VirtualWaysTableViewCell.swift */; };
 		9A0581CB1EEAABCC00B3EB4A /* SkillsNInterestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0581CA1EEAABCC00B3EB4A /* SkillsNInterestCollectionViewCell.swift */; };
 		9A0CD5D91EE5512200F02612 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0CD5D81EE5512200F02612 /* CameraViewController.swift */; };
 		9A0CD5DB1EE5552E00F02612 /* UploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0CD5DA1EE5552E00F02612 /* UploadViewController.swift */; };
@@ -199,6 +200,7 @@
 		499BC7411F46B59F00159B58 /* FSCalendarStickyHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarStickyHeader.m; sourceTree = "<group>"; };
 		499BC77F1F46FEC500159B58 /* SendRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendRequestViewController.swift; sourceTree = "<group>"; };
 		499BC7811F471A5E00159B58 /* RequestDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDetailsViewController.swift; sourceTree = "<group>"; };
+		49F46D1C1F4C324800E490EE /* VirtualWaysTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualWaysTableViewCell.swift; sourceTree = "<group>"; };
 		600584AE8695F12EB0CD3BAC /* Pods_ShadowTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShadowTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0581CA1EEAABCC00B3EB4A /* SkillsNInterestCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkillsNInterestCollectionViewCell.swift; sourceTree = "<group>"; };
 		9A0CD5D81EE5512200F02612 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -744,6 +746,7 @@
 				9A31666C1F0B5FD900882666 /* CustomCollectionViewCell.swift */,
 				9AF6E6651F0A27DB002F20C9 /* CustomSearchViewController.swift */,
 				499BC77F1F46FEC500159B58 /* SendRequestViewController.swift */,
+				49F46D1C1F4C324800E490EE /* VirtualWaysTableViewCell.swift */,
 				499BC7811F471A5E00159B58 /* RequestDetailsViewController.swift */,
 			);
 			name = "Search Classes";
@@ -1174,6 +1177,7 @@
 				9AC4FF221EEFF704002524DB /* NYTPhotosDataSource.m in Sources */,
 				9ACF2A721F4BF0D600B37156 /* OccupationDetailViewController.swift in Sources */,
 				9AC4FF201EEFF704002524DB /* NYTPhotoCaptionView.m in Sources */,
+				49F46D1D1F4C324800E490EE /* VirtualWaysTableViewCell.swift in Sources */,
 				492AD9201F0A787A00F102CC /* Profile_UserInterestsCollectionViewCell.swift in Sources */,
 				9AC4FF291EEFF704002524DB /* NYTScalingImageView.m in Sources */,
 				9AC4FF261EEFF704002524DB /* NYTPhotoTransitionController.m in Sources */,

@@ -20,6 +20,10 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     @IBOutlet var calender: FSCalendar!
     @IBOutlet var txtView_Message: UITextView!
     
+    @IBOutlet var lbl_MessagePlaceholder: UILabel!
+    
+    @IBOutlet var tblView_VirtualWays: UITableView!
+    
     var user_Name:String?
     
     override func viewDidLoad() {
@@ -60,7 +64,6 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     }
     
     @IBAction func Action_CheckBtnVirtualOption(_ sender: UIButton) {
-        
         
         self.imgView_Virtually.image = UIImage.init(named: "checked")
         self.imgView_InPerson.image = UIImage.init(named: "unchecked")
@@ -112,7 +115,6 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     // Turn the network activity indicator on and off again.
     func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
->>>>>>> 1326e2c6e7fbd8bba8c96e4d08175699fe1bb710
     }
     
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
@@ -132,3 +134,81 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     */
 
 }
+
+extension SendRequestViewController:UITextViewDelegate{
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        if text == "\n"
+        {
+            textView.resignFirstResponder()
+        }
+        return true
+        
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+       // lbl_PlaceholderComments.isHidden = true
+        
+        if Global.DeviceType.IS_IPHONE_5{
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 1.0, animations: {
+                   // self.k_Constraint_Top_MainView.constant = -20.0
+                })
+            }
+            
+            
+        }
+        if Global.DeviceType.IS_IPHONE_4_OR_LESS{
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 1.0, animations: {
+                   // self.k_Constraint_Top_MainView.constant = -40
+                })
+            }
+        }
+    }
+
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+        let str = textView.text.trimmingCharacters(in: .whitespaces)
+        
+        if str == ""
+        {
+            self.txtView_Message.text = ""
+            //lbl_PlaceholderComments.isHidden = false
+            
+        }
+        else{
+            txtView_Message.text = textView.text
+        }
+        
+        if Global.DeviceType.IS_IPHONE_5{
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 1.0, animations: {
+                    //self.k_Constraint_Top_MainView.constant = 0.0
+                })
+            }
+            
+            
+        }
+        if Global.DeviceType.IS_IPHONE_4_OR_LESS{
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 1.0, animations: {
+                   // self.k_Constraint_Top_MainView.constant = 0.0
+                })
+            }
+            
+            
+        }
+    }
+
+    
+    
+    
+}
+
+
+
+
