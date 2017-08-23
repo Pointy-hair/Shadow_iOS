@@ -89,31 +89,31 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
         
         
         var cell = UICollectionViewCell()
-        
-        if collectionView == collectionViewCompany {
-            let company_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "company", for: indexPath)as! CompanyCollectionViewCell
-            
-//            if array_UserSkills.count > 0 {
-//                
-//                skills_cell.lbl_Skill.text = (array_UserSkills[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
-//            }
-            
-            cell = company_cell
-            
-        }
-        
-        if collectionView == collectionViewSchool{
-            let school_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "school", for: indexPath)as! SchoolCollectionViewCell
-            
-//            if array_UserInterests.count > 0 {
-//                
-//                interest_cell.lbl_InterestName.text = (array_UserInterests[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
-//                
-//            }
-            
-            cell = school_cell
-            
-        }
+//        
+//        if collectionView == collectionViewCompany {
+//            let company_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "company", for: indexPath)as! CompanyCollectionViewCell
+//            
+////            if array_UserSkills.count > 0 {
+////                
+////                skills_cell.lbl_Skill.text = (array_UserSkills[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
+////            }
+//            
+//            cell = company_cell
+//            
+//        }
+//        
+//        if collectionView == collectionViewSchool{
+//            let school_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "school", for: indexPath)as! SchoolCollectionViewCell
+//            
+////            if array_UserInterests.count > 0 {
+////                
+////                interest_cell.lbl_InterestName.text = (array_UserInterests[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
+////                
+////            }
+//            
+//            cell = school_cell
+//            
+//        }
 //
       return cell
         
