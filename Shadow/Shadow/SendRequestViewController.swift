@@ -62,8 +62,8 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             
             //Adding button to navigation bar
             let btn2 = UIButton(type: .custom)
-            btn2.setTitle("Send", for: .normal)
-          //  btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
+            //btn2.setTitle("Send", for: .normal)
+            btn2.setImage(UIImage(named: "Send"), for: .normal)
             btn2.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
             btn2.addTarget(self, action: #selector(self.Send), for: .touchUpInside)
             let item2 = UIBarButtonItem(customView: btn2)

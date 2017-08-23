@@ -10,6 +10,7 @@
 		39F894D11A158A07D4FA8B0B /* Pods_Shadow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7E3A5B7125EA8477EAA2370 /* Pods_Shadow.framework */; };
 		4901F75A1EE9056200070A8D /* ActualSkillsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901F7591EE9056200070A8D /* ActualSkillsTableViewCell.swift */; };
 		490557A11F03A976000FF3CF /* UserEditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490557A01F03A976000FF3CF /* UserEditProfileViewController.swift */; };
+		490A2EDA1F4D9882005ECA85 /* RequestsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490A2ED91F4D9882005ECA85 /* RequestsListViewController.swift */; };
 		492805041F03685C000CB5ED /* SocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805031F03685C000CB5ED /* SocialSitesTableViewCell.swift */; };
 		492805061F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805051F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift */; };
 		492805081F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805071F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift */; };
@@ -154,6 +155,7 @@
 		4700161004F615ACB1BB8712 /* Pods_ShadowUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShadowUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4901F7591EE9056200070A8D /* ActualSkillsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActualSkillsTableViewCell.swift; sourceTree = "<group>"; };
 		490557A01F03A976000FF3CF /* UserEditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserEditProfileViewController.swift; sourceTree = "<group>"; };
+		490A2ED91F4D9882005ECA85 /* RequestsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsListViewController.swift; sourceTree = "<group>"; };
 		492805031F03685C000CB5ED /* SocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialSitesTableViewCell.swift; sourceTree = "<group>"; };
 		492805051F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSocialSitesTableViewCell.swift; sourceTree = "<group>"; };
 		492805071F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActualSocialSitesTableViewCell.swift; sourceTree = "<group>"; };
@@ -201,7 +203,7 @@
 		499BC7401F46B59F00159B58 /* FSCalendarStickyHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarStickyHeader.h; sourceTree = "<group>"; };
 		499BC7411F46B59F00159B58 /* FSCalendarStickyHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarStickyHeader.m; sourceTree = "<group>"; };
 		499BC77F1F46FEC500159B58 /* SendRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendRequestViewController.swift; sourceTree = "<group>"; };
-		499BC7811F471A5E00159B58 /* RequestDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDetailsViewController.swift; sourceTree = "<group>"; };
+		499BC7811F471A5E00159B58 /* RequestDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestDetailsViewController.swift; path = Shadow/RequestDetailsViewController.swift; sourceTree = "<group>"; };
 		49F46D1C1F4C324800E490EE /* VirtualWaysTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualWaysTableViewCell.swift; sourceTree = "<group>"; };
 		600584AE8695F12EB0CD3BAC /* Pods_ShadowTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShadowTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0581CA1EEAABCC00B3EB4A /* SkillsNInterestCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkillsNInterestCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -384,6 +386,24 @@
 			name = EditProfileUser;
 			sourceTree = "<group>";
 		};
+		490A2ED71F4D9835005ECA85 /* Send Requests */ = {
+			isa = PBXGroup;
+			children = (
+				499BC77F1F46FEC500159B58 /* SendRequestViewController.swift */,
+				49F46D1C1F4C324800E490EE /* VirtualWaysTableViewCell.swift */,
+			);
+			name = "Send Requests";
+			sourceTree = "<group>";
+		};
+		490A2ED81F4D9859005ECA85 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				490A2ED91F4D9882005ECA85 /* RequestsListViewController.swift */,
+				499BC7811F471A5E00159B58 /* RequestDetailsViewController.swift */,
+			);
+			name = Requests;
+			sourceTree = "<group>";
+		};
 		4928050A1F037B32000CB5ED /* Table cells classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -559,6 +579,7 @@
 		9A2276E81F32E28E0021B6A7 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				490A2ED81F4D9859005ECA85 /* Requests */,
 				4997ABC01F287EBC00883476 /* Notifications */,
 				49D159111F275EA5009E94F0 /* Side Bar */,
 				49D159121F275EAF009E94F0 /* Tab bar */,
@@ -751,9 +772,7 @@
 				9A60983F1F00D9BC00C901BF /* SearchViewController.swift */,
 				9A31666C1F0B5FD900882666 /* CustomCollectionViewCell.swift */,
 				9AF6E6651F0A27DB002F20C9 /* CustomSearchViewController.swift */,
-				499BC77F1F46FEC500159B58 /* SendRequestViewController.swift */,
-				49F46D1C1F4C324800E490EE /* VirtualWaysTableViewCell.swift */,
-				499BC7811F471A5E00159B58 /* RequestDetailsViewController.swift */,
+				490A2ED71F4D9835005ECA85 /* Send Requests */,
 			);
 			name = "Search Classes";
 			path = Shadow;
@@ -1153,6 +1172,7 @@
 				494C5A1C1F0666D7006436F1 /* User_OccupationsTableViewCell.swift in Sources */,
 				9A0E9E1E1F1393720019E3A5 /* SDWebImageCompat.m in Sources */,
 				9A0CD5DB1EE5552E00F02612 /* UploadViewController.swift in Sources */,
+				490A2EDA1F4D9882005ECA85 /* RequestsListViewController.swift in Sources */,
 				9AC4FF231EEFF704002524DB /* NYTPhotosOverlayView.m in Sources */,
 				9AC4FF271EEFF704002524DB /* NYTPhotoViewController.m in Sources */,
 				9A957E151F4D4CD500A5CCE5 /* CompanyCollectionViewCell.swift in Sources */,
