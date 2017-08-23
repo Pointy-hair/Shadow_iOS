@@ -1654,6 +1654,7 @@ extension EditProfileViewController:UICollectionViewDataSource,UICollectionViewD
         count = array_UserOccupations.count
         
         if count! <= 2 {
+            
             self.kheightViewBehindOccupation.constant = 100
             
         }
@@ -1677,7 +1678,6 @@ extension EditProfileViewController:UICollectionViewDataSource,UICollectionViewD
             }
             
         }
-        
         
         self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindOccupation.constant  + 60)
          return count!

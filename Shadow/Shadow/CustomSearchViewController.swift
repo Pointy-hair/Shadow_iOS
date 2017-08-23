@@ -918,7 +918,9 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
             
         }
         else {
-            self.showAlert(Message: "Coming Soon.", vc: self)
+           // self.showAlert(Message: "Coming Soon.", vc: self)
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+            _ = self.navigationController?.pushViewController(vc, animated: true)
             
         }
     }

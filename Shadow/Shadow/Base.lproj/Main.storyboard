@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fzx-XX-5se">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fzx-XX-5se">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1624,7 +1624,7 @@
             <objects>
                 <navigationController storyboardIdentifier="Login" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fzx-XX-5se" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="BEC-hO-jfQ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="BEC-hO-jfQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -3122,7 +3122,7 @@
         <!--Occupation Detail View Controller-->
         <scene sceneID="V8N-1h-jQs">
             <objects>
-                <viewController storyboardIdentifier="OccupationDetail" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Q9O-t7-jQ6" customClass="OccupationDetailViewController" customModule="Shadow" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OccupationDetail" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Q9O-t7-jQ6" customClass="OccupationDetailViewController" customModule="Shadow" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ztn-qh-J8r"/>
                         <viewControllerLayoutGuide type="bottom" id="W8Q-F4-moM"/>
@@ -3390,7 +3390,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="interest_cell" id="kNs-Ff-7X3" customClass="Profile_UserInterestsCollectionViewCell" customModule="Shadow" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="company" id="kNs-Ff-7X3" customClass="CompanyCollectionViewCell" customModule="Shadow" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="140" height="52"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -3414,10 +3414,15 @@
                                                                     <constraint firstAttribute="bottom" secondItem="4BE-8y-XhS" secondAttribute="bottom" constant="3" id="fKU-1v-LuU"/>
                                                                 </constraints>
                                                                 <connections>
+                                                                    <outlet property="lbl_CompanyName" destination="4BE-8y-XhS" id="UVj-m0-zUl"/>
                                                                     <outlet property="lbl_InterestName" destination="4BE-8y-XhS" id="cxY-18-Y4T"/>
                                                                 </connections>
                                                             </collectionViewCell>
                                                         </cells>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="Q9O-t7-jQ6" id="owk-GG-HMm"/>
+                                                            <outlet property="delegate" destination="Q9O-t7-jQ6" id="sFx-bT-J54"/>
+                                                        </connections>
                                                     </collectionView>
                                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data yet." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTx-2j-Qc7">
                                                         <rect key="frame" x="0.0" y="49" width="358" height="50"/>
@@ -3467,7 +3472,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="skill" id="ZdM-kE-grf" customClass="SkillsNInterestCollectionViewCell" customModule="Shadow" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="school" id="ZdM-kE-grf" customClass="SchoolCollectionViewCell" customModule="Shadow" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="142" height="50"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -3490,10 +3495,15 @@
                                                                     <constraint firstAttribute="bottom" secondItem="ZFT-Ya-hDI" secondAttribute="bottom" constant="2" id="NfN-gB-F5A"/>
                                                                 </constraints>
                                                                 <connections>
+                                                                    <outlet property="lbl_SchoolName" destination="ZFT-Ya-hDI" id="YC0-4v-zZ7"/>
                                                                     <outlet property="lbl_Skill" destination="ZFT-Ya-hDI" id="plC-1u-bqQ"/>
                                                                 </connections>
                                                             </collectionViewCell>
                                                         </cells>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="Q9O-t7-jQ6" id="dPP-yt-pWh"/>
+                                                            <outlet property="delegate" destination="Q9O-t7-jQ6" id="nLV-3c-Gc0"/>
+                                                        </connections>
                                                     </collectionView>
                                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6Q-eq-FRz">
                                                         <rect key="frame" x="4" y="59" width="350" height="56"/>
@@ -3575,11 +3585,14 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="850"/>
                     <connections>
+                        <outlet property="collectionViewCompany" destination="JZ0-Br-GPS" id="kLc-kI-Rls"/>
+                        <outlet property="collectionViewSchool" destination="3gd-vO-lws" id="eL3-gg-EzQ"/>
                         <outlet property="lbl_AvgSalary" destination="Ef6-d4-gp6" id="sdW-7U-rcm"/>
                         <outlet property="lbl_GrowthPercentage" destination="gK0-LE-okx" id="OB9-d6-zpn"/>
                         <outlet property="lbl_UserThatShadowedThis" destination="tTG-7f-P4I" id="o3J-6K-U2k"/>
                         <outlet property="lbl_UsersWithThisOccupation" destination="b4Z-DZ-ChT" id="9Cj-je-CK7"/>
                         <outlet property="lbl_avgRating" destination="Nwy-hQ-wlR" id="RUe-3y-TjW"/>
+                        <outlet property="scroll_View" destination="z8g-OF-rcN" id="a6p-KF-5DO"/>
                         <outlet property="txtfield_Occupation" destination="8RA-yg-bHU" id="Wti-gT-yYI"/>
                     </connections>
                 </viewController>
@@ -4191,7 +4204,7 @@
                 <navigationController storyboardIdentifier="nav_search" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ejd-y7-dwW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="search-icon" id="YsD-Oz-avm"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="5qb-GU-cdh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="5qb-GU-cdh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6296,7 +6309,7 @@
                 <navigationController storyboardIdentifier="nav_user" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="02d-wM-bUa" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="profile-icon" id="yyE-l9-CMZ"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="zgA-Nb-dPo">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="zgA-Nb-dPo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -7275,7 +7288,7 @@
             <objects>
                 <navigationController storyboardIdentifier="nav_company" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="12O-iG-ttf" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Mgv-uF-W8H">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="Mgv-uF-W8H">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -8652,7 +8665,7 @@
             <objects>
                 <navigationController storyboardIdentifier="nav_editUser" automaticallyAdjustsScrollViewInsets="NO" id="lem-i3-sVN" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="fAb-mz-XcM">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="fAb-mz-XcM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -8674,7 +8687,7 @@
             <objects>
                 <navigationController storyboardIdentifier="nav_editCompany" automaticallyAdjustsScrollViewInsets="NO" id="RaR-7M-zTN" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="tf4-cz-9zi">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="tf4-cz-9zi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -8696,7 +8709,7 @@
             <objects>
                 <navigationController storyboardIdentifier="nav_Notification" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ss4-hJ-Imx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="wgH-Zi-xdL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="wgH-Zi-xdL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -8718,7 +8731,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tpn-H0-yQC" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="X1x-rS-GIS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="X1x-rS-GIS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.61176470589999998" green="0.1529411765" blue="0.69019607839999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
