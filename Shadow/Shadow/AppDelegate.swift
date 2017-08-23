@@ -10,6 +10,7 @@ import UIKit
 import GooglePlaces
 import GooglePlacePicker
 
+var deviceTokenString : String?                       // Device token string used in login and sign ups
 
 public var DeviceType:String = "0"
 public var DeviceToken:String = "123456"
@@ -31,7 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        //Code for push notifications
         
+        let settings = UIUserNotificationSettings(types: [.alert,.badge,.sound], categories: nil)
+        application.registerUserNotificationSettings(settings)
+        application.registerForRemoteNotifications()
+
         let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
         statusBar.backgroundColor = Global.macros.themeColor_pink
         UIApplication.shared.statusBarStyle = .lightContent
@@ -112,6 +118,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
+    //MARK: Push notifications delegates
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
+        var token: String = ""
+        
+        for i in 0 ..< deviceToken.count {
+            token += String(format: "%02.2hhx", arguments: [deviceToken[i]])
+        }
+        deviceTokenString = token
+        
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        deviceTokenString = "b43c88327277116c7eb398395a96907e744d04ebb288efc970658b63498014ec"
+        // print(error.localizedDescription)
+        
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
+        
+        print("notifications")
+        print(userInfo)
+        
+        //  bool_FromNotification = true
+       // Notificationview.sharedInstance.createNotificationview(win: window!)
+      //  Notificationview.sharedInstance.showNotificationView(userInfo as NSDictionary)
+        
+        // if let notification = userInfo["apsinfo"] as? NSDictionary
+        
+    }
     
 }
 

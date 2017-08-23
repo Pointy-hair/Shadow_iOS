@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import Charts
 
 class OccupationDetailViewController: UIViewController {
     
+     var months: [String]!
     
+    
+    @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var lbl_avgRating: UILabel!
     
     @IBOutlet weak var lbl_AvgSalary: UILabel!
@@ -32,6 +36,15 @@ class OccupationDetailViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+       setChart()
+
+    }
+    
+    func setChart(){
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let unitsSold = [20.0, 4.0, 3.0, 6.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
+        
+        barChartView.setBarChartData(xValues: months, yValues: unitsSold, label: "Monthly Sales")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,32 +102,32 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
         
         
         var cell = UICollectionViewCell()
-//        
-//        if collectionView == collectionViewCompany {
-//            let company_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "company", for: indexPath)as! CompanyCollectionViewCell
-//            
-////            if array_UserSkills.count > 0 {
-////                
-////                skills_cell.lbl_Skill.text = (array_UserSkills[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
-////            }
-//            
-//            cell = company_cell
-//            
-//        }
-//        
-//        if collectionView == collectionViewSchool{
-//            let school_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "school", for: indexPath)as! SchoolCollectionViewCell
-//            
-////            if array_UserInterests.count > 0 {
-////                
-////                interest_cell.lbl_InterestName.text = (array_UserInterests[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
-////                
-////            }
-//            
-//            cell = school_cell
-//            
-//        }
-//
+        
+        if collectionView == collectionViewCompany {
+            let company_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "company", for: indexPath)as! CompanyCollectionViewCell
+            
+//            if array_UserSkills.count > 0 {
+//                
+//                skills_cell.lbl_Skill.text = (array_UserSkills[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
+//            }
+            
+            cell = company_cell
+            
+        }
+        
+        if collectionView == collectionViewSchool{
+            let school_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "school", for: indexPath)as! SchoolCollectionViewCell
+            
+//            if array_UserInterests.count > 0 {
+//                
+//                interest_cell.lbl_InterestName.text = (array_UserInterests[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
+//                
+//            }
+            
+            cell = school_cell
+            
+        }
+
       return cell
         
     }
@@ -188,5 +201,41 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
         return 10
 
    }
+}
+extension BarChartView {
+    
+    private class BarChartFormatter: NSObject, IAxisValueFormatter {
+        
+        var labels: [String] = []
+        
+        func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+            return labels[Int(value)]
+        }
+        
+        init(labels: [String]) {
+            super.init()
+            self.labels = labels
+        }
+    }
+    
+    func setBarChartData(xValues: [String], yValues: [Double], label: String) {
+        
+        var dataEntries: [BarChartDataEntry] = []
+        
+        for i in 0..<yValues.count {
+            let dataEntry = BarChartDataEntry(x: Double(i), y: yValues[i])
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: label)
+        let chartData = BarChartData(dataSet: chartDataSet)
+        
+        let chartFormatter = BarChartFormatter(labels: xValues)
+        let xAxis = XAxis()
+        xAxis.valueFormatter = chartFormatter
+        self.xAxis.valueFormatter = xAxis.valueFormatter
+        
+        self.data = chartData
+    }
 }
 

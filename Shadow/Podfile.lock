@@ -1,5 +1,8 @@
 PODS:
   - Alamofire (4.4.0)
+  - Charts (3.0.2):
+    - Charts/Core (= 3.0.2)
+  - Charts/Core (3.0.2)
   - GoogleMaps (2.3.0):
     - GoogleMaps/Maps (= 2.3.0)
   - GoogleMaps/Base (2.3.0)
@@ -15,6 +18,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - Charts
   - GooglePlacePicker
   - GooglePlaces
   - RSKImageCropper
@@ -22,12 +26,13 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  Charts: 236d6ccdd0ce6feae151d89e829a7397381a21fd
   GoogleMaps: 340a6a0bebd17c2db8abcd3921976c7c53c86cb8
   GooglePlacePicker: 80a6719aa4d06c63524a231d0ecd8f87e87d98c2
   GooglePlaces: 74d322c74184ea4576184089b496d291cf0dcd38
   RSKImageCropper: 356e36fc58c57c371b5d8b23d603936d6a73df6c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: c833c7130bf8aa847da4d486289230cee4d44aaf
+PODFILE CHECKSUM: b34e9ebd88df63f1c4cd95c73a1d1f0d5d5ce3fb
 
 COCOAPODS: 1.1.1

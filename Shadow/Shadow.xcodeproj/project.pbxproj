@@ -277,6 +277,7 @@
 		9A6098411F00DFB200C901BF /* AllSearchesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllSearchesTableViewCell.swift; sourceTree = "<group>"; };
 		9A957E141F4D4CD500A5CCE5 /* CompanyCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyCollectionViewCell.swift; sourceTree = "<group>"; };
 		9A957E161F4D4D0300A5CCE5 /* SchoolCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolCollectionViewCell.swift; sourceTree = "<group>"; };
+		9A957E191F4D809A00A5CCE5 /* Shadow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shadow.entitlements; sourceTree = "<group>"; };
 		9AA7B1A61F04C6080070A210 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		9AB6C37C1EF15B8600D1E729 /* libTestFairy.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFairy.a; sourceTree = "<group>"; };
 		9AB6C37D1EF15B8600D1E729 /* TestFairy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFairy.h; sourceTree = "<group>"; };
@@ -657,6 +658,7 @@
 		9A3BB94C1EDC014C00772FF5 /* Shadow */ = {
 			isa = PBXGroup;
 			children = (
+				9A957E191F4D809A00A5CCE5 /* Shadow.entitlements */,
 				9A3BB9511EDC014C00772FF5 /* Main.storyboard */,
 				499BC7501F46B5AC00159B58 /* FSCalender */,
 				9A26E0751F1F71B000035F23 /* SWRevealViewController */,
@@ -1005,6 +1007,14 @@
 						DevelopmentTeam = HE7TDTH6H9;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 					9A3BB95D1EDC014C00772FF5 = {
 						CreatedOnToolsVersion = 8.2;

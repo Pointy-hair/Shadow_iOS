@@ -8,6 +8,8 @@ pod 'GooglePlaces'
 pod ‘Alamofire’
 pod ’SwiftyJSON’
 pod 'RSKImageCropper'
+pod ‘Charts’
+
 use_frameworks!
 
 end
