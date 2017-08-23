@@ -21,9 +21,15 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     @IBOutlet var txtView_Message: UITextView!
     @IBOutlet var lbl_MessagePlaceholder: UILabel!
     @IBOutlet var k_Constraint_ScroolViewTop: NSLayoutConstraint!
-    
+    @IBOutlet var scrollView: UIScrollView!
     
     var user_Name:String?
+    
+    
+    override func viewWillLayoutSubviews() {
+        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 800)
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +44,12 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             self.btn_SelectVirtualOption.layer.borderColor = Global.macros.themeColor_pink.cgColor
             self.btn_SelectVirtualOption.layer.borderWidth = 1.0
             
+            
+            self.txtView_Message.layer.cornerRadius = 5.0
+            self.txtView_Message.layer.borderWidth = 1.0
+            self.txtView_Message.layer.borderColor = Global.macros.themeColor.cgColor
+            
+            
             self.CreateNavigationBackBarButton()
             
             //Adding button to navigation bar
@@ -45,11 +57,14 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             btn2.setTitle("Send", for: .normal)
           //  btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
             btn2.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
-         //   btn2.addTarget(self, action: #selector(), for: .touchUpInside)
+            btn2.addTarget(self, action: #selector(self.Send), for: .touchUpInside)
             let item2 = UIBarButtonItem(customView: btn2)
             //Right items
             self.navigationItem.setRightBarButtonItems([item2], animated: true)
 
+            
+            
+            
             
             
         }
@@ -94,6 +109,18 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     }
     
     @IBAction func Action_SelectVirtualOption(_ sender: UIButton) {
+        
+        self.showAlert(Message: "Coming Soon", vc: self)
+    }
+    
+   //MARK: - Functions
+    
+    func Send(){
+        
+       print("Clicked")
+       
+        
+        
         
         
     }
@@ -163,10 +190,14 @@ extension SendRequestViewController:UITextViewDelegate{
         
         lbl_MessagePlaceholder.isHidden = true
         
-        if Global.DeviceType.IS_IPHONE_5{
+        if Global.DeviceType.IS_IPHONE_5 || Global.DeviceType.IS_IPHONE_6{
             DispatchQueue.main.async {
+                
+                 self.animateTextView(textView: textView, up: true, movementDistance: textView.frame.maxY, scrollView:self.scrollView)
+                
                 UIView.animate(withDuration: 1.0, animations: {
-                    self.k_Constraint_ScroolViewTop.constant = 120.0
+                    //self.k_Constraint_ScroolViewTop.constant = -170.0
+                    
                 })
             }
             
@@ -175,7 +206,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_4_OR_LESS{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
-                    self.k_Constraint_ScroolViewTop.constant = -150
+                    //self.k_Constraint_ScroolViewTop.constant = -200
                 })
             }
         }
@@ -198,8 +229,11 @@ extension SendRequestViewController:UITextViewDelegate{
         
         if Global.DeviceType.IS_IPHONE_5{
             DispatchQueue.main.async {
+                
+                 self.animateTextView(textView: textView, up: false, movementDistance: textView.frame.minY, scrollView:self.scrollView)
+                
                 UIView.animate(withDuration: 1.0, animations: {
-                    self.k_Constraint_ScroolViewTop.constant = 0.0
+                    //self.k_Constraint_ScroolViewTop.constant = 0.0
                 })
             }
             
@@ -208,7 +242,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_4_OR_LESS{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
-                    self.k_Constraint_ScroolViewTop.constant = 0.0
+                    //self.k_Constraint_ScroolViewTop.constant = 0.0
                 })
             }
             
