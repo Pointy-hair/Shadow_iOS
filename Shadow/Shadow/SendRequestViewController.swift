@@ -24,13 +24,20 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     @IBOutlet var scrollView: UIScrollView!
     
     var user_Name:String?
-    
+    fileprivate var str_date_selected:String? = ""
     
     override func viewWillLayoutSubviews() {
-        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 800)
+        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 700)
     }
     
-    
+    //Converts string into date
+    let formatter: DateFormatter =
+        {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return formatter
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
@@ -52,6 +59,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             
             self.CreateNavigationBackBarButton()
             
+            
             //Adding button to navigation bar
             let btn2 = UIButton(type: .custom)
             btn2.setTitle("Send", for: .normal)
@@ -62,11 +70,6 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             //Right items
             self.navigationItem.setRightBarButtonItems([item2], animated: true)
 
-            
-            
-            
-            
-            
         }
         // Do any additional setup after loading the view.
     }
@@ -92,7 +95,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     
     @IBAction func Action_CheckBtnVirtualOption(_ sender: UIButton) {
         
-        self.imgView_Virtually.image = UIImage.init(named: "checked")
+        self.imgView_Virtually.image = UIImage.init( named: "checked")
         self.imgView_InPerson.image = UIImage.init(named: "unchecked")
 
         self.btn_SelectLocation.isHidden = true
@@ -117,14 +120,48 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     
     func Send(){
         
-       print("Clicked")
-       
-        
-        
-        
-        
+        if self.imgView_Virtually.image == UIImage.init(named: "checked") || self.imgView_InPerson.image == UIImage.init(named: "checked"){
+            if str_date_selected != ""{
+                if txtView_Message.text != ""  {
+                    
+                    if self.checkInternetConnection(){
+                        
+                        let dict = NSMutableDictionary()
+                        
+                        if imgView_InPerson.image == UIImage.init(named: "checked"){
+                            dict.setValue(btn_SelectLocation.currentTitle, forKey: "")
+
+                        }
+                        else if  imgView_Virtually.image == UIImage.init(named: "checked"){
+                            dict.setValue(btn_SelectVirtualOption.currentTitle, forKey: "")
+
+                        }
+                        
+                        dict.setValue(str_date_selected!, forKey: "")
+                        dict.setValue(txtView_Message.text!, forKey: "")
+                        print(dict)
+                        
+                        
+                        
+                        
+                        
+                        
+                    }else{
+                        
+                        self.showAlert(Message:Global.macros.kInternetConnection, vc: self)
+                    }
+                }else{
+                    self.showAlert(Message: "Please write some message.", vc: self)
+                }
+            }
+            else{
+                self.showAlert(Message: "Please select a date.", vc: self)
+            }
+           
+        }else{
+            self.showAlert(Message: "Please select atleast one option to meet.", vc: self)
+        }
     }
-    
     
     
     // MARK: - Delegate GMSAutocompleteViewController
@@ -250,11 +287,37 @@ extension SendRequestViewController:UITextViewDelegate{
         }
     }
 
-    
-    
-    
 }
+extension SendRequestViewController:FSCalendarDelegate,FSCalendarDataSource{
+    
+    
+    //Called when available date is selected
+    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
+        
+        
+        if date <= calendar.today!
+        {
+            calender.deselect(date)
+            self.showAlert(Message: "Please select future date.", vc: self)
+            return
+        }
+        else{
+            
+            str_date_selected = (self.formatter.string(from: date))
+            
+        }
+        
+    }
+    
+    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
+        
+        if date == calender.today
+        {
+            return "Today"
+        }
+        else{
+            return nil
+        }
+    }
 
-
-
-
+}
