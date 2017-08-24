@@ -32,9 +32,8 @@ class SearchViewController: UIViewController {
         if self.revealViewController() != nil {
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
         }
-        // Do any additional setup after loading the view.
-        
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         
         //Setting footer view
@@ -54,20 +53,14 @@ class SearchViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        
         self.navigationController?.navigationBar.backgroundColor = UIColor.clear
         self.navigationController?.navigationBar.tintColor = UIColor.clear
         self.tabBarController?.tabBar.backgroundColor = UIColor.clear
-//        
-//        self.navigationController?.setNavigationBarHidden(true, animated: false)
-//        self.navigationItem.setHidesBackButton(true, animated:true)
-//        self.tabBarController?.tabBar.isHidden = true
-
+        
     }
     
     //MARK: Fuctions
     func showSearchBar() {
-        
         
         // searchBar.delegate = self
         
@@ -83,12 +76,9 @@ class SearchViewController: UIViewController {
             textFieldInsideSearchBar.backgroundColor = UIColor.init(red: 144.0/255.0, green: 20.0/255.0, blue: 151.0/255.0, alpha: 1.0)
             textFieldInsideSearchBar.attributedPlaceholder = NSAttributedString(string: "Search",
                                                                                 attributes: [NSForegroundColorAttributeName: UIColor.white])
-            
-            
             textFieldInsideSearchBar.isUserInteractionEnabled = false
             
         }
-        
         navigationItem.titleView = searchBar
         
     }

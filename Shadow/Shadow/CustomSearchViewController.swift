@@ -925,6 +925,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
             vc.extendedLayoutIncludesOpaqueBars = true
             self.tabBarController?.tabBar.isTranslucent = false
             self.navigationController?.navigationBar.isTranslucent = false
+            
         }
     }
     
@@ -969,6 +970,10 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
         
+    }
+    
+    
+    @IBAction func Action_ViewProfileOccupation(_ sender: Any) {
     }
     
     
@@ -2160,6 +2165,8 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
      
         DispatchQueue.main.async {
             if self.bool_Search == true {
+                
+                if bool_Occupation == false {
                 self.bool_Search = false
                 cell.btn_ViewFullProfile.tag = indexPath.row
                 cell.btn_PlayVideo.tag = indexPath.row
@@ -2473,30 +2480,29 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                                 cell.lbl_Url.text = dict_Temp?.value(forKey: "companyUrl") as? String
                                 cell.btn_OpenUrl.isUserInteractionEnabled = true
                                 
-                                
                                 cell.lbl_Url.isHidden = false
                                 cell.imgView_Url.isHidden = false
                                 cell.k_Constraint_Top_labelUrl.constant = 8.0
                                 cell.k_Constraint_Top_btnUrl.constant = 8.0
                                 cell.k_Constraint_Top_imageViewUrl.constant = 8.0
                                 
-                                if array_public_UserSocialSites.count > 0{//social sites not nil
+                                if array_public_UserSocialSites.count > 0   {   //social sites not nil
                                     cell.tbl_View_SocialSite.isHidden = false
                                     
-                                    if array_public_UserSocialSites.count == 1 {//social site count 1
+                                    if array_public_UserSocialSites.count == 1 {   //social site count 1
                                         
                                         cell.k_Constraint_Height_TableviewSocialSite.constant = 50.0
                                         cell.k_Constraint_ViewDescriptionHeight.constant = 180.0
                                         
-                                        
                                     }
-                                    else  if array_public_UserSocialSites.count == 2{//social site count 2
+                                        
+                                    else  if array_public_UserSocialSites.count == 2{    //social site count 2
                                         
                                         cell.k_Constraint_Height_TableviewSocialSite.constant = 100.0
                                         cell.k_Constraint_ViewDescriptionHeight.constant = 210.0
                                         
                                     }
-                                    else{//social site count 3
+                                    else {//social site count 3
                                         
                                         cell.k_Constraint_Height_TableviewSocialSite.constant = 130.0
                                         cell.k_Constraint_ViewDescriptionHeight.constant = 240.0
@@ -2676,10 +2682,17 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                         if profileurl != nil {
                             cell.imgView_ProfilePic.sd_setImage(with: URL(string:profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
                         }
+                        
                     }else{
+                        
                         cell.imgView_ProfilePic.image = UIImage.init(named: "dummy")
+                        
                     }
                     self.bool_LastResultSearch = false
+                    
+                }
+            }   //at
+                else {
                     
                 }
             }

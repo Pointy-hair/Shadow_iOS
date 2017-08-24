@@ -13,24 +13,16 @@ class OccupationDetailViewController: UIViewController {
     
      var months: [String]!
     
-    
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var lbl_avgRating: UILabel!
-    
     @IBOutlet weak var lbl_AvgSalary: UILabel!
-    
     @IBOutlet weak var lbl_GrowthPercentage: UILabel!
-    
     @IBOutlet weak var lbl_UsersWithThisOccupation: UILabel!
-    
     @IBOutlet weak var lbl_UserThatShadowedThis: UILabel!
-    
     @IBOutlet weak var txtfield_Occupation: UITextView!
     @IBOutlet weak var scroll_View: UIScrollView!
-    
     @IBOutlet weak var collectionViewCompany: UICollectionView!
     @IBOutlet weak var collectionViewSchool: UICollectionView!
-    
 
     override func viewDidLoad() {
         
@@ -39,8 +31,7 @@ class OccupationDetailViewController: UIViewController {
         
 //        self.navigationItem.setHidesBackButton(false, animated:true)
 //        self.tabBarController?.tabBar.isHidden = true
-        
-        
+     
         let myBackButton:UIButton = UIButton()
         myBackButton.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
         myBackButton.setImage(UIImage(named:"back-new"), for: UIControlState())
@@ -50,7 +41,7 @@ class OccupationDetailViewController: UIViewController {
        
         // Do any additional setup after loading the view.
         setChart()
-
+ 
     }
     
     override func viewDidAppear(_ animated: Bool) {

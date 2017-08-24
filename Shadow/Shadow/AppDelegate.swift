@@ -10,7 +10,7 @@ import UIKit
 import GooglePlaces
 import GooglePlacePicker
 
-var deviceTokenString : String?                       // Device token string used in login and sign ups
+var deviceTokenString : String?       // Device token string used in login and sign ups
 
 public var DeviceType:String = "0"
 public var DeviceToken:String = "123456"
@@ -61,9 +61,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         if SavedPreferences.value(forKey: "userId")as? NSNumber != nil
         {
             DispatchQueue.main.async {
-                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "SWRevealViewController")as!  SWRevealViewController
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "SWRevealViewController") as!  SWRevealViewController
                 Global.macros.kAppDelegate.window?.rootViewController = vc
           }
+            
         }
         else
         {

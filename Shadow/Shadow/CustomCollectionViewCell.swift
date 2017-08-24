@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Charts
 
 class CustomCollectionViewCell: UICollectionViewCell {
     
@@ -52,9 +53,21 @@ class CustomCollectionViewCell: UICollectionViewCell {
     @IBOutlet var k_Constraint_ViewDescriptionHeight: NSLayoutConstraint!
     @IBOutlet var imgView_Url: UIImageView!
     @IBOutlet var imgView_Location: UIImageView!
-    
     @IBOutlet var lbl_totalRatingCount: UILabel!
     
+    
+    //Outlets for occupation view
+    
+    @IBOutlet weak var view_MainOccupation: UIView!
+    @IBOutlet weak var lbl_Rating: UILabel!
+    @IBOutlet weak var lbl_avgSalary: UILabel!
+    @IBOutlet weak var lbl_Growth: UILabel!
+    @IBOutlet weak var lbl_UserWithOccupation: UILabel!
+    @IBOutlet weak var txtView_Description: UITextView!
+    @IBOutlet weak var barChartView: BarChartView!
+    
+    
+    @IBOutlet weak var lbl_UserShadowed: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
