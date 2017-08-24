@@ -151,6 +151,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     
     override func viewDidDisappear(_ animated: Bool) {
+        
         bool_LastResultSearch = false
         bool_Occupation = false
 
@@ -921,7 +922,9 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
            // self.showAlert(Message: "Coming Soon.", vc: self)
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
             _ = self.navigationController?.pushViewController(vc, animated: true)
-            
+            vc.extendedLayoutIncludesOpaqueBars = true
+            self.tabBarController?.tabBar.isTranslucent = false
+            self.navigationController?.navigationBar.isTranslucent = false
         }
     }
     

@@ -33,34 +33,47 @@ class OccupationDetailViewController: UIViewController {
     
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+//        self.navigationItem.setHidesBackButton(false, animated:true)
+//        self.tabBarController?.tabBar.isHidden = true
+        
+        
+        let myBackButton:UIButton = UIButton()
+        myBackButton.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+        myBackButton.setImage(UIImage(named:"back-new"), for: UIControlState())
+        myBackButton.addTarget(self, action: #selector(self.PopToRootViewController), for: UIControlEvents.touchUpInside)
+        let leftBackBarButton:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
+        self.navigationItem.leftBarButtonItem = leftBackBarButton
+       
         // Do any additional setup after loading the view.
-       setChart()
+        setChart()
 
     }
     
-    func setChart(){
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    
+    func setChart() {
+        
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         let unitsSold = [20.0, 4.0, 3.0, 6.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
-        
         barChartView.setBarChartData(xValues: months, yValues: unitsSold, label: "Monthly Sales")
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationItem.setHidesBackButton(true, animated:true)
-        self.tabBarController?.tabBar.isHidden = true
-    }
+       
+     }
     
     override func viewDidLayoutSubviews() {
-        
         scroll_View.contentSize = CGSize.init(width: view.frame.size.width, height:  900)
     }
     
-    
-    
-
+ 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
