@@ -38,33 +38,36 @@ class RequestDetailsViewController: UIViewController {
 
         DispatchQueue.main.async {
             
-            self.navigationItem.title = self.user_Name!
-
+            self.navigationItem.title = self.username!
+            self.navigationItem.setHidesBackButton(false, animated:true)
+            self.CreateNavigationBackBarButton()
+            
+            
             self.calender.layer.borderWidth = 1.0
             self.calender.layer.borderColor = Global.macros.themeColor.cgColor
-            self.calender.layer.cornerRadius = 3.0
+            self.calender.layer.cornerRadius = 5.0
             
-            self.btn_Accept.layer.cornerRadius = 3.0
+            self.btn_Accept.layer.cornerRadius = 8.0
             self.btn_Accept.layer.borderWidth = 1.0
             self.btn_Accept.layer.borderColor = Global.macros.themeColor.cgColor
             
-            self.btn_Decline.layer.cornerRadius = 3.0
+            self.btn_Decline.layer.cornerRadius = 5.0
             self.btn_Decline.layer.borderWidth = 1.0
             self.btn_Decline.layer.borderColor = Global.macros.themeColor.cgColor
             
-            self.btn_AcceptedRejected.layer.cornerRadius = 3.0
+            self.btn_AcceptedRejected.layer.cornerRadius = 8.0
             self.btn_AcceptedRejected.layer.borderWidth = 1.0
             self.btn_AcceptedRejected.layer.borderColor = Global.macros.themeColor.cgColor
 
-            self.txtView_Message.layer.cornerRadius = 3.0
+            self.txtView_Message.layer.cornerRadius = 5.0
             self.txtView_Message.layer.borderWidth = 1.0
             self.txtView_Message.layer.borderColor = Global.macros.themeColor.cgColor
 
-            self.lbl_Location.layer.cornerRadius = 3.0
+            self.lbl_Location.layer.cornerRadius = 5.0
             self.lbl_Location.layer.borderWidth = 1.0
             self.lbl_Location.layer.borderColor = Global.macros.themeColor.cgColor
             
-            self.lbl_VirtualMedium.layer.cornerRadius = 3.0
+            self.lbl_VirtualMedium.layer.cornerRadius = 5.0
             self.lbl_VirtualMedium.layer.borderWidth = 1.0
             self.lbl_VirtualMedium.layer.borderColor = Global.macros.themeColor.cgColor
             
@@ -82,7 +85,7 @@ class RequestDetailsViewController: UIViewController {
     //MARK: - Button Actions
     @IBAction func action_OpenVideo(_ sender: UIButton) {
         
-        
+        self.showAlert(Message: "Coming", vc: self)
         
     }
 

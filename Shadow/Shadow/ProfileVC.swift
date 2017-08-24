@@ -155,20 +155,20 @@ class ProfileVC: UIViewController {
 
                 let btn2 = UIButton(type: .custom)
                 btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
-                btn2.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
+                btn2.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
                 btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
                 let item2 = UIBarButtonItem(customView: btn2)
                 
                 let btn4 = UIButton(type: .custom)
                 btn4.setImage(UIImage(named: "notifications-button"), for: .normal)
-                btn4.frame = CGRect(x:self.view.frame.size.width - 50, y: 0, width: 25, height: 25)
+                btn4.frame = CGRect(x:self.view.frame.size.width - 40, y: 0, width: 20, height: 25)
                 btn4.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
                 let item4 = UIBarButtonItem(customView: btn4)
                 
                 
                 let btn3 = UIButton(type: .custom)
                 btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
-                btn3.frame = CGRect(x: self.view.frame.size.width - 75, y: 0, width: 25, height: 25)
+                btn3.frame = CGRect(x: self.view.frame.size.width - 60, y: 0, width: 20, height: 25)
                 btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
                 let item3 = UIBarButtonItem(customView: btn3)
 

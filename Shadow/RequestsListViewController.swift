@@ -21,9 +21,15 @@ class RequestsListViewController: UIViewController {
         super.viewDidLoad()
         DispatchQueue.main.async {
             
+            //self.segment_Control.tintColor = Global.macros.themeColor_pink
+
+//            let titleTextAttributes = NSForegroundColorAttributeName.
+//            self.segment_Control.appearance().setTitleTextAttributes(titleTextAttributes, forState: .Selected)
+            
             self.navigationItem.title = self.user_Name!
             self.segment_Control.backgroundColor = UIColor.white
-
+            self.navigationItem.setHidesBackButton(false, animated:true)
+            self.CreateNavigationBackBarButton()
         }
 
         
@@ -40,7 +46,7 @@ class RequestsListViewController: UIViewController {
         
         if segment_Control.selectedSegmentIndex == 0{
             
-            self.segment_Control.tintColor = Global.macros.themeColor_pink
+           // self.segment_Control.tintColor = Global.macros.themeColor_pink
             self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
         }
     }
