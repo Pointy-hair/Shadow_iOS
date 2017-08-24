@@ -13,8 +13,18 @@ class RequestsListViewController: UIViewController {
     @IBOutlet var segment_Control: UISegmentedControl!
     @IBOutlet var tblView_Requests: UITableView!
     
+    var user_Name:String?
+
     override func viewDidLoad() {
+        
+        
         super.viewDidLoad()
+        DispatchQueue.main.async {
+            
+            self.navigationItem.title = self.user_Name!
+            self.segment_Control.backgroundColor = UIColor.white
+
+        }
 
         
         // Do any additional setup after loading the view.
@@ -26,14 +36,32 @@ class RequestsListViewController: UIViewController {
     }
     
 
-    /*
+    @IBAction func Action_SegmntControl(_ sender: UISegmentedControl) {
+        
+        if segment_Control.selectedSegmentIndex == 0{
+            
+            self.segment_Control.tintColor = Global.macros.themeColor_pink
+            self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
+        }
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "myrequests_to_requestdetail"{
+            
+            let vc = segue.destination as! RequestDetailsViewController
+            vc.username = self.navigationItem.title
+        }
+        
+        
+        
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }
