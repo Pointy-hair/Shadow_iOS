@@ -20,6 +20,7 @@
 		492AD91C1F0A424600F102CC /* User_InterestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492AD91B1F0A424600F102CC /* User_InterestsTableViewCell.swift */; };
 		492AD91E1F0A43CD00F102CC /* Actual_InterestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492AD91D1F0A43CD00F102CC /* Actual_InterestsTableViewCell.swift */; };
 		492AD9201F0A787A00F102CC /* Profile_UserInterestsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492AD91F1F0A787A00F102CC /* Profile_UserInterestsCollectionViewCell.swift */; };
+		4931A8DA1F4EF99C00E89D3A /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4931A8D91F4EF99C00E89D3A /* NotificationTableViewCell.swift */; };
 		494795F41F26042D0045AD85 /* SideMenuBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494795F31F26042D0045AD85 /* SideMenuBarViewController.swift */; };
 		494795F61F2606690045AD85 /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494795F51F2606690045AD85 /* SideMenuTableViewCell.swift */; };
 		494C5A171F0664BA006436F1 /* User_SocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494C5A161F0664BA006436F1 /* User_SocialSitesTableViewCell.swift */; };
@@ -165,6 +166,7 @@
 		492AD91B1F0A424600F102CC /* User_InterestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User_InterestsTableViewCell.swift; sourceTree = "<group>"; };
 		492AD91D1F0A43CD00F102CC /* Actual_InterestsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actual_InterestsTableViewCell.swift; sourceTree = "<group>"; };
 		492AD91F1F0A787A00F102CC /* Profile_UserInterestsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile_UserInterestsCollectionViewCell.swift; sourceTree = "<group>"; };
+		4931A8D91F4EF99C00E89D3A /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		494795F31F26042D0045AD85 /* SideMenuBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuBarViewController.swift; sourceTree = "<group>"; };
 		494795F51F2606690045AD85 /* SideMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewCell.swift; sourceTree = "<group>"; };
 		494C5A161F0664BA006436F1 /* User_SocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User_SocialSitesTableViewCell.swift; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				4997ABBE1F287E6500883476 /* NotificationsViewController.swift */,
+				4931A8D91F4EF99C00E89D3A /* NotificationTableViewCell.swift */,
 			);
 			name = Notifications;
 			path = Shadow;
@@ -1202,6 +1205,7 @@
 				492AD9191F0A0A7B00F102CC /* MainView_User_InterestsCollectionViewCell.swift in Sources */,
 				9A3BB9891EDC189400772FF5 /* GlobalFunctions.swift in Sources */,
 				9A3BB9821EDC165200772FF5 /* Reachability.swift in Sources */,
+				4931A8DA1F4EF99C00E89D3A /* NotificationTableViewCell.swift in Sources */,
 				9AC4FF3E1EF00D1E002524DB /* NYTExamplePhoto.m in Sources */,
 				9F8306A71EDEC033006D1ACF /* EnterOtpVC.swift in Sources */,
 				9AC4FF241EEFF704002524DB /* NYTPhotosViewController.m in Sources */,

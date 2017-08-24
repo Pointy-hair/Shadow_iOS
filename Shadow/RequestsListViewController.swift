@@ -21,10 +21,8 @@ class RequestsListViewController: UIViewController {
         super.viewDidLoad()
         DispatchQueue.main.async {
             
-            //self.segment_Control.tintColor = Global.macros.themeColor_pink
+            self.segment_Control.tintColor = Global.macros.themeColor_pink
 
-//            let titleTextAttributes = NSForegroundColorAttributeName.
-//            self.segment_Control.appearance().setTitleTextAttributes(titleTextAttributes, forState: .Selected)
             
             self.navigationItem.title = self.user_Name!
             self.segment_Control.backgroundColor = UIColor.white
