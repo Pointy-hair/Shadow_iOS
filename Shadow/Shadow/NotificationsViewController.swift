@@ -46,7 +46,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     
     //MARK: -  Functions
     
-    func getAllNotifications(){
+  fileprivate func getAllNotifications(){
     
         let dict = NSMutableDictionary()
         dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
@@ -108,7 +108,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     }
     
     
-    func btn_Clear(){
+  @objc fileprivate func btn_Clear(){
         
         let dict = NSMutableDictionary()
         dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)

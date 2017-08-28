@@ -12,6 +12,7 @@
 		490557A11F03A976000FF3CF /* UserEditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490557A01F03A976000FF3CF /* UserEditProfileViewController.swift */; };
 		490A2EDA1F4D9882005ECA85 /* RequestsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490A2ED91F4D9882005ECA85 /* RequestsListViewController.swift */; };
 		4917BC9A1F53E5240087F8DC /* Notification_API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4917BC991F53E5240087F8DC /* Notification_API.swift */; };
+		4917BC9C1F5420150087F8DC /* RequestsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4917BC9B1F5420150087F8DC /* RequestsListTableViewCell.swift */; };
 		492805041F03685C000CB5ED /* SocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805031F03685C000CB5ED /* SocialSitesTableViewCell.swift */; };
 		492805061F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805051F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift */; };
 		492805081F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805071F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift */; };
@@ -159,6 +160,7 @@
 		490557A01F03A976000FF3CF /* UserEditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserEditProfileViewController.swift; sourceTree = "<group>"; };
 		490A2ED91F4D9882005ECA85 /* RequestsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsListViewController.swift; sourceTree = "<group>"; };
 		4917BC991F53E5240087F8DC /* Notification_API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification_API.swift; sourceTree = "<group>"; };
+		4917BC9B1F5420150087F8DC /* RequestsListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsListTableViewCell.swift; sourceTree = "<group>"; };
 		492805031F03685C000CB5ED /* SocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialSitesTableViewCell.swift; sourceTree = "<group>"; };
 		492805051F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSocialSitesTableViewCell.swift; sourceTree = "<group>"; };
 		492805071F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActualSocialSitesTableViewCell.swift; sourceTree = "<group>"; };
@@ -403,6 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				490A2ED91F4D9882005ECA85 /* RequestsListViewController.swift */,
+				4917BC9B1F5420150087F8DC /* RequestsListTableViewCell.swift */,
 				499BC7811F471A5E00159B58 /* RequestDetailsViewController.swift */,
 			);
 			name = Requests;
@@ -1186,6 +1189,7 @@
 				9A0E9E1F1F1393720019E3A5 /* SDWebImageDecoder.m in Sources */,
 				9A6098401F00D9BC00C901BF /* SearchViewController.swift in Sources */,
 				492AD9151F0A00E500F102CC /* MainView_UserSocialSitesTableViewCell.swift in Sources */,
+				4917BC9C1F5420150087F8DC /* RequestsListTableViewCell.swift in Sources */,
 				9F8306A51EDEC027006D1ACF /* EnterPhoneNumberVC.swift in Sources */,
 				9A0E9E1A1F1393720019E3A5 /* NSData+ImageContentType.m in Sources */,
 				499BC74E1F46B59F00159B58 /* FSCalendarScopeHandle.m in Sources */,

@@ -10,8 +10,22 @@ import UIKit
 
 class RequestsListViewController: UIViewController {
 
-    @IBOutlet var segment_Control: UISegmentedControl!
+    
+    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var view_MainButtons: UIView!
+    @IBOutlet var btn_MyRequest: UIButton!
+    @IBOutlet var btn_ShadowRequest: UIButton!
+    @IBOutlet var btn_Accepted: UIButton!
+    @IBOutlet var lbl_btn_Accepted: UILabel!
+    @IBOutlet var btn_All: UIButton!
+    @IBOutlet var lbl_btn_All: UILabel!
+    @IBOutlet var btn_Declined: UIButton!
+    @IBOutlet var lbl_btn_Declined: UILabel!
     @IBOutlet var tblView_Requests: UITableView!
+    @IBOutlet var lbl_NoRequests: UILabel!
+    
+    
+    
     
     var user_Name:String?
 
@@ -21,10 +35,8 @@ class RequestsListViewController: UIViewController {
         super.viewDidLoad()
         DispatchQueue.main.async {
             
-            self.segment_Control.tintColor = Global.macros.themeColor_pink
 
             self.navigationItem.title = self.user_Name!
-            self.segment_Control.backgroundColor = UIColor.white
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
         }
@@ -39,14 +51,20 @@ class RequestsListViewController: UIViewController {
     }
     
 
-    @IBAction func Action_SegmntControl(_ sender: UISegmentedControl) {
-        
-        if segment_Control.selectedSegmentIndex == 0{
-            
-            self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
-        }
-    }
     
+    
+          //  self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
+    
+    //MARK: - Button Actions
+    
+    
+    @IBAction func Action_MyRequests(_ sender: UIButton) {
+    }
+
+
+
+
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -760,14 +760,6 @@ class ProfileVC: UIViewController {
         
     }
     
-    
-    
-//    func editProfileBtnPressed(sender: AnyObject){
-//        
-//        self.performSegue(withIdentifier: "userProfile_to_usereditProfile", sender: self)
-//        
-//    }
-    
     func menuBtnPressed(sender: AnyObject){
         
         let dict = NSMutableDictionary()
