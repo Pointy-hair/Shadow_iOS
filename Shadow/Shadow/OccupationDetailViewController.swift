@@ -57,7 +57,9 @@ class OccupationDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-       
+        
+       bool_Occupation = true
+        
      }
     
     override func viewDidLayoutSubviews() {

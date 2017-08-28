@@ -658,7 +658,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     @IBAction func Action_HorizontalView(_ sender: Any) {
         
-        if bool_Occupation == false {
+     //   if bool_Occupation == false {
             
             if arr_SearchData.count > 0 {
                 
@@ -697,14 +697,56 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                 }
                 
                 
-                //                btn_HorizontalView.setImage(UIImage(named:  "purpleDots"), for: .normal)
-                //                btn_VerticalView.setImage(UIImage(named:  "grayHorizontalLines"), for: .normal)
-                //
-                //                self.scrollViewDidEndDecelerating(customCollectionView)
-                //
-                //                tblview_AllSearchResult.isHidden = true
-                //                view_CollectionView.isHidden = false
-                //                searchBar.resignFirstResponder()
+            }
+            else {
+                
+                
+                self.showAlert(Message: "No data found.", vc: self)
+                
+            }
+            
+    //    }
+            
+      /*  else {
+            if arr_SearchData.count > 0 {
+                
+                
+                if (btn_HorizontalView.currentImage?.isEqual(UIImage(named: "three-dot-icon")))! {
+                    
+                    //do something here
+                    btn_HorizontalView.setImage(UIImage(named: "grayHorizontalLines"), for: .normal)
+                    self.scrollViewDidEndDecelerating(customCollectionView)
+                    tblview_AllSearchResult.isHidden = true
+                    view_CollectionView.isHidden = false
+                    
+                    searchBar.resignFirstResponder()
+                    
+                    
+                    
+                }
+                    
+                else {
+                    
+                    btn_HorizontalView.setImage(UIImage(named: "three-dot-icon"), for: .normal)
+                    tblview_AllSearchResult.isHidden = false
+                    view_CollectionView.isHidden = true
+                    searchBar.isHidden = false
+                    
+                    if bool_LocationFilter == true {
+                        
+                        btn_FilterLocation.isHidden = false
+                        img_DropDrown.isHidden = false
+                        
+                    }
+                    else {
+                        
+                        btn_FilterLocation.isHidden = true
+                        img_DropDrown.isHidden = true
+                        
+                    }
+                    
+                }
+                
                 
             }
             else {
@@ -714,12 +756,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                 
             }
             
-        }
-            
-        else {
-            self.showAlert(Message: "Coming Soon.", vc: self)
-            
-        }
+        } */
         
     }
     
@@ -1071,8 +1108,9 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                         DispatchQueue.main.async {
                           
                                 
-                          
-                            
+                            if bool_Occupation == false {
+
+                             cell?.view_MainOccupation.isHidden = true
                             cell?.btn_ViewFullProfile.tag = (indexPath?.row)!
                             cell?.btn_PlayVideo.tag = (indexPath?.row)!
                             cell?.btn_SocialSite1.tag = (indexPath?.row)!
@@ -1598,8 +1636,63 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                 }
                                 self.bool_LastResultSearch = false
                             }
+                          
+                        } //a
                             
+                            else {
+                                cell?.view_MainOccupation.isHidden = false
+                                if self.arr_SearchData.count > 0 {
+                                    
+                                    self.dicUrl.removeAllObjects()
+                                    
+                                    if (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] != nil || (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String != "" {
+                                        cell?.lbl_CompanySchoolUserName.text = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String
+                                        
+                                    }
+                                    else {
+                                        
+                                        cell?.lbl_CompanySchoolUserName.text = "NA"
+                                        
+                                    }
+                                    
+                                    let rating_number = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["avgRating"]!)"
+                                    
+                                    let dbl = 2.0
+                                    
+                                    if  dbl.truncatingRemainder(dividingBy: 1) == 0
+                                    {
+                                        cell?.lbl_Rating.text = rating_number + ".0"
+                                        
+                                    }
+                                    else {
+                                        cell?.lbl_Rating.text = rating_number
+                                    }
+                                    
+                                    
+                                    cell?.lbl_Rating.text = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["ratingCount"]!)"
+                                    cell?.lbl_avgSalary.text = "NA"
+                                    cell?.lbl_Growth.text = "NA"
+                                    cell?.lbl_UserWithOccupation.text = "7"
+                                    cell?.lbl_UserShadowed.text = "8"
+                                    
+                                    let dict_Temp = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary
+                                    let str_bio = dict_Temp?.value(forKey: "bio") as? String
+                                    
+                                    if str_bio == "" || str_bio == nil {
+                                        cell?.txtView_Description.text = "No biography to show..."
+                                    }
+                                    else {
+                                        cell?.txtView_Description.text = str_bio
+                                    }
+                                    
+                                    
+                                    
+                                }
+
+                            }
                         }
+                        
+                        
                     }
                 }
             }
@@ -1878,11 +1971,7 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
             let str_role = dict_Temp?.value(forKey: "role") as? String
             
             
-            
-            
-            
             if str_role == "USER" {
-                
                 
                 
                 if dict_Temp?.value(forKey: "companyName") != nil {
@@ -2167,6 +2256,7 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
             if self.bool_Search == true {
                 
                 if bool_Occupation == false {
+                cell.view_MainOccupation.isHidden = true
                 self.bool_Search = false
                 cell.btn_ViewFullProfile.tag = indexPath.row
                 cell.btn_PlayVideo.tag = indexPath.row
@@ -2175,7 +2265,6 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                 cell.btn_SocialSite3.tag = indexPath.row
                 
                 print(indexPath.row)
-                
                 print("indexPath \(indexPath.row)")
                 if self.arr_SearchData.count > 0 {
                     
@@ -2693,6 +2782,56 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                 }
             }   //at
                 else {
+                   
+                    cell.view_MainOccupation.isHidden = false
+                    if self.arr_SearchData.count > 0 {
+                        
+                        self.dicUrl.removeAllObjects()
+                        
+                        if (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] != nil || (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String != "" {
+                            cell.lbl_CompanySchoolUserName.text = (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String
+                            
+                        }
+                        else {
+                            
+                            cell.lbl_CompanySchoolUserName.text = "NA"
+                            
+                        }
+                        
+                        let rating_number = "\((self.arr_SearchData[indexPath.row] as! NSDictionary)["avgRating"]!)"
+                        
+                        let dbl = 2.0
+                        
+                        if  dbl.truncatingRemainder(dividingBy: 1) == 0
+                        {
+                            cell.lbl_Rating.text = rating_number + ".0"
+                            
+                        }
+                        else {
+                            cell.lbl_Rating.text = rating_number
+                        }
+                        
+                        
+                        cell.lbl_Rating.text = "\((self.arr_SearchData[(indexPath.row)] as! NSDictionary)["ratingCount"]!)"
+                         cell.lbl_avgSalary.text = "NA"
+                        cell.lbl_Growth.text = "NA"
+                        cell.lbl_UserWithOccupation.text = "7"
+                        cell.lbl_UserShadowed.text = "8"
+                        
+                        let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["userDTO"] as? NSDictionary
+                        let str_bio = dict_Temp?.value(forKey: "bio") as? String
+                        
+                        if str_bio == "" || str_bio == nil {
+                            cell.txtView_Description.text = "No biography to show..."
+                        }
+                        else {
+                            cell.txtView_Description.text = str_bio
+                        }
+
+ 
+                        
+                    }
+  
                     
                 }
             }

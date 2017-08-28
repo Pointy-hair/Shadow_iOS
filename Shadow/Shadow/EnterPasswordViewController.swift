@@ -146,43 +146,37 @@ class EnterPasswordViewController: UIViewController {
 
 }
 extension EnterPasswordViewController:UITextFieldDelegate
+    
 {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        
         if textField == textfield_Password
         {
-            
             textfield_ConfirmPassword.becomeFirstResponder()
         }
-        else
-        {
+        else {
             textfield_ConfirmPassword.resignFirstResponder()
-            
         }
         return true
         
     }
     
-    
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
         
         let string: NSString = (textField.text! as NSString).replacingCharacters(in: range, with: string) as NSString
             
-        
             if (string.length > 0) {
+                
                 btn_Next.isUserInteractionEnabled = true
-
                 return string.length <= 15
+                
             }
         
             else{
                 btn_Next.isUserInteractionEnabled = false
                 return string.length <= 15
-
             }
     }
 }
