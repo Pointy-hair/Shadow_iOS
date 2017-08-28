@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fzx-XX-5se">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fzx-XX-5se">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -2923,7 +2923,7 @@
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7ha-4M-Yow">
                                                                             <rect key="frame" x="10" y="81" width="359" height="185"/>
                                                                             <subviews>
-                                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ube-kT-kRE" customClass="BarChartView" customModule="Shadow" customModuleProvider="target">
+                                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ube-kT-kRE" customClass="BarChartView" customModule="Charts">
                                                                                     <rect key="frame" x="25" y="-44" width="309" height="134"/>
                                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                     <constraints>
@@ -3225,7 +3225,7 @@
                                                 </constraints>
                                                 <size key="customSize" width="379" height="838"/>
                                                 <connections>
-                                                    <outlet property="barChartView" destination="Ube-kT-kRE" id="O5C-Su-Whn"/>
+                                                    <outlet property="barChartView" destination="Ube-kT-kRE" id="pHg-kV-0ja"/>
                                                     <outlet property="btn_OpenUrl" destination="N67-fU-0Of" id="eZx-M5-piV"/>
                                                     <outlet property="btn_PlayVideo" destination="heR-ZV-29v" id="hzW-wX-qcD"/>
                                                     <outlet property="btn_SocialSite1" destination="Sis-3i-L3d" id="OgA-GN-DpA"/>

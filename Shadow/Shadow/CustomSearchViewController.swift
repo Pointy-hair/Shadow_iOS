@@ -1641,6 +1641,8 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                             
                             else {
                                 cell?.view_MainOccupation.isHidden = false
+                                cell?.setChart()
+
                                 if self.arr_SearchData.count > 0 {
                                     
                                     self.dicUrl.removeAllObjects()
@@ -1708,8 +1710,18 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
         if indexPath != nil {
             let cell = self.customCollectionView.cellForItem(at: indexPath!) as? CustomCollectionViewCell
-            cell?.customScrollView.contentSize = CGSize.init(width: self.customCollectionView.frame.size.width, height:  950)
             
+          if bool_Occupation == false {
+                cell?.customScrollView.contentSize = CGSize.init(width: self.view.frame.size.width, height:  950)
+                
+            }
+                
+            else{
+                
+                cell?.customScrollView.contentSize = CGSize.init(width: self.view.frame.size.width, height:  750)
+                
+                
+            }
             
             if scrollView == self.customCollectionView {
                 
@@ -2784,6 +2796,8 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                 else {
                    
                     cell.view_MainOccupation.isHidden = false
+                    cell.setChart()
+
                     if self.arr_SearchData.count > 0 {
                         
                         self.dicUrl.removeAllObjects()

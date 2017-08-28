@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/OccupationDetailViewController.swift"
-            timestampString = "525603589.419006"
+            timestampString = "525605533.079846"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/OccupationDetailViewController.swift"
-            timestampString = "525603589.419006"
+            timestampString = "525605533.079846"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "525596743.743167"
+            timestampString = "525609827.205559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2757"
-            endingLineNumber = "2757"
+            startingLineNumber = "2769"
+            endingLineNumber = "2769"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -68,7 +68,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "525598236.047464"
+            timestampString = "525609827.205559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "670"
@@ -84,7 +84,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "525602770.263494"
+            timestampString = "525609827.205559"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1112"
@@ -99,14 +99,62 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "525602782.882786"
+            filePath = "Shadow/OccupationDetailViewController.swift"
+            timestampString = "525608820.116945"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1644"
-            endingLineNumber = "1644"
-            landmarkName = "scrollViewDidEndDecelerating(_:)"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
+            landmarkName = "setBarChartData(xValues:yValues:label:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/OccupationDetailViewController.swift"
+            timestampString = "525610207.911162"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "BarChartView"
+            landmarkType = "4">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(extension in Shadow):Charts.BarChartView.(BarChartFormatter in _39E7E0E1FA11965E4F8CC4236865363F).__deallocating_deinit"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
+                  timestampString = "525610233.390022"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(extension in Shadow):Charts.BarChartView.(BarChartFormatter in _39E7E0E1FA11965E4F8CC4236865363F).init () -&gt; (extension in Shadow):Charts.BarChartView.(BarChartFormatter in _39E7E0E1FA11965E4F8CC4236865363F)"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
+                  timestampString = "525610233.392396"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "212"
+                  endingLineNumber = "212"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

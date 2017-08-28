@@ -11,6 +11,8 @@ import Charts
 
 class CustomCollectionViewCell: UICollectionViewCell {
     
+    var months: [String]!
+
     
     @IBOutlet weak var btn_PlayVideo: UIButton!
     @IBOutlet weak var kHeight_BehindDetailView: NSLayoutConstraint!  //191
@@ -64,9 +66,9 @@ class CustomCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lbl_Growth: UILabel!
     @IBOutlet weak var lbl_UserWithOccupation: UILabel!
     @IBOutlet weak var txtView_Description: UITextView!
-    @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var lbl_UserShadowed: UILabel!
     
+    @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var lbl_Abt: UILabel!
     
     
@@ -83,6 +85,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
             self.customView(view: self.view_BehindTxtView)
             self.customView(view: self.view_BehindProfile)
             self.customView(view: self.view_BehindNumericTems)
+
             
         }
     }
@@ -95,5 +98,18 @@ class CustomCollectionViewCell: UICollectionViewCell {
         view.layer.borderWidth = 1.0
         
     }
+    func setChart() {
+        
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let unitsSold = [20.0, 4.0, 3.0, 6.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
+        barChartView.setBarChartData(xValues: months, yValues: unitsSold, label: "Monthly Sales")
+        
+        
+    }
+    
+ 
 }
+
+
+
 

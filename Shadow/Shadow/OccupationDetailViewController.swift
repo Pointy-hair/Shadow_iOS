@@ -59,7 +59,6 @@ class OccupationDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
        bool_Occupation = true
-        
      }
     
     override func viewDidLayoutSubviews() {
@@ -210,7 +209,7 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
 }
 extension BarChartView {
     
-    private class BarChartFormatter: NSObject, IAxisValueFormatter {
+     class BarChartFormatter: NSObject, IAxisValueFormatter {
         
         var labels: [String] = []
         
