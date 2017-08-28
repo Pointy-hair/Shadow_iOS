@@ -39,6 +39,12 @@ class RequestsListViewController: UIViewController {
             self.navigationItem.title = self.user_Name!
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
+            self.tabBarController?.tabBar.isHidden = true
+            
+            self.view_MainButtons.layer.borderWidth = 1.0
+            self.view_MainButtons.layer.borderColor = Global.macros.themeColor_pink.cgColor
+
+            
         }
 
         
@@ -50,21 +56,54 @@ class RequestsListViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    
-    
-          //  self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
     
     //MARK: - Button Actions
     
     
     @IBAction func Action_MyRequests(_ sender: UIButton) {
+        
+        
+        self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        self.btn_ShadowRequest.setTitleColor(UIColor.black, for: .normal)
+
+        
+        
+    }
+
+    @IBAction func Action_ShadowRequests(_ sender: UIButton) {
+        
+        self.btn_MyRequest.setTitleColor(UIColor.black, for: .normal)
+        self.btn_ShadowRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+
+    }
+
+    @IBAction func Action_Accepted(_ sender: UIButton) {
+        
+        //Showing line and color of accepted button
+        self.btn_Accepted.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        self.lbl_btn_Accepted.isHidden = false
+        
+        //hiding the lines and changing color unselected buttons
+        self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        self.lbl_btn_Accepted.isHidden = false
+
+        self.btn_Accepted.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        self.lbl_btn_Accepted.isHidden = false
+
+        
+        
+        
+        
+        
+    }
+
+    @IBAction func Action_All(_ sender: UIButton) {
+        
     }
 
 
-
-
-
+    @IBAction func Action_Declined(_ sender: UIButton) {
+    }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -84,4 +123,29 @@ class RequestsListViewController: UIViewController {
     }
     
 
+}
+
+extension RequestsListViewController:UITableViewDelegate,UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RequestsListTableViewCell
+        
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+          self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
+
+    }
+    
+    
+    
 }
