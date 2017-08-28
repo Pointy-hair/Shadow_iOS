@@ -67,6 +67,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var lbl_UserShadowed: UILabel!
     
+    @IBOutlet weak var lbl_Abt: UILabel!
     
     
     override func awakeFromNib() {
