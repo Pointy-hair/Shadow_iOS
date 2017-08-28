@@ -11,6 +11,7 @@
 		4901F75A1EE9056200070A8D /* ActualSkillsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4901F7591EE9056200070A8D /* ActualSkillsTableViewCell.swift */; };
 		490557A11F03A976000FF3CF /* UserEditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490557A01F03A976000FF3CF /* UserEditProfileViewController.swift */; };
 		490A2EDA1F4D9882005ECA85 /* RequestsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490A2ED91F4D9882005ECA85 /* RequestsListViewController.swift */; };
+		4917BC9A1F53E5240087F8DC /* Notification_API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4917BC991F53E5240087F8DC /* Notification_API.swift */; };
 		492805041F03685C000CB5ED /* SocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805031F03685C000CB5ED /* SocialSitesTableViewCell.swift */; };
 		492805061F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805051F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift */; };
 		492805081F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492805071F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift */; };
@@ -157,6 +158,7 @@
 		4901F7591EE9056200070A8D /* ActualSkillsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActualSkillsTableViewCell.swift; sourceTree = "<group>"; };
 		490557A01F03A976000FF3CF /* UserEditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserEditProfileViewController.swift; sourceTree = "<group>"; };
 		490A2ED91F4D9882005ECA85 /* RequestsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsListViewController.swift; sourceTree = "<group>"; };
+		4917BC991F53E5240087F8DC /* Notification_API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification_API.swift; sourceTree = "<group>"; };
 		492805031F03685C000CB5ED /* SocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialSitesTableViewCell.swift; sourceTree = "<group>"; };
 		492805051F037AC7000CB5ED /* UserSocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSocialSitesTableViewCell.swift; sourceTree = "<group>"; };
 		492805071F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActualSocialSitesTableViewCell.swift; sourceTree = "<group>"; };
@@ -941,6 +943,7 @@
 			children = (
 				9FFCE4801EE0298E00451875 /* AuthenticationAPI.swift */,
 				9FD747F51EE52BB9001DEB34 /* ProfileAPI.swift */,
+				4917BC991F53E5240087F8DC /* Notification_API.swift */,
 			);
 			name = "API Classes";
 			sourceTree = "<group>";
@@ -1256,6 +1259,7 @@
 				499BC7801F46FEC500159B58 /* SendRequestViewController.swift in Sources */,
 				499BC7461F46B59F00159B58 /* FSCalendarAppearance.m in Sources */,
 				9A957E171F4D4D0300A5CCE5 /* SchoolCollectionViewCell.swift in Sources */,
+				4917BC9A1F53E5240087F8DC /* Notification_API.swift in Sources */,
 				9A0E9E291F1393720019E3A5 /* UIImageView+WebCache.m in Sources */,
 				9F8306AA1EDEC059006D1ACF /* ProfileVC.swift in Sources */,
 				492AD91C1F0A424600F102CC /* User_InterestsTableViewCell.swift in Sources */,

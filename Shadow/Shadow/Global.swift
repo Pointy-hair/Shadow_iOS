@@ -80,7 +80,7 @@ class Global: NSObject {
         
         //Alert Message
         static let kError:String = "Error Occurred. \n Please try again later."
-        static let kInternetConnection:String = "Check your Internet Connection."
+        static let kInternetConnection:String = "Please check your Internet Connection."
         static let kIncorrectCredentials:String = "Please enter correct credentials."
         
         

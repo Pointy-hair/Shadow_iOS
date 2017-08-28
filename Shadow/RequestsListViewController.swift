@@ -23,7 +23,6 @@ class RequestsListViewController: UIViewController {
             
             self.segment_Control.tintColor = Global.macros.themeColor_pink
 
-            
             self.navigationItem.title = self.user_Name!
             self.segment_Control.backgroundColor = UIColor.white
             self.navigationItem.setHidesBackButton(false, animated:true)
@@ -44,7 +43,6 @@ class RequestsListViewController: UIViewController {
         
         if segment_Control.selectedSegmentIndex == 0{
             
-           // self.segment_Control.tintColor = Global.macros.themeColor_pink
             self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
         }
     }

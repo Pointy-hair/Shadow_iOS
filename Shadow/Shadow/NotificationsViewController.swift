@@ -11,7 +11,10 @@ import UIKit
 class NotificationsViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
     @IBOutlet var tblView_Notifications: UITableView!
+    @IBOutlet var lbl_NoNotifications: UILabel!
     
+    fileprivate var array_allNotifications = NSMutableArray()
+    fileprivate var item_request = UIBarButtonItem()
     
     
     override func viewDidLoad() {
@@ -20,6 +23,15 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
             self.navigationItem.title = "Notifications"
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
+            self.getAllNotifications()
+            
+            //navigation clear button
+            let btn_request = UIButton(type: .custom)
+            btn_request.setImage(UIImage(named: "chat-icon"), for: .normal)
+            btn_request.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
+            btn_request.addTarget(self, action: #selector(self.btn_Clear), for: .touchUpInside)
+            self.item_request = UIBarButtonItem(customView: btn_request)
+            self.navigationItem.setRightBarButtonItems([self.item_request], animated: true)
 
             
             
@@ -32,6 +44,136 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: -  Functions
+    
+    func getAllNotifications(){
+    
+        let dict = NSMutableDictionary()
+        dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
+        print(dict)
+        
+        if self.checkInternetConnection(){
+            
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            
+            Notification_API.sharedInstance.retrieveNotifications(dict: dict, completionBlock: { (response) in
+                print(response)
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                }
+                let status = response.value(forKey: "status") as? NSNumber
+                switch(status!){
+                    
+                case 200:
+                    
+                    self.array_allNotifications = (response.value(forKey: "data") as! NSArray).mutableCopy() as! NSMutableArray
+                    DispatchQueue.main.async {
+                        self.tblView_Notifications.isHidden = false
+                        self.tblView_Notifications.reloadData()
+                        self.lbl_NoNotifications.isHidden = true
+                        self.item_request.isEnabled = true
+
+                    }
+                    
+                    break
+                    
+                case 404:
+                    DispatchQueue.main.async {
+                        self.tblView_Notifications.isHidden = true
+                        self.lbl_NoNotifications.isHidden = false
+                        self.item_request.isEnabled = false
+                    }
+                    
+                    break
+                    
+                default:
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                    break
+                    
+                    
+                }
+                
+            }, errorBlock: { (error) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                }
+            })
+        }else{
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+        }
+    }
+    
+    
+    func btn_Clear(){
+        
+        let dict = NSMutableDictionary()
+        dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
+        print(dict)
+        
+        if self.checkInternetConnection(){
+            
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            Notification_API.sharedInstance.clearNotifications(dict: dict, completionBlock: { (response) in
+                print(response)
+                
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                }
+                let status = response.value(forKey: "status") as? NSNumber
+                switch(status!){
+                    
+                case 200:
+                    
+                    self.array_allNotifications.removeAllObjects()
+                    DispatchQueue.main.async {
+                        self.tblView_Notifications.reloadData()
+                        self.tblView_Notifications.isHidden = true
+                        self.lbl_NoNotifications.isHidden = false
+                    }
+                    
+                    break
+                    
+                case 404:
+                    DispatchQueue.main.async {
+                        
+                        self.showAlert(Message: "Already cleared", vc: self)
+                        self.tblView_Notifications.isHidden = true
+                        self.lbl_NoNotifications.isHidden = false
+                    }
+                    
+                    break
+                    
+                default:
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                    break
+                    
+                    
+                }
+                
+            }, errorBlock: { (error) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                }
+            })
+            
+            
+
+        }else{
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+        }
+        
+    }
+    
+    
+    
     //MARK: - UITableview Datasource and delegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NotificationTableViewCell
@@ -42,7 +184,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return self.array_allNotifications.count
     }
     
 
