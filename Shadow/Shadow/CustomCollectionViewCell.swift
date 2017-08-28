@@ -98,6 +98,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         view.layer.borderWidth = 1.0
         
     }
+    
     func setChart() {
         
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
