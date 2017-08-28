@@ -731,7 +731,10 @@ class ProfileVC: UIViewController {
     
     
     func notificationBtnPressed(sender: AnyObject){
-        self.showAlert(Message: "Coming Soon", vc: self)
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Notifications") as! NotificationsViewController
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        
         
     }
     

@@ -15,8 +15,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "954"
             endingLineNumber = "954"
-            landmarkName = "Action_openSchoolCompany(_:)"
-            landmarkType = "7">
+            landmarkName = "ProfileVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

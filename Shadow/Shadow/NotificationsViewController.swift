@@ -18,6 +18,10 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
         super.viewDidLoad()
         DispatchQueue.main.async {
             self.navigationItem.title = "Notifications"
+            self.navigationItem.setHidesBackButton(false, animated:true)
+            self.CreateNavigationBackBarButton()
+
+            
             
         }
         // Do any additional setup after loading the view.
@@ -31,6 +35,8 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     //MARK: - UITableview Datasource and delegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NotificationTableViewCell
+        
+        cell.lbl_Notification.text = "Hello"
         
         return cell
     }

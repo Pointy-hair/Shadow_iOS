@@ -10,6 +10,11 @@ import UIKit
 
 class NotificationTableViewCell: UITableViewCell {
 
+    
+    @IBOutlet var imgView_Notification: UIImageView!
+    @IBOutlet var lbl_Notification: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

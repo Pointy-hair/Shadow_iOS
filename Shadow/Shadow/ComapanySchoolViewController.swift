@@ -328,8 +328,6 @@ class ComapanySchoolViewController: UIViewController{
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
         _ = self.navigationController?.pushViewController(vc, animated: true)
         
-        
-        
     }
     
     func customView(view : UIView) {
@@ -343,7 +341,10 @@ class ComapanySchoolViewController: UIViewController{
     
     
     func notificationBtnPressed(sender: AnyObject){
-        self.showAlert(Message: "Coming Soon", vc: self)
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Notifications") as! NotificationsViewController
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+    
     }
     
     func chatBtnPressed(sender: AnyObject){
