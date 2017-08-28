@@ -76,11 +76,11 @@ class CustomCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         DispatchQueue.main.async {
+            
             self.imgView_ProfilePic.layer.cornerRadius = 60.0
             self.imgView_ProfilePic.clipsToBounds = true
-            //    self.imgView_ProfilePic.layer.borderColor = UIColor.init(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 0.5).cgColor
-            //   self.imgView_ProfilePic.layer.borderWidth = 1.0
-            
+            // self.imgView_ProfilePic.layer.borderColor = UIColor.init(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 0.5).cgColor
+            // self.imgView_ProfilePic.layer.borderWidth = 1.0
             
             self.customView(view: self.view_BehindTxtView)
             self.customView(view: self.view_BehindProfile)
@@ -103,7 +103,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         let unitsSold = [20.0, 4.0, 3.0, 6.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
         barChartView.setBarChartData(xValues: months, yValues: unitsSold, label: "Monthly Sales")
-        
         
     }
     

@@ -1011,6 +1011,12 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     
     @IBAction func Action_ViewProfileOccupation(_ sender: Any) {
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        vc.extendedLayoutIncludesOpaqueBars = true
+        self.tabBarController?.tabBar.isTranslucent = false
+        self.navigationController?.navigationBar.isTranslucent = false
     }
     
     
@@ -1649,12 +1655,12 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                     
                                     if (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] != nil || (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String != "" {
                                         cell?.lbl_CompanySchoolUserName.text = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String
-                                        
+                                        cell?.lbl_Abt.text = "About" + " " + "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"]!)"
                                     }
                                     else {
                                         
                                         cell?.lbl_CompanySchoolUserName.text = "NA"
-                                        
+                                        cell?.lbl_Abt.text = "About"
                                     }
                                     
                                     let rating_number = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["avgRating"]!)"
@@ -2804,12 +2810,13 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                         
                         if (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] != nil || (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String != "" {
                             cell.lbl_CompanySchoolUserName.text = (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String
-                            
+                            cell.lbl_Abt.text = "About" + " " + "\((self.arr_SearchData[indexPath.row] as! NSDictionary)["name"]!)"
+
                         }
                         else {
                             
                             cell.lbl_CompanySchoolUserName.text = "NA"
-                            
+                            cell.lbl_Abt.text = "About"
                         }
                         
                         let rating_number = "\((self.arr_SearchData[indexPath.row] as! NSDictionary)["avgRating"]!)"
@@ -2825,14 +2832,15 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                             cell.lbl_Rating.text = rating_number
                         }
                         
-                        
+                        let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["userDTO"] as? NSDictionary
+  
                         cell.lbl_Rating.text = "\((self.arr_SearchData[(indexPath.row)] as! NSDictionary)["ratingCount"]!)"
                          cell.lbl_avgSalary.text = "NA"
                         cell.lbl_Growth.text = "NA"
-                        cell.lbl_UserWithOccupation.text = "7"
-                        cell.lbl_UserShadowed.text = "8"
+                       
+                        cell.lbl_UserWithOccupation.text = "8"
+                        cell.lbl_UserShadowed.text = "7"
                         
-                        let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["userDTO"] as? NSDictionary
                         let str_bio = dict_Temp?.value(forKey: "bio") as? String
                         
                         if str_bio == "" || str_bio == nil {

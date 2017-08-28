@@ -40,8 +40,13 @@ class OccupationDetailViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = leftBackBarButton
        
         // Do any additional setup after loading the view.
+        GetData()
         setChart()
  
+    }
+    
+    func GetData(){
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,10 +61,10 @@ class OccupationDetailViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-       bool_Occupation = true
-     }
+    override func viewDidDisappear(_ animated: Bool) {
+        bool_Occupation = true
+
+    }
     
     override func viewDidLayoutSubviews() {
         scroll_View.contentSize = CGSize.init(width: view.frame.size.width, height:  900)
