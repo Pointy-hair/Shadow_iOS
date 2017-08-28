@@ -41,9 +41,24 @@ class RequestsListViewController: UIViewController {
             self.CreateNavigationBackBarButton()
             self.tabBarController?.tabBar.isHidden = true
             
-            self.view_MainButtons.layer.borderWidth = 1.0
+            self.view_MainButtons.layer.borderWidth = 1.5
             self.view_MainButtons.layer.borderColor = Global.macros.themeColor_pink.cgColor
 
+            //setting default selected filter button
+            //Showing line and color of accepted button
+            self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+            self.lbl_btn_All.isHidden = false
+            
+            //hiding the lines and changing color unselected buttons
+            self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
+            self.lbl_btn_Accepted.isHidden = true
+            
+            self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
+            self.lbl_btn_Declined.isHidden = true
+            
+            
+            
+            
             
         }
 
@@ -84,11 +99,11 @@ class RequestsListViewController: UIViewController {
         self.lbl_btn_Accepted.isHidden = false
         
         //hiding the lines and changing color unselected buttons
-        self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_Accepted.isHidden = false
+        self.btn_All.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_All.isHidden = true
 
-        self.btn_Accepted.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_Accepted.isHidden = false
+        self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_Declined.isHidden = true
 
         
         
@@ -99,11 +114,37 @@ class RequestsListViewController: UIViewController {
 
     @IBAction func Action_All(_ sender: UIButton) {
         
+        //Showing line and color of accepted button
+        self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        self.lbl_btn_All.isHidden = false
+        
+        //hiding the lines and changing color unselected buttons
+        self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_Accepted.isHidden = true
+        
+        self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_Declined.isHidden = true
+        
+
     }
 
 
     @IBAction func Action_Declined(_ sender: UIButton) {
+        
+        //Showing line and color of accepted button
+        self.btn_Declined.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        self.lbl_btn_Declined.isHidden = false
+        
+        //hiding the lines and changing color unselected buttons
+        self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_Accepted.isHidden = true
+        
+        self.btn_All.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_All.isHidden = true
+
+        
     }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
