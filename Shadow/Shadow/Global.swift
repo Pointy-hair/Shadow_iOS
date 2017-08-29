@@ -75,6 +75,7 @@ class Global: NSObject {
         
         static let KStatus:String = "status"
         static let kUserId:String = "userId"
+        static let kotherUserId:String = "otherUserId"
         static let kAppBuildNumber = "appBuildNumber"
         static let kAppVersion:String = "appVersion"
         
@@ -130,8 +131,14 @@ class Global: NSObject {
         static let api_param_pageIndex:String = "pageIndex"
         static let api_param_pageSize:String = "pageSize"
 
-        
-        
+        //Sent Request api_Params
+        static let k_location:String = "location"
+        static let k_mediumOfCommunication:String = "mediumOfCommunication"
+        static let k_SelectedDate:String = "SelectedDate"
+        static let k_message:String = "message"
+
+        //getrequestsbytype api_params
+        static let k_type:String = "type"
 
         
         

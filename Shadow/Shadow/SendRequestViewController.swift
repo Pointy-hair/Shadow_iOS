@@ -24,6 +24,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     @IBOutlet var scrollView: UIScrollView!
     
     var user_Name:String?
+    
     fileprivate var str_date_selected:String? = ""
     
     override func viewWillLayoutSubviews() {
@@ -62,8 +63,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             
             //Adding button to navigation bar
             let btn2 = UIButton(type: .custom)
-            //btn2.setTitle("Send", for: .normal)
-            btn2.setImage(UIImage(named: "Send"), for: .normal)
+            btn2.setImage(UIImage(named: "send_white"), for: .normal)
             btn2.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
             btn2.addTarget(self, action: #selector(self.Send), for: .touchUpInside)
             let item2 = UIBarButtonItem(customView: btn2)
@@ -87,7 +87,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
         self.imgView_Virtually.image = UIImage.init(named: "unchecked")
         
         self.btn_SelectLocation.isHidden = false
-        self.btn_SelectVirtualOption.isHidden = true
+      //  self.btn_SelectVirtualOption.isHidden = true
 
         
         
@@ -99,7 +99,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
         self.imgView_InPerson.image = UIImage.init(named: "unchecked")
 
         self.btn_SelectLocation.isHidden = true
-        self.btn_SelectVirtualOption.isHidden = false
+     //   self.btn_SelectVirtualOption.isHidden = false
     }
     
 
@@ -120,30 +120,77 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     
     func Send(){
         
+        txtView_Message.resignFirstResponder()
         if self.imgView_Virtually.image == UIImage.init(named: "checked") || self.imgView_InPerson.image == UIImage.init(named: "checked"){
             if str_date_selected != ""{
                 if txtView_Message.text != ""  {
                     
                     if self.checkInternetConnection(){
                         
+                        DispatchQueue.main.async {
+                            self.pleaseWait()
+                        }
+
+                        
                         let dict = NSMutableDictionary()
                         
+                        let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+                        dict.setValue(user_Id, forKey: Global.macros.kUserId)
+                        dict.setValue(userIdFromSearch, forKey:Global.macros.kotherUserId)
+
                         if imgView_InPerson.image == UIImage.init(named: "checked"){
-                            dict.setValue(btn_SelectLocation.currentTitle, forKey: "")
+                            dict.setValue(btn_SelectLocation.currentTitle, forKey: Global.macros.k_location)
 
                         }
                         else if  imgView_Virtually.image == UIImage.init(named: "checked"){
-                            dict.setValue(btn_SelectVirtualOption.currentTitle, forKey: "")
+                            //dict.setValue(btn_SelectVirtualOption.currentTitle, forKey: Global.macros.k_mediumOfCommunication)
+                            
+                            dict.setValue("Video Call", forKey: Global.macros.k_mediumOfCommunication)
 
                         }
                         
-                        dict.setValue(str_date_selected!, forKey: "")
-                        dict.setValue(txtView_Message.text!, forKey: "")
+                        dict.setValue(str_date_selected!, forKey: Global.macros.k_SelectedDate)
+                        dict.setValue(txtView_Message.text!, forKey: Global.macros.k_message)
                         print(dict)
                         
-                        
-                        
-                        
+                        Requests_API.sharedInstance.sendRequest(completionBlock: { (status, dict_Info) in
+                            
+                            DispatchQueue.main.async {
+                                self.clearAllNotice()
+                            }
+                            
+                            switch status {
+                                
+                            case 200:
+                                
+                                DispatchQueue.main.async {
+                                    
+                                    self.showAlert(Message: "Request successfully sent.", vc: self)
+                                    _ = self.navigationController?.popToRootViewController(animated: true)
+                                }
+
+                                break
+                                
+                            case 400:
+                                DispatchQueue.main.async {
+
+                                 self.showAlert(Message: "Your previous request is pending.", vc: self)
+                                  _ = self.navigationController?.popToRootViewController(animated: true)
+                                }
+                                break
+                            default:
+                                 self.showAlert(Message: Global.macros.kError, vc: self)
+                                break
+                                
+                            }
+                            
+                        }, errorBlock: { (error) in
+                            DispatchQueue.main.async {
+                                self.clearAllNotice()
+                                self.showAlert(Message: Global.macros.kError, vc: self)
+                            }
+
+                        }, dict: dict)
                         
                         
                     }else{

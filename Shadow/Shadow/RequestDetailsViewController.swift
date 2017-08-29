@@ -27,6 +27,7 @@ class RequestDetailsViewController: UIViewController {
     @IBOutlet var lbl_VirtualMedium: UILabel!
     
     var username:String?
+    var request_Id:NSNumber?
 
     override func viewDidLayoutSubviews() {
         self.scroll_View.contentSize = CGSize.init(width: self.view.frame.width, height: 800)
@@ -117,7 +118,44 @@ class RequestDetailsViewController: UIViewController {
 
     }
     
-    
+    //MARK: - Functions
+    func setRequestData()  {
+        
+        let dict = NSMutableDictionary()
+        let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+        dict.setValue(user_Id, forKey: Global.macros.kUserId)
+        dict.setValue(self.request_Id!, forKey: "id")
+        print(dict)
+
+        if self.checkInternetConnection(){
+            
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            Requests_API.sharedInstance.viewRequest(completionBlock: { (status, dict_Info) in
+              
+                
+                
+            }, errorBlock: { (error) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+                }
+            }, dictionary: dict)
+            
+            
+        }else{
+            
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+        }
+        
+        
+        
+        
+        
+        
+    }
     
     
     

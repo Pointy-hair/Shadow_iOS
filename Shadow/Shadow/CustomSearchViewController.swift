@@ -845,18 +845,8 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         
         
         if str_role == "USER" {
-            
-            
-            //let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "nav_user") as! UINavigationController
-          //  _ = self.navigationController?.present(vc, animated: true, completion: nil)
 
-            
-//
-            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC//TabBar
-//           // self.tabBarController?.tabBar.isHidden = true
-//    //      vc.extendedLayoutIncludesOpaqueBars = true
-//            //self.tabBarController?.tabBar.isTranslucent = false
-//         //   self.navigationController?.navigationBar.isTranslucent = false
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC
             _ = self.navigationController?.pushViewController(vc, animated: true)
             
         }
@@ -864,9 +854,6 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         else {
             
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
-//            vc.extendedLayoutIncludesOpaqueBars = true
-//            self.tabBarController?.tabBar.isTranslucent = false
-//            self.navigationController?.navigationBar.isTranslucent = false
             _ = self.navigationController?.pushViewController(vc, animated: true)
             
         }

@@ -123,7 +123,6 @@ class ProfileVC: UIViewController {
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.view.endEditing(true)
                 self.CreateNavigationBackBarButton() //Create custom back button
-              //  self.tabBarController?.tabBar.isHidden = true
                 
 //                let desiredOffset = CGPoint(x: 0, y: -60)
 //                self.scrollbar.setContentOffset(desiredOffset, animated: true)
@@ -212,7 +211,7 @@ class ProfileVC: UIViewController {
     {
         let dict =  NSMutableDictionary()
         dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
-        dict.setValue(user_IdMyProfile, forKey: "otherUserId")
+        dict.setValue(user_IdMyProfile, forKey:Global.macros.kotherUserId)
         
         
         if self.checkInternetConnection()
@@ -747,6 +746,7 @@ class ProfileVC: UIViewController {
         
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "send_request") as! SendRequestViewController
         vc.user_Name =  self.navigationItem.title
+        //userIdFromSearch
         _ = self.navigationController?.pushViewController(vc, animated: true)
 
     }
