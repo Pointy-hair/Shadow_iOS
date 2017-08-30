@@ -72,6 +72,8 @@ class RequestDetailsViewController: UIViewController {
             self.lbl_VirtualMedium.layer.borderWidth = 1.0
             self.lbl_VirtualMedium.layer.borderColor = Global.macros.themeColor.cgColor
             
+            
+            self.setRequestData()
         }
         
         
@@ -135,6 +137,11 @@ class RequestDetailsViewController: UIViewController {
             
             Requests_API.sharedInstance.viewRequest(completionBlock: { (status, dict_Info) in
               
+                
+                
+                
+                
+                
                 
                 
             }, errorBlock: { (error) in

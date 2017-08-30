@@ -87,6 +87,32 @@ class Requests_API: NSObject {
     }
     
     
+    func requestAcceptReject(completionBlock:@escaping completionHandler,errorBlock:@escaping ErrorBlock,dict:NSMutableDictionary){
+        
+        ServerCall.sharedInstance.postService({ (response) in
+            
+            let status = (response as! NSDictionary).value(forKey: "status") as? NSNumber
+            if status == 200
+            {
+                let dict_Info = ((response as! NSDictionary).value(forKey: "data") as? NSDictionary)?.mutableCopy() as! NSMutableDictionary
+                completionBlock(status!,dict_Info)
+            }
+            else
+            {
+                completionBlock(status!,[:])
+                
+            }
+            
+        }, error_block: {(err) in
+            
+            errorBlock(err)
+            
+        }, paramDict: dict, is_synchronous: false, url:"acceptRejectRequest")
+        
+    }
+    
+    
+    
     func viewRequest(completionBlock:@escaping completionHandler,errorBlock:@escaping ErrorBlock,dictionary:NSMutableDictionary)  {
         
           ServerCall.sharedInstance.postService({ (response) in

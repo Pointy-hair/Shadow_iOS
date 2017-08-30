@@ -9,7 +9,7 @@
 import UIKit
 
 class RequestsListTableViewCell: UITableViewCell {
-
+    
     @IBOutlet var imgView_UserProfile: UIImageView!
     @IBOutlet var lbl_UserName: UILabel!
     @IBOutlet var lbl_Date: UILabel!
@@ -24,53 +24,138 @@ class RequestsListTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.btn_Accept.layer.borderWidth = 1.0
-        self.btn_Accept.layer.borderColor = Global.macros.themeColor_pink.cgColor
-        self.btn_Accept.layer.cornerRadius = 5.0
-        self.btn_Accept.setTitleColor(UIColor.white, for: .normal)
-        self.btn_Accept.backgroundColor = Global.macros.themeColor_pink
         
-        
-        self.btn_Decline.layer.borderWidth = 1.0
-        self.btn_Decline.layer.borderColor = Global.macros.themeColor_pink.cgColor
-        self.btn_Decline.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.btn_Decline.backgroundColor = UIColor.white
-        self.btn_Decline.layer.cornerRadius = 5.0
-
-        
+        DispatchQueue.main.async {
+            
+            self.btn_Accept.layer.borderWidth = 1.0
+            self.btn_Accept.layer.borderColor = Global.macros.themeColor_pink.cgColor
+            self.btn_Accept.layer.cornerRadius = 5.0
+            self.btn_Accept.setTitleColor(UIColor.white, for: .normal)
+            self.btn_Accept.backgroundColor = Global.macros.themeColor_pink
+            
+            
+            self.btn_Decline.layer.borderWidth = 1.0
+            self.btn_Decline.layer.borderColor = Global.macros.themeColor_pink.cgColor
+            self.btn_Decline.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+            self.btn_Decline.backgroundColor = UIColor.white
+            self.btn_Decline.layer.cornerRadius = 5.0
+            
+            //corner radius profile image
+            
+            self.imgView_UserProfile.layer.cornerRadius = 30.0
+            self.imgView_UserProfile.clipsToBounds = true
+            
+            
+            
+        }
         
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-
+    
     func DataToCell(dictionary:NSDictionary)  {
         
-        if dictionary.value(forKey: "accept") as? NSNumber == 0 &&  dictionary.value(forKey: "reject") as? NSNumber == 0 {
+        DispatchQueue.main.async {
             
-            lbl_RequestStatus.isHidden = true
-            btn_Decline.isHidden = false
-            btn_Accept.isHidden = false
             
+            if My_Request_Selected_Status == true{//mY request selected
+                
+                //setting status if my request is selected
+                if dictionary.value(forKey: "accept") as? NSNumber == 0 &&  dictionary.value(forKey: "reject") as? NSNumber == 0 {
+                    
+                    self.lbl_RequestStatus.isHidden = true
+                    self.btn_Decline.isHidden = false
+                    self.btn_Accept.isHidden = false
+                    
+                }
+                
+            }
+                
+            else{
+                //setting status if shadow request is selected
+                if dictionary.value(forKey: "accept") as? NSNumber == 0 &&  dictionary.value(forKey: "reject") as? NSNumber == 0 {
+                    
+                    self.lbl_RequestStatus.isHidden = false
+                    self.lbl_RequestStatus.text = "PENDING"
+                    self.lbl_RequestStatus.textColor = UIColor.yellow
+                    self.btn_Decline.isHidden = true
+                    self.btn_Accept.isHidden = true
+                }
+            }
+            
+            
+            //if request is accepted
+            if dictionary.value(forKey: "accept") as? NSNumber == 1 &&  dictionary.value(forKey: "reject") as? NSNumber == 0{
+                self.lbl_RequestStatus.isHidden = false
+                self.lbl_RequestStatus.text = "ACCEPTED"
+                self.lbl_RequestStatus.textColor = Global.macros.themeColor_Green
+                self.btn_Decline.isHidden = true
+                self.btn_Accept.isHidden = true
+                
+            }
+                //if request is rejected
+            else  if dictionary.value(forKey: "reject") as? NSNumber == 1 &&  dictionary.value(forKey: "accept") as? NSNumber == 0{
+                self.lbl_RequestStatus.isHidden = false
+                self.lbl_RequestStatus.text = "REJECTED"
+                self.lbl_RequestStatus.textColor = Global.macros.themeColor_Red
+                self.btn_Decline.isHidden = true
+                self.btn_Accept.isHidden = true
+                
+            }
+            
+            //setting user info
+            let dict_UserInfo = dictionary.value(forKey: "userDTO") as! NSDictionary
+            
+            if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "USER"{
+                self.lbl_UserName.text = (dict_UserInfo.value(forKey: "userName") as? String)?.capitalizingFirstLetter()
+            }
+            else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "SCHOOL"{
+                
+                self.lbl_UserName.text = (dict_UserInfo.value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "name") as? String
+                
+            }else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "COMPANY"{
+                
+                self.lbl_UserName.text = (dict_UserInfo.value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "name") as? String
+                
+            }
+            
+            
+            
+                let str_profileImage = dict_UserInfo.value(forKey: "profileImageUrl") as? String
+                if str_profileImage != nil{
+                    self.imgView_UserProfile.sd_setImage(with: URL.init(string: str_profileImage!), placeholderImage: UIImage.init(named: "dummySearch"))
+                    
+                }
+                
+                self.lbl_TotalRatingCount.text = "\((dict_UserInfo).value(forKey: "ratingCount")!)"
+                
+                
+                
+                let str_avgRating = ((dict_UserInfo).value(forKey: "avgRating") as? NSNumber)?.stringValue
+                
+                let dbl = 2.0
+                
+                if  dbl.truncatingRemainder(dividingBy: 1) == 0
+                {
+                    self.lbl_AverageRating.text = str_avgRating! + ".0"
+                    
+                }
+                else {
+                    
+                    self.lbl_AverageRating.text = str_avgRating!
+                    
+                }
+                
+                
+                
+                
+                
+                
+            }
         }
-        else  if dictionary.value(forKey: "accept") as? NSNumber == 1 &&  dictionary.value(forKey: "reject") as? NSNumber == 0{
-            lbl_RequestStatus.isHidden = false
-            lbl_RequestStatus.text = "ACCEPTED"
-            btn_Decline.isHidden = true
-            btn_Accept.isHidden = true
-
-        }
-        else  if dictionary.value(forKey: "reject") as? NSNumber == 1 &&  dictionary.value(forKey: "accept") as? NSNumber == 0{
-            lbl_RequestStatus.isHidden = false
-            lbl_RequestStatus.text = "REJECTED"
-            btn_Decline.isHidden = true
-            btn_Accept.isHidden = true
-
-        }
-    }
-    
 }

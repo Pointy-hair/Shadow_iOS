@@ -8,6 +8,8 @@
 
 import UIKit
 
+var My_Request_Selected_Status:Bool = true
+
 class RequestsListViewController: UIViewController {
 
     
@@ -29,7 +31,6 @@ class RequestsListViewController: UIViewController {
     //Variables
     var user_Name:String?
     fileprivate var requestID:NSNumber?
-   // fileprivate var dictionary_RequestInfo = NSDictionary()
     fileprivate var array_Requests = NSMutableArray()
     
     
@@ -80,7 +81,8 @@ class RequestsListViewController: UIViewController {
             self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
             self.lbl_btn_Declined.isHidden = true
             
-            self.getRequestsByType(Type: "Send")
+            self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
+            //initialy my request keyword at server end is "send"
             
         }
 
@@ -97,23 +99,52 @@ class RequestsListViewController: UIViewController {
     //MARK: - Button Actions
     
     
-    @IBAction func Action_MyRequests(_ sender: UIButton) {
+    @IBAction func Action_MyRequests(_ sender: UIButton) {//requests to me
         
         self.navigationItem.title = "My Request"
         self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
         self.btn_ShadowRequest.setTitleColor(UIColor.black, for: .normal)
 
-      
+        //Showing line and color of accepted button
+        self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        self.lbl_btn_All.isHidden = false
+        
+        //hiding the lines and changing color unselected buttons
+        self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_Accepted.isHidden = true
+        
+        self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_Declined.isHidden = true
+        
+        
+        self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
+        My_Request_Selected_Status = true
+
         
         
     }
 
-    @IBAction func Action_ShadowRequests(_ sender: UIButton) {
+    @IBAction func Action_ShadowRequests(_ sender: UIButton) {//requests that I have send
         
         self.navigationItem.title = "Shadow Request"
         self.btn_MyRequest.setTitleColor(UIColor.black, for: .normal)
         self.btn_ShadowRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
 
+        
+        //Showing line and color of accepted button
+        self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        self.lbl_btn_All.isHidden = false
+        
+        //hiding the lines and changing color unselected buttons
+        self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_Accepted.isHidden = true
+        
+        self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
+        self.lbl_btn_Declined.isHidden = true
+        
+        self.getRequestsByType(Type: Global.macros.kReceived,SubType:Global.macros.kAll)
+        My_Request_Selected_Status = false
+        
     }
 
     @IBAction func Action_Accepted(_ sender: UIButton) {
@@ -129,8 +160,17 @@ class RequestsListViewController: UIViewController {
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
         self.lbl_btn_Declined.isHidden = true
 
-        self.getRequestsByType(Type: "Accept")
 
+        //getting requests according to type(My request or shadow request)
+        if My_Request_Selected_Status == true{//My request is selected
+            self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAccept)
+            
+        }
+        else{
+            self.getRequestsByType(Type: Global.macros.kReceived,SubType:Global.macros.kAccept)
+
+        }
+        
     }
 
     @IBAction func Action_All(_ sender: UIButton) {
@@ -146,8 +186,15 @@ class RequestsListViewController: UIViewController {
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
         self.lbl_btn_Declined.isHidden = true
         
-        self.getRequestsByType(Type: "All")
-
+        //getting requests according to type(My request or shadow request)
+        if My_Request_Selected_Status == true{//My request is selected
+            self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
+            
+        }
+        else{
+            self.getRequestsByType(Type: Global.macros.kReceived,SubType:Global.macros.kAll)
+            
+        }
     }
 
 
@@ -164,8 +211,15 @@ class RequestsListViewController: UIViewController {
         self.btn_All.setTitleColor(UIColor.black, for: .normal)
         self.lbl_btn_All.isHidden = true
 
-        self.getRequestsByType(Type: "Declined")
-
+        //getting requests according to type(My request or shadow request)
+        if My_Request_Selected_Status == true{//My request is selected
+            self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kReject)
+            
+        }
+        else{
+            self.getRequestsByType(Type: Global.macros.kReceived,SubType:Global.macros.kReject)
+            
+        }
     }
     
     
@@ -173,26 +227,47 @@ class RequestsListViewController: UIViewController {
         
         sender.setTitleColor(UIColor.white, for: .normal)
         sender.backgroundColor = Global.macros.themeColor_pink
+        
+        
+        //changing color of unselected button
+        let indexPath = NSIndexPath.init(row: sender.tag, section: 0)
+        let cell = tblView_Requests.cellForRow(at: indexPath as IndexPath) as! RequestsListTableViewCell
+        cell.btn_Decline.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        cell.btn_Decline.backgroundColor = UIColor.white
 
+        self.request_AcceptReject(idx: sender.tag, acceptStatus: "true", rejectStatus: "false")
+        
         
     }
     
     
     @IBAction func Action_DeclineRequest(_ sender: UIButton) {
         
-        sender.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        sender.backgroundColor = UIColor.white
+        sender.setTitleColor(UIColor.white, for: .normal)
+        sender.backgroundColor = Global.macros.themeColor_pink
+        
+        //changing color of unselected button
+        let indexPath = NSIndexPath.init(row: sender.tag, section: 0)
+        let cell = tblView_Requests.cellForRow(at: indexPath as IndexPath) as! RequestsListTableViewCell
+        cell.btn_Accept.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+        cell.btn_Accept.backgroundColor = UIColor.white
+        
+        self.request_AcceptReject(idx: sender.tag, acceptStatus: "false", rejectStatus: "true")
+
     }
     
     
     //MARK: - Functions
     
-    func getRequestsByType(Type:String)  {
+    func getRequestsByType(Type:String,SubType:String)  {
         
         let dict = NSMutableDictionary()
         let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+       
         dict.setValue(user_Id, forKey: Global.macros.kUserId)
         dict.setValue(Type, forKey: Global.macros.k_type)
+        dict.setValue(SubType, forKey: Global.macros.k_subType)
+
         print(dict)
         
         if self.checkInternetConnection(){
@@ -215,7 +290,7 @@ class RequestsListViewController: UIViewController {
                         self.tblView_Requests.isHidden = false
                         self.lbl_NoRequests.isHidden = true
                         self.array_Requests = array_Info as! NSMutableArray
-                       self.tblView_Requests.reloadData()
+                        self.tblView_Requests.reloadData()
                     }
                     
                     break
@@ -251,6 +326,74 @@ class RequestsListViewController: UIViewController {
              self.showAlert(Message:Global.macros.kInternetConnection, vc: self)
         }
     }
+    
+    func request_AcceptReject(idx:Int,acceptStatus:String,rejectStatus:String) {
+        
+        
+        let request_id = (array_Requests.object(at: idx) as! NSDictionary).value(forKey: "id") as? NSNumber
+        let dict = NSMutableDictionary()
+        let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+        dict.setValue(user_Id, forKey: Global.macros.kUserId)
+        dict.setValue(request_id, forKey: Global.macros.kId)
+        dict.setValue(acceptStatus, forKey: Global.macros.kAccept)
+        dict.setValue(rejectStatus, forKey: Global.macros.kSmallReject)
+
+        print(dict)
+        if self.checkInternetConnection(){
+         
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            Requests_API.sharedInstance.requestAcceptReject(completionBlock: { (status, dict_Info) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                }
+
+                switch status {
+                    
+                case 200:
+                    
+                    DispatchQueue.main.async {
+                        
+                        self.getRequestsByType(Type: Global.macros.kSend, SubType: Global.macros.kAll)
+                    }
+                    
+                    break
+                    
+                case 404:
+                    
+                    DispatchQueue.main.async {
+                        
+                    }
+                    
+                    
+                    
+                    
+                    break
+                default:
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                    break
+                    
+                }
+                
+                
+                
+            }, errorBlock: { (error) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                }
+
+            }, dict: dict)
+            
+        }else{
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+        }
+        
+    }
+    
+    
     
     func delete(){
         
@@ -336,7 +479,10 @@ extension RequestsListViewController:UITableViewDelegate,UITableViewDataSource{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RequestsListTableViewCell
         
-    
+        cell.btn_Accept.tag = indexPath.row
+        cell.btn_Decline.tag = indexPath.row
+        
+        
         cell.DataToCell(dictionary: array_Requests.object(at: indexPath.row) as! NSDictionary)
         
         

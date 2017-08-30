@@ -230,6 +230,10 @@ class ProfileVC: UIViewController {
                         
                         dictionary_user_Info = response.1
                         
+                        let shadow_Status = (response.1).value(forKey: "otherUsersShadowYou") as? NSNumber
+                        SavedPreferences.set(shadow_Status, forKey: Global.macros.kotherUsersShadowYou)
+                        
+                        
                         self.lbl_shadowedTo.text = (((response.1).value(forKey: "shadowersVerified") as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
                         self.lbl_ShadowedBy.text = (((response.1).value(forKey: "shadowedByShadowUser") as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
                         

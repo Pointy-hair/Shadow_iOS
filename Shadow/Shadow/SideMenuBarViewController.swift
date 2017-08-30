@@ -9,19 +9,19 @@
 import UIKit
 
 class SideMenuBarViewController: UIViewController {
-
+    
     @IBOutlet var tbl_View: UITableView!
     
     fileprivate var array_sideBarItems = ["Shadow Me","Edit Profile","Help","Log Out"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.tbl_View.tableFooterView = UIView()
         // Do any additional setup after loading the view.
     }
-
- 
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -34,7 +34,19 @@ class SideMenuBarViewController: UIViewController {
     
     @IBAction func Action_Switch(_ sender: UISwitch) {
         
-        self.showAlert(Message: "Coming soon", vc: self)
+        //getting cell
+        //changing color of unselected button
+        let indexPath = NSIndexPath.init(row: sender.tag, section: 0)
+        let cell = tbl_View.cellForRow(at: indexPath as IndexPath) as! SideMenuTableViewCell
+        
+        //you have on shadow me
+        if cell.btn_Switch.isOn{
+            self.shadowMe(switch_status: "true")
+        }
+        else{
+            self.shadowMe(switch_status: "false")
+        }
+        
         
     }
     
@@ -43,13 +55,66 @@ class SideMenuBarViewController: UIViewController {
         
     }
     
+    
+    //MARK: - Functions
+    
+    func shadowMe(switch_status:String){
+        
+        let dict = NSMutableDictionary()
+        let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+        dict.setValue(user_Id, forKey: Global.macros.kUserId)
+        dict.setValue(switch_status, forKey: Global.macros.kotherUsersShadowYou)
+        
+        if self.checkInternetConnection(){
+            
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            ServerCall.sharedInstance.postService({ (response) in
+               
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                }
+                let status = (response as! NSDictionary).value(forKey: "status") as? NSNumber
+                if status == 200{
+                    DispatchQueue.main.async {
+                    self.showAlert(Message: "Shadow status changed successfully.", vc: self)
+                        
+                    }
+                }
+                else{
+                    DispatchQueue.main.async {
+                        self.showAlert(Message: Global.macros.kError, vc: self)
+                        
+                    }
+                }
+ 
+                
+            }, error_block: {(error) in
+                
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                }
+                
+            }, paramDict: dict, is_synchronous: false, url: "changeShadowStatus")
+            
+        }else{
+            
+            self.showAlert(Message: Global.macros.kError, vc: self)
+        }
+        
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     
-
+    
 }
 
 extension SideMenuBarViewController:UITableViewDataSource,UITableViewDelegate{
@@ -62,6 +127,7 @@ extension SideMenuBarViewController:UITableViewDataSource,UITableViewDelegate{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SideMenuTableViewCell
         
+        cell.btn_Switch.tag = indexPath.row
         cell.lbl_ItemName.text = self.array_sideBarItems[indexPath.row]
         
         if cell.isSelected {
@@ -70,13 +136,24 @@ extension SideMenuBarViewController:UITableViewDataSource,UITableViewDelegate{
             // change color back to whatever it was
             cell.lbl_ItemName.textColor = UIColor.black
         }
-
+        
         //hiding switch button
         switch indexPath.row {
         case 0:
             DispatchQueue.main.async {
                 cell.btn_Switch.isHidden = false
-                cell.btn_Switch.isOn = false
+                
+                 let shadow_Status = SavedPreferences.value(forKey: Global.macros.kotherUsersShadowYou) as? NSNumber
+                
+                print(shadow_Status!)
+                
+                if shadow_Status == 1{
+                    cell.btn_Switch.isOn = true
+
+                }else{
+                    cell.btn_Switch.isOn = false
+
+                }
                 
             }
             break
@@ -97,10 +174,10 @@ extension SideMenuBarViewController:UITableViewDataSource,UITableViewDelegate{
         cell.lbl_ItemName.textColor = Global.macros.themeColor_pink
         
         //tbl_View.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
-
+        
         let role = SavedPreferences.value(forKey: Global.macros.krole) as? String
         switch indexPath.row {
-        
+            
         //Shadow me
         case 0:
             
@@ -114,21 +191,21 @@ extension SideMenuBarViewController:UITableViewDataSource,UITableViewDelegate{
             DispatchQueue.main.async {
                 
                 if role == "USER"{
-                   self.performSegue(withIdentifier: "sideBar_to_EditProfileUser", sender: self)
+                    self.performSegue(withIdentifier: "sideBar_to_EditProfileUser", sender: self)
                 }
                 else{
                     print("Yes")
                     self.performSegue(withIdentifier: "sideBar_to_EditProfileC", sender: self)
                 }
             }
-           
+            
         //Help
         case 2:
             DispatchQueue.main.async{
                 self.showAlert(Message: "Coming Soon", vc: self)
             }
             break
-       
+            
         //LogOut
         case 3:
             
@@ -221,14 +298,14 @@ extension SideMenuBarViewController:UITableViewDataSource,UITableViewDelegate{
         // change color back to whatever it was
         cell.lbl_ItemName.textColor = UIColor.black
         tbl_View.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
-
+        
     }
     
-   
     
     
     
     
     
-   
+    
+    
 }

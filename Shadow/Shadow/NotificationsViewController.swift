@@ -32,7 +32,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
             btn_request.addTarget(self, action: #selector(self.btn_Clear), for: .touchUpInside)
             self.item_request = UIBarButtonItem(customView: btn_request)
             self.navigationItem.setRightBarButtonItems([self.item_request], animated: true)
-
+            
+            //adding view to table footer
+            self.tblView_Notifications.tableFooterView = UIView()
             
             
         }
@@ -75,7 +77,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
                         self.tblView_Notifications.reloadData()
                         self.lbl_NoNotifications.isHidden = true
                         self.item_request.isEnabled = true
-
+                        self.tblView_Notifications.reloadData()
                     }
                     
                     break
@@ -178,7 +180,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NotificationTableViewCell
         
-        cell.lbl_Notification.text = "Hello"
+        cell.dataToCell(dict: self.array_allNotifications.object(at: indexPath.row) as! NSDictionary)
         
         return cell
     }

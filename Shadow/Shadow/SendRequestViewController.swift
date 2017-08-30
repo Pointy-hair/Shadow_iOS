@@ -166,7 +166,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                                 DispatchQueue.main.async {
                                     
                                     self.showAlert(Message: "Request successfully sent.", vc: self)
-                                    _ = self.navigationController?.popToRootViewController(animated: true)
+                                  
                                 }
 
                                 break
@@ -175,7 +175,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                                 DispatchQueue.main.async {
 
                                  self.showAlert(Message: "Your previous request is pending.", vc: self)
-                                  _ = self.navigationController?.popToRootViewController(animated: true)
+                                 
                                 }
                                 break
                             default:

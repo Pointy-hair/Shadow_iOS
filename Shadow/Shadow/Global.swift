@@ -56,9 +56,15 @@ class Global: NSObject {
         
          static let themeColor_pink:UIColor = UIColor.init(red: 156.0/255.0, green: 39.0/255.0, blue: 176.0/255.0, alpha: 1.0)
         
+        static let themeColor_Red:UIColor = UIColor.init(red: 177.0/255.0, green: 24.0/255.0, blue: 6.0/255.0, alpha: 1.0)
+
+        static let themeColor_Green:UIColor = UIColor.init(red: 0.0/255.0, green: 125.0/255.0, blue: 23.0/255.0, alpha: 1.0)
+
+        static let themeColor_Yellow:UIColor = UIColor.init(red: 255.0/255.0, green: 174.0/255.0, blue: 30.0/255.0, alpha: 1.0)
+
+        
         //Keys
         static let kUserName:String = "userName"
-        //static let kuserId:String = "userId"
         static let kPassword:String = "password"
         static let kEmail:String = "email"
         static let kFirstName:String = "firstName"
@@ -107,7 +113,16 @@ class Global: NSObject {
         static let kcompanyList:String = "companyList"
         static let kschoolList:String = "schoolList"
         static let kschoolCompanyWithTheseUsers:String = "schoolOrCompanyWithTheseUsers"
-        
+        static let kReceived:String = "Received"
+        static let kSend:String = "Send"
+        static let kAll:String = "All"
+        static let kAccept:String = "accept"
+        static let kReject:String = "Reject"
+        static let kId:String = "id"
+        static let kSmallReject:String = "reject"
+
+
+
         
         static let kgetUrl:String = "http://115.248.100.76:8013/user/api/"
         static let Array_MenuImages:[UIImage] =     [UIImage(named:"linkedIn")!,
@@ -139,7 +154,7 @@ class Global: NSObject {
 
         //getrequestsbytype api_params
         static let k_type:String = "type"
-
+        static let k_subType:String = "subType"
         
         
         
