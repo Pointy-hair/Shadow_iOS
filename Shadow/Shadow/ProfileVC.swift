@@ -276,7 +276,7 @@ class ProfileVC: UIViewController {
                             
                         }
                         
-                        ratingview_name = ((response.1).value(forKey: Global.macros.kUserName)as? String)!
+                        ratingview_name = (response.1).value(forKey: Global.macros.kUserName) as? String
                         
                          self.navigationItem.title = ((response.1).value(forKey: Global.macros.kUserName) as? String)?.capitalizingFirstLetter()
                         

@@ -26,8 +26,10 @@ class Requests_API: NSObject {
             let status = (response as! NSDictionary).value(forKey: "status") as? NSNumber
             if status == 200
             {
+                if response?["data"] != nil{
                 let dict_Info = ((response as! NSDictionary).value(forKey: "data") as? NSDictionary)?.mutableCopy() as! NSMutableDictionary
                 completionBlock(status!,dict_Info)
+                }
             }
             else
             {

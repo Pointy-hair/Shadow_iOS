@@ -148,10 +148,18 @@ class RequestsListTableViewCell: UITableViewCell {
                 else {
                     
                     self.lbl_AverageRating.text = str_avgRating!
-                    
                 }
-                
-                
+            
+            //setting date
+            let date_String = dictionary.value(forKey: "selectedDate") as? String
+            if date_String != nil{
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let s = dateFormatter.date(from: date_String!)
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM dd,yyyy"
+            self.lbl_Date.text = formatter.string(from: s!).uppercased()
+            }
                 
                 
                 

@@ -149,13 +149,15 @@ class ComapanySchoolViewController: UIViewController{
                 let btn3 = UIButton(type: .custom)
                 btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
                 btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
-                btn3.addTarget(self, action: #selector(self.shadowBtnPressed), for: .touchUpInside)
+                btn3.addTarget(self, action: #selector(self.Calender_SearchBtnPressed), for: .touchUpInside)
                 let item3 = UIBarButtonItem(customView: btn3)
                 
+                
+                //right nav btns
                 self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
                 
-                self.user_IdMyProfile = userIdFromSearch
                 
+                self.user_IdMyProfile = userIdFromSearch
                 DispatchQueue.global(qos: .background).async {
                     
                     self.GetCompanySchoolProfile()
@@ -205,7 +207,7 @@ class ComapanySchoolViewController: UIViewController{
                     let btn3 = UIButton(type: .custom)
                     btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
                     btn3.frame = CGRect(x: self.view.frame.size.width - 60, y: 0, width: 20, height: 20)
-                 //   btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
+                    btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
                     let item3 = UIBarButtonItem(customView: btn3)
                     
                     
@@ -1039,6 +1041,25 @@ class ComapanySchoolViewController: UIViewController{
         
     }
     
+    
+    func Calender_SearchBtnPressed(sender: AnyObject){
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "send_request") as! SendRequestViewController
+        vc.user_Name =  self.navigationItem.title
+        //userIdFromSearch
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
+    func calenderBtnPressed(sender: AnyObject){
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "MyRequests") as! RequestsListViewController
+        vc.user_Name =  self.navigationItem.title
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        
+        
+    }
+
     
     //MARK: - Button Actions
     

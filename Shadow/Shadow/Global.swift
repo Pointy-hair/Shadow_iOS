@@ -149,7 +149,7 @@ class Global: NSObject {
         //Sent Request api_Params
         static let k_location:String = "location"
         static let k_mediumOfCommunication:String = "mediumOfCommunication"
-        static let k_SelectedDate:String = "SelectedDate"
+        static let k_SelectedDate:String = "selectedDate"
         static let k_message:String = "message"
 
         //getrequestsbytype api_params

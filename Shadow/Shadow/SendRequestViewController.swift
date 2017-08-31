@@ -12,7 +12,7 @@ import GooglePlaces
 import GooglePlacePicker
 
 class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerDelegate {
-
+    
     @IBOutlet var imgView_InPerson: UIImageView!
     @IBOutlet var btn_SelectLocation: UIButton!
     @IBOutlet var imgView_Virtually: UIImageView!
@@ -38,7 +38,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             formatter.dateFormat = "yyyy-MM-dd"
             return formatter
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
@@ -69,11 +69,11 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             let item2 = UIBarButtonItem(customView: btn2)
             //Right items
             self.navigationItem.setRightBarButtonItems([item2], animated: true)
-
+            
         }
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -87,8 +87,8 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
         self.imgView_Virtually.image = UIImage.init(named: "unchecked")
         
         self.btn_SelectLocation.isHidden = false
-      //  self.btn_SelectVirtualOption.isHidden = true
-
+        //  self.btn_SelectVirtualOption.isHidden = true
+        
         
         
     }
@@ -97,12 +97,12 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
         
         self.imgView_Virtually.image = UIImage.init( named: "checked")
         self.imgView_InPerson.image = UIImage.init(named: "unchecked")
-
+        
         self.btn_SelectLocation.isHidden = true
-     //   self.btn_SelectVirtualOption.isHidden = false
+        //   self.btn_SelectVirtualOption.isHidden = false
     }
     
-
+    
     @IBAction func Action_SelectLocation(_ sender: Any) {
         
         let autocompleteController = GMSAutocompleteViewController()
@@ -116,97 +116,129 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
         self.showAlert(Message: "Coming Soon", vc: self)
     }
     
-   //MARK: - Functions
+    //MARK: - Functions
     
     func Send(){
         
         txtView_Message.resignFirstResponder()
         if self.imgView_Virtually.image == UIImage.init(named: "checked") || self.imgView_InPerson.image == UIImage.init(named: "checked"){
-            if str_date_selected != ""{
-                if txtView_Message.text != ""  {
-                    
-                    if self.checkInternetConnection(){
+            
+            if self.imgView_InPerson.image == UIImage.init(named: "checked") && self.btn_SelectLocation.currentTitle != "Select Location"{
+                
+                if str_date_selected != ""{
+                    if txtView_Message.text != ""  {
                         
-                        DispatchQueue.main.async {
-                            self.pleaseWait()
-                        }
-
-                        
-                        let dict = NSMutableDictionary()
-                        
-                        let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
-                        dict.setValue(user_Id, forKey: Global.macros.kUserId)
-                        dict.setValue(userIdFromSearch, forKey:Global.macros.kotherUserId)
-
-                        if imgView_InPerson.image == UIImage.init(named: "checked"){
-                            dict.setValue(btn_SelectLocation.currentTitle, forKey: Global.macros.k_location)
-
-                        }
-                        else if  imgView_Virtually.image == UIImage.init(named: "checked"){
-                            //dict.setValue(btn_SelectVirtualOption.currentTitle, forKey: Global.macros.k_mediumOfCommunication)
-                            
-                            dict.setValue("Video Call", forKey: Global.macros.k_mediumOfCommunication)
-
-                        }
-                        
-                        dict.setValue(str_date_selected!, forKey: Global.macros.k_SelectedDate)
-                        dict.setValue(txtView_Message.text!, forKey: Global.macros.k_message)
-                        print(dict)
-                        
-                        Requests_API.sharedInstance.sendRequest(completionBlock: { (status, dict_Info) in
-                            
-                            DispatchQueue.main.async {
-                                self.clearAllNotice()
-                            }
-                            
-                            switch status {
-                                
-                            case 200:
-                                
-                                DispatchQueue.main.async {
-                                    
-                                    self.showAlert(Message: "Request successfully sent.", vc: self)
-                                  
-                                }
-
-                                break
-                                
-                            case 400:
-                                DispatchQueue.main.async {
-
-                                 self.showAlert(Message: "Your previous request is pending.", vc: self)
-                                 
-                                }
-                                break
-                            default:
-                                 self.showAlert(Message: Global.macros.kError, vc: self)
-                                break
-                                
-                            }
-                            
-                        }, errorBlock: { (error) in
-                            DispatchQueue.main.async {
-                                self.clearAllNotice()
-                                self.showAlert(Message: Global.macros.kError, vc: self)
-                            }
-
-                        }, dict: dict)
-                        
+                        self.SendRequest_Service()
                         
                     }else{
-                        
-                        self.showAlert(Message:Global.macros.kInternetConnection, vc: self)
+                        self.showAlert(Message: "Please write some message.", vc: self)
                     }
-                }else{
-                    self.showAlert(Message: "Please write some message.", vc: self)
+                }
+                else{
+                    self.showAlert(Message: "Please select a date.", vc: self)
                 }
             }
-            else{
-                self.showAlert(Message: "Please select a date.", vc: self)
+                
+            else if self.imgView_Virtually.image == UIImage.init(named: "checked"){
+                if str_date_selected != ""{
+                    if txtView_Message.text != ""  {
+                        
+                        
+                        self.SendRequest_Service()
+                        
+                        
+                    }
+                    else{
+                        self.showAlert(Message: "Please write some message.", vc: self)
+                    }
+                    
+                } else{
+                    self.showAlert(Message: "Please select a date.", vc: self)
+                }
+                
             }
-           
-        }else{
+            else{
+                self.showAlert(Message: "Please select a Location.", vc: self)
+            }
+        }
+            
+        else{
             self.showAlert(Message: "Please select atleast one option to meet.", vc: self)
+        }
+    }
+    
+    func SendRequest_Service()  {
+        if self.checkInternetConnection(){
+            
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            let dict = NSMutableDictionary()
+            
+            let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+            dict.setValue(user_Id, forKey: Global.macros.kUserId)
+            dict.setValue(userIdFromSearch, forKey:Global.macros.kotherUserId)
+            
+            if imgView_InPerson.image == UIImage.init(named: "checked"){
+                dict.setValue(btn_SelectLocation.currentTitle, forKey: Global.macros.k_location)
+                
+            }
+            else if  imgView_Virtually.image == UIImage.init(named: "checked"){
+                //dict.setValue(btn_SelectVirtualOption.currentTitle, forKey: Global.macros.k_mediumOfCommunication)
+                
+                dict.setValue("VideoCall", forKey: Global.macros.k_mediumOfCommunication)
+                
+            }
+            
+            dict.setValue(str_date_selected!, forKey: Global.macros.k_SelectedDate)
+            dict.setValue(txtView_Message.text!, forKey: Global.macros.k_message)
+            print(dict)
+            
+            Requests_API.sharedInstance.sendRequest(completionBlock: { (status, dict_Info) in
+                
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                }
+                
+                switch status {
+                    
+                case 200:
+                    
+                    DispatchQueue.main.async {
+                        
+                        self.showAlert(Message: "Request successfully sent.", vc: self)
+                        _ = self.navigationController?.popToRootViewController(animated: true)
+                    }
+                    
+                    break
+                    
+                case 406:
+                    DispatchQueue.main.async {
+                        
+                        self.showAlert(Message: "Your previous request is pending.", vc: self)
+                        _ = self.navigationController?.popToRootViewController(animated: true)
+
+                    }
+                    break
+                default:
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                    break
+                    
+                }
+                
+            }, errorBlock: { (error) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                }
+                
+            }, dict: dict)
+            
+            
+        }else{
+            
+            self.showAlert(Message:Global.macros.kInternetConnection, vc: self)
         }
     }
     
@@ -220,7 +252,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
         print("Place attributions: \(place.attributions)")
         self.btn_SelectLocation.setTitle(place.name, for: .normal)
         dismiss(animated: true, completion: nil)
-   
+        
     }
     
     
@@ -245,17 +277,17 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     }
     
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 extension SendRequestViewController:UITextViewDelegate{
@@ -277,7 +309,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_5 || Global.DeviceType.IS_IPHONE_6{
             DispatchQueue.main.async {
                 
-                 self.animateTextView(textView: textView, up: true, movementDistance: textView.frame.maxY, scrollView:self.scrollView)
+                self.animateTextView(textView: textView, up: true, movementDistance: textView.frame.maxY, scrollView:self.scrollView)
                 
                 UIView.animate(withDuration: 1.0, animations: {
                     //self.k_Constraint_ScroolViewTop.constant = -170.0
@@ -295,7 +327,7 @@ extension SendRequestViewController:UITextViewDelegate{
             }
         }
     }
-
+    
     
     func textViewDidEndEditing(_ textView: UITextView) {
         
@@ -314,7 +346,7 @@ extension SendRequestViewController:UITextViewDelegate{
         if Global.DeviceType.IS_IPHONE_5{
             DispatchQueue.main.async {
                 
-                 self.animateTextView(textView: textView, up: false, movementDistance: textView.frame.minY, scrollView:self.scrollView)
+                self.animateTextView(textView: textView, up: false, movementDistance: textView.frame.minY, scrollView:self.scrollView)
                 
                 UIView.animate(withDuration: 1.0, animations: {
                     //self.k_Constraint_ScroolViewTop.constant = 0.0
@@ -333,7 +365,7 @@ extension SendRequestViewController:UITextViewDelegate{
             
         }
     }
-
+    
 }
 extension SendRequestViewController:FSCalendarDelegate,FSCalendarDataSource{
     
@@ -366,5 +398,5 @@ extension SendRequestViewController:FSCalendarDelegate,FSCalendarDataSource{
             return nil
         }
     }
-
+    
 }

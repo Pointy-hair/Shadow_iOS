@@ -81,7 +81,6 @@ class RequestsListViewController: UIViewController {
             self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
             self.lbl_btn_Declined.isHidden = true
             
-            self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
             //initialy my request keyword at server end is "send"
             
         }
@@ -89,7 +88,12 @@ class RequestsListViewController: UIViewController {
         
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
 
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -358,7 +362,6 @@ class RequestsListViewController: UIViewController {
                         
                         self.getRequestsByType(Type: Global.macros.kSend, SubType: Global.macros.kAll)
                     }
-                    
                     break
                     
                 case 404:
@@ -366,18 +369,12 @@ class RequestsListViewController: UIViewController {
                     DispatchQueue.main.async {
                         
                     }
-                    
-                    
-                    
-                    
-                    break
+                     break
                 default:
                     self.showAlert(Message: Global.macros.kError, vc: self)
                     break
                     
                 }
-                
-                
                 
             }, errorBlock: { (error) in
                 DispatchQueue.main.async {
@@ -468,7 +465,7 @@ class RequestsListViewController: UIViewController {
             
             let vc = segue.destination as! RequestDetailsViewController
             vc.username = self.navigationItem.title
-            vc.request_Id = self.requestID
+            vc.request_Id =  self.requestID
         }
     }
 }
@@ -502,9 +499,10 @@ extension RequestsListViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
         self.requestID = (array_Requests.object(at: indexPath.row) as! NSDictionary).value(forKey: "id") as? NSNumber
         print(requestID!)
+        self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
+
 
     }
     

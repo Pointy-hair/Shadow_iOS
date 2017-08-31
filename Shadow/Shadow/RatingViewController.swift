@@ -52,8 +52,6 @@ class RatingViewController: UIViewController {
             
             self.imgView_Profile.layer.cornerRadius = 60.0
             self.imgView_Profile.clipsToBounds = true
-//          self.imgView_Profile.layer.borderColor = UIColor.init(red: 176.0/255.0, green: 93.0/255.0, blue: 206.0/255.0, alpha: 1.0).cgColor
-//          self.imgView_Profile.layer.borderWidth = 2.0
             
             //SETTING BORDER OF CUSTOM VIEWS(bOUNDARIES)
             self.customView(view: self.view_Behind_Profile)
@@ -91,24 +89,11 @@ class RatingViewController: UIViewController {
         
         tblView_Rating.tableFooterView = UIView()
         
+        self.navigationItem.setHidesBackButton(false, animated:true)
         CreateNavigationBackBarButton() //Create custom ack button
-        //custom_StarView ()
         ShowRatingData()
-
         
-       
-//        let main_string = "5 ratings"
-//        let string_to_color = "ratings"
-//        let range = (main_string as NSString).range(of: string_to_color)
-//        let attribute = NSMutableAttributedString.init(string: main_string)
-//        attribute.addAttribute(NSForegroundColorAttributeName, value: UIColor.darkGray , range: range)
-//        lbl_ratings.attributedText = attribute
-        
-        
-        
-        
-        
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+       // navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
         
         if ratingview_name == "" || ratingview_name == nil {
             
@@ -225,6 +210,7 @@ class RatingViewController: UIViewController {
                 switch status
                 {
                 case 200:
+                    
                     print("success")
                     self.tblView_Rating.isHidden = false
                     let arr  = (response.value(forKey: "data") as? NSDictionary)?.mutableCopy() as! NSMutableDictionary
