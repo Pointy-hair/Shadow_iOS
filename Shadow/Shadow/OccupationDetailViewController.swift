@@ -24,11 +24,32 @@ class OccupationDetailViewController: UIViewController {
     @IBOutlet weak var collectionViewCompany: UICollectionView!
     @IBOutlet weak var collectionViewSchool: UICollectionView!
     var dic_Occupation = NSMutableDictionary()
+     var arr_school = NSMutableArray()
+     var arr_company = NSMutableArray()
     public var occupationId : NSNumber?
+    
+    @IBOutlet weak var lbl_RatingCount: UILabel!
+    
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        self.barChartView.xAxis.drawGridLinesEnabled = false
+        self.barChartView.rightAxis.drawGridLinesEnabled = false
+        self.barChartView.rightAxis.drawAxisLineEnabled = false
+        self.barChartView.rightAxis.drawLabelsEnabled = false
+        self.barChartView.leftAxis.drawGridLinesEnabled = false
+        self.barChartView.leftAxis.drawAxisLineEnabled = false
+        self.barChartView.leftAxis.drawLabelsEnabled = false
+        self.barChartView.xAxis.drawAxisLineEnabled = false
+        self.barChartView.xAxis.drawLabelsEnabled = false
+             //chartDataSet.colors = [.green, .yellow, .red]
+        self.barChartView.legend.enabled = false
+       self.barChartView.highlightPerTapEnabled = false
+        self.barChartView.highlightFullBarEnabled = false
+        
+      
         self.txtfield_Occupation.setContentOffset(CGPoint.zero, animated: false)
 
         GetData()
@@ -81,7 +102,7 @@ class OccupationDetailViewController: UIViewController {
                     
                     self.navigationItem.title = (self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter()
                     self.lbl_avgRating.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
-                      //  self..text = "\((self.dic_Occupation.value(forKey: "ratingCount")!))"
+                     self.lbl_RatingCount.text = "\((self.dic_Occupation.value(forKey: "ratingCount")!))"
                     // self.lbl_AvgSalary.text = (self.dic_Occupation.value(forKey: "salary") as? String)
                       // print(self.suffixNumber(number: NSNumber(long: 24000)));
                         
@@ -93,12 +114,18 @@ class OccupationDetailViewController: UIViewController {
                         self.txtfield_Occupation.setContentOffset(CGPoint.zero, animated: false)
                         self.txtfield_Occupation.text = (self.dic_Occupation.value(forKey: "description") as? String)
                         
+                        
+                        
                          let myInteger = Int(morePrecisePI!)
                             let myNumber = NSNumber(value:myInteger)
                             print(myNumber)
                             self.lbl_AvgSalary.text = self.suffixNumber(number: myNumber) as String
-                            print(self.lbl_AvgSalary.text!)
+                            print(self.lbl_AvgSalary.text!) //companys
                         
+                        
+                        self.arr_company = (self.dic_Occupation.value(forKey: "companys") as! NSArray).mutableCopy() as! NSMutableArray
+                        self.arr_school = (self.dic_Occupation.value(forKey: "schools") as! NSArray).mutableCopy() as! NSMutableArray
+
                         
                         self.collectionViewSchool.reloadData()
                         self.collectionViewCompany.reloadData()
@@ -163,7 +190,7 @@ class OccupationDetailViewController: UIViewController {
         
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         let unitsSold = [20.0, 4.0, 3.0, 6.0, 12.0, 16.0, 4.0, 18.0, 2.0, 4.0, 5.0, 4.0]
-        barChartView.setBarChartData(xValues: months, yValues: unitsSold, label: "Monthly Sales")
+        barChartView.setBarChartData(xValues: months, yValues: unitsSold, label: "")
         
     }
     
@@ -222,10 +249,12 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
         if collectionView == collectionViewCompany {
             let company_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "company", for: indexPath)as! CompanyCollectionViewCell
             
-//            if array_UserSkills.count > 0 {
-//                
-//                skills_cell.lbl_Skill.text = (array_UserSkills[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
-//            }
+            if arr_company.count > 0 {
+                
+               let dict = (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO")as? NSMutableDictionary
+                
+                 company_cell.lbl_CompanyName.text = dict?.value(forKey: "companyName") as! String?
+            }
             
             cell = company_cell
             
@@ -234,11 +263,13 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
         if collectionView == collectionViewSchool{
             let school_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "school", for: indexPath)as! SchoolCollectionViewCell
             
-//            if array_UserInterests.count > 0 {
-//                
-//                interest_cell.lbl_InterestName.text = (array_UserInterests[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
-//                
-//            }
+            if arr_school.count > 0 {
+                
+                let dict = (arr_school[indexPath.row]as! NSDictionary).value(forKey: "userDTO")as? NSMutableDictionary
+                
+             //   school_cell.lbl_SchoolName.text = dict?.value(forKey: "schoolName") as! String?
+                
+            }
             
             cell = school_cell
             
@@ -250,69 +281,69 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-//        var count:Int?
-//        
-//        if collectionView == collectionView_Skills{
-//            
-//            count = array_UserSkills.count
-//            if count! <= 2 {
-//                self.kheightViewBehindSkill.constant = 100
-//                
-//            }
-//                
-//                
-//            else if count == 4 {
-//                self.kheightViewBehindSkill.constant = 150
-//                
-//            }
-//            else {
-//                
-//                self.kheightViewBehindSkill.constant = CGFloat(count! * 32) + CGFloat(10)
-//                
-//            }
-//            
-//            if Global.DeviceType.IS_IPHONE_5 {
-//                
-//                if count == 3 {
-//                    self.kheightViewBehindSkill.constant = 150
-//                    
-//                }
-//                
-//                
-//            }
-//            
-//            
-//        }
-//        
-//        if collectionView == collectionView_Interests{
-//            
-//            count = array_UserInterests.count
-//            if count! <= 2 {
-//                self.kheightViewBehindInterest.constant = 100
-//            }
-//            else if count == 4 {
-//                self.kheightViewBehindInterest.constant = 150
-//                
-//            }
-//            else {
-//                self.kheightViewBehindInterest.constant = CGFloat(count! * 32) + CGFloat(10)
-//                
-//            }
-//            
-//            if Global.DeviceType.IS_IPHONE_5 {
-//                
-//                if count == 3 {
-//                    self.kheightViewBehindInterest.constant = 150
-//                    
-//                }
-//                
-//                
-//            }
-//            
-//        }
-//        self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant + 15)
-//        
-//        return count!
+        var count:Int?
+        
+        if collectionView == collectionViewCompany{
+            
+            count = arr_company.count
+            if count! <= 2 {
+                self.kheightViewBehindCompany.constant = 100
+                
+            }
+                
+                
+            else if count == 4 {
+                self.kheightViewBehindCompany.constant = 150
+                
+            }
+            else {
+                
+                self.kheightViewBehindCompany.constant = CGFloat(count! * 32) + CGFloat(10)
+                
+            }
+            
+            if Global.DeviceType.IS_IPHONE_5 {
+                
+                if count == 3 {
+                    self.kheightViewBehindCompany.constant = 150
+                    
+                }
+                
+                
+            }
+            
+            
+        }
+        
+        if collectionView == collectionViewSchool{
+            
+            count = arr_school.count
+            if count! <= 2 {
+                self.kheightViewBehindSchool.constant = 100
+            }
+            else if count == 4 {
+                self.kheightViewBehindSchool.constant = 150
+                
+            }
+            else {
+                self.kheightViewBehindSchool.constant = CGFloat(count! * 32) + CGFloat(10)
+                
+            }
+            
+            if Global.DeviceType.IS_IPHONE_5 {
+                
+                if count == 3 {
+                    self.kheightViewBehindSchool.constant = 150
+                    
+                }
+                
+                
+            }
+            
+        }
+        self.scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindCompany.constant + self.kheightViewBehindSchool.constant + 15)
+        
+        return count!
         
         return 10
 
@@ -344,6 +375,9 @@ extension BarChartView {
         }
         
         let chartDataSet = BarChartDataSet(values: dataEntries, label: label)
+        let color = UIColor.init(red: 180.0/255.0, green: 90.0/255.0, blue: 200.0/255.0, alpha: 1.0)
+        chartDataSet.setColors(color)
+        
         let chartData = BarChartData(dataSet: chartDataSet)
         
         let chartFormatter = BarChartFormatter(labels: xValues)
@@ -352,6 +386,8 @@ extension BarChartView {
         self.xAxis.valueFormatter = xAxis.valueFormatter
         
         self.data = chartData
+        
+       
     }
 }
 

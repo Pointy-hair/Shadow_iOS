@@ -17,7 +17,7 @@ open class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, IBarChartDat
 {
     fileprivate func initialize()
     {
-        self.highlightColor = NSUIColor.white
+        self.highlightColor = NSUIColor.clear
         
         self.calcStackSize(entries: values as! [BarChartDataEntry])
         self.calcEntryCountIncludingStacks(entries: values as! [BarChartDataEntry])
