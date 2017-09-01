@@ -391,6 +391,58 @@ class ProfileAPI: NSObject {
         
     }
     
+// Get Occupation Detail by Id
+    //Get all data from search
+    
+    
+    func OccupationDetail(dict:NSMutableDictionary,completion:@escaping CompletionBlockDict,errorBlock:@escaping ErrorBlock)
+    {
+        
+        ServerCall.sharedInstance.postService({(response) in
+            let status = (response as! NSDictionary).value(forKey: Global.macros.KStatus)as! NSNumber
+            
+            if status == 200
+            {
+                completion(response as! NSDictionary)
+                
+                
+                
+            }
+                
+            else if status == 210 {
+                
+                completion(response as! NSDictionary)
+                
+                
+            }
+                
+            else if status == 400 {
+                
+                completion(response as! NSDictionary)
+                
+                
+            }
+                
+                
+            else if status == 401 {
+                
+                completion(response as! NSDictionary)
+                
+                
+            }
+            
+            
+            
+        }, error_block: {(err) in
+            
+            errorBlock(err)
+            
+            clearAllNotice()
+            
+        }, paramDict: dict, is_synchronous: false, url: "getOccupationDetailByOccupationId")
+        
+        
+    }
 
     
 }

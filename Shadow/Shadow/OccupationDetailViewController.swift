@@ -23,10 +23,16 @@ class OccupationDetailViewController: UIViewController {
     @IBOutlet weak var scroll_View: UIScrollView!
     @IBOutlet weak var collectionViewCompany: UICollectionView!
     @IBOutlet weak var collectionViewSchool: UICollectionView!
+    var dic_Occupation = NSMutableDictionary()
+    public var occupationId : NSNumber?
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        self.txtfield_Occupation.setContentOffset(CGPoint.zero, animated: false)
+
+        GetData()
+
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
 //        self.navigationItem.setHidesBackButton(false, animated:true)
@@ -40,14 +46,114 @@ class OccupationDetailViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = leftBackBarButton
        
         // Do any additional setup after loading the view.
-        GetData()
         setChart()
  
     }
     
     func GetData(){
         
+        let dict = NSMutableDictionary()
+        dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
+        dict.setValue(occupationId, forKey: "occupationId")
+
+        print(dict)
+        
+        if self.checkInternetConnection(){
+            
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            
+            ProfileAPI.sharedInstance.OccupationDetail(dict: dict, completion: { (response) in
+                print(response)
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                }
+                let status = response.value(forKey: "status") as? NSNumber
+                switch(status!){
+                    
+                case 200:
+                    print(response)
+                    
+                    self.dic_Occupation = (response.value(forKey: "data") as! NSDictionary).mutableCopy() as! NSMutableDictionary
+                       DispatchQueue.main.async {
+                    
+                    self.navigationItem.title = (self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter()
+                    self.lbl_avgRating.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
+                      //  self..text = "\((self.dic_Occupation.value(forKey: "ratingCount")!))"
+                    // self.lbl_AvgSalary.text = (self.dic_Occupation.value(forKey: "salary") as? String)
+                      // print(self.suffixNumber(number: NSNumber(long: 24000)));
+                        
+                      
+                        let morePrecisePI = Double((self.dic_Occupation.value(forKey: "salary") as? String)!)
+                        
+                        self.lbl_UsersWithThisOccupation.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
+                        self.lbl_UserThatShadowedThis.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
+                        self.txtfield_Occupation.setContentOffset(CGPoint.zero, animated: false)
+                        self.txtfield_Occupation.text = (self.dic_Occupation.value(forKey: "description") as? String)
+                        
+                         let myInteger = Int(morePrecisePI!)
+                            let myNumber = NSNumber(value:myInteger)
+                            print(myNumber)
+                            self.lbl_AvgSalary.text = self.suffixNumber(number: myNumber) as String
+                            print(self.lbl_AvgSalary.text!)
+                        
+                        
+                        self.collectionViewSchool.reloadData()
+                        self.collectionViewCompany.reloadData()
+                    }
+                    break
+                    
+                case 404:
+                    DispatchQueue.main.async {
+                        self.collectionViewSchool.isHidden = true
+                        self.collectionViewCompany.isHidden = false
+                    }
+                    
+                    break
+                    
+                default:
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                    break
+                    
+                    
+                }
+                
+            }, errorBlock: { (error) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                }
+            })
+        }else{
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+        }
+
+        
     }
+    
+    func suffixNumber(number:NSNumber) -> NSString {
+        
+        var num:Double = number.doubleValue;
+        let sign = ((num < 0) ? "-" : "" );
+        
+        num = fabs(num);
+        
+        if (num < 1000.0){
+            return "\(sign)\(num)" as NSString;
+        }
+        
+        let exp:Int = Int(log10(num) / 3.0 ); //log10(1000));
+        
+        let units:[String] = ["K","M","G","T","P","E"];
+        
+        let roundedNum:Double = round(10 * num / pow(1000.0,Double(exp))) / 10;
+        
+        return "\(sign)\(roundedNum)\(units[exp-1])" as NSString;
+    }
+    
+    
     
     override func viewDidAppear(_ animated: Bool) {
         

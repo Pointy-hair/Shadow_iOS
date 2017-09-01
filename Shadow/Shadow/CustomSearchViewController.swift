@@ -945,6 +945,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         else {
            // self.showAlert(Message: "Coming Soon.", vc: self)
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+            vc.occupationId = (arr_SearchData[sender.tag] as! NSDictionary)["id"]! as? NSNumber
             _ = self.navigationController?.pushViewController(vc, animated: true)
             vc.extendedLayoutIncludesOpaqueBars = true
             self.tabBarController?.tabBar.isTranslucent = false
@@ -965,7 +966,6 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         }
         
         DispatchQueue.main.async {
-            
             
             if url != nil && url != ""{
                 if let checkURL = NSURL(string: url!) {
