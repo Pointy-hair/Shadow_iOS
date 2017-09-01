@@ -18,6 +18,12 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+      
         DispatchQueue.main.async {
             self.navigationItem.title = "Notifications"
             self.navigationItem.setHidesBackButton(false, animated:true)
@@ -37,9 +43,9 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
             
             
         }
-        // Do any additional setup after loading the view.
     }
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -191,15 +197,13 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let requestID = (array_allNotifications.object(at: indexPath.row) as! NSDictionary).value(forKey: "id") as? NSNumber
-  
+        let requestID = ((array_allNotifications.object(at: indexPath.row) as! NSDictionary).value(forKey: "requestDTO") as! NSDictionary).value(forKey: Global.macros.kId) as? NSNumber
+       
         print(requestID!)
         
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Request_Details") as! RequestDetailsViewController
-//        vc.user_Name =  self.navigationItem.title
-//        vc.request_id_fromRequestDetail = requestID!
-//        vc.check_comingFromRequestDetail = "YES"
-       // userIdFromSearch = Dict_Info.value(forKey: Global.macros.kotherUserId) as? NSNumber
+        vc.username =  self.navigationItem.title
+        vc.request_Id = requestID!
         _ = self.navigationController?.pushViewController(vc, animated: true)
         
         
