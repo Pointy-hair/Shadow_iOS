@@ -16,7 +16,6 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     fileprivate var array_allNotifications = NSMutableArray()
     fileprivate var item_trash = UIBarButtonItem()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.async {
@@ -190,6 +189,22 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     }
     
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let requestID = (array_allNotifications.object(at: indexPath.row) as! NSDictionary).value(forKey: "id") as? NSNumber
+  
+        print(requestID!)
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Request_Details") as! RequestDetailsViewController
+//        vc.user_Name =  self.navigationItem.title
+//        vc.request_id_fromRequestDetail = requestID!
+//        vc.check_comingFromRequestDetail = "YES"
+       // userIdFromSearch = Dict_Info.value(forKey: Global.macros.kotherUserId) as? NSNumber
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        
+        
+        
+    }
     /*
     // MARK: - Navigation
 

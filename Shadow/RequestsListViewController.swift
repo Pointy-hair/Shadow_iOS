@@ -92,6 +92,7 @@ class RequestsListViewController: UIViewController {
         }
 
         //initialy my request keyword at server end is "send"
+        My_Request_Selected_Status = true
         self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
 
     }
@@ -502,7 +503,7 @@ extension RequestsListViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         self.requestID = (array_Requests.object(at: indexPath.row) as! NSDictionary).value(forKey: "id") as? NSNumber
-        print(requestID!)
+        //print(requestID!)
         self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
 
 

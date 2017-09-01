@@ -314,13 +314,32 @@ extension RatingViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)as! RatingTableViewCell
         cell.txtView_Comment.text = (arr_GetRatingData[indexPath.row] as! NSDictionary)["comment"] as? String
         
         let dict_Temp = (arr_GetRatingData[indexPath.row] as! NSDictionary)["userDTO"] as? NSDictionary
         
         //setting name
-        cell.lbl_name.text = dict_Temp?.value(forKey: "userName") as? String
+
+        if (arr_GetRatingData[indexPath.row] as! NSDictionary)["userDTO"] != nil{
+            
+           if dict_Temp?[Global.macros.krole] as? String == "COMPANY"{
+           
+            cell.lbl_name.text = (dict_Temp?.value(forKey: Global.macros.kname) as? String)?.capitalizingFirstLetter()
+
+            }
+           else if dict_Temp?[Global.macros.krole] as? String == "SCHOOL"{
+            
+            cell.lbl_name.text = (dict_Temp?.value(forKey: Global.macros.kname) as? String)?.capitalizingFirstLetter()
+            }
+            
+           else{
+            
+            cell.lbl_name.text = (dict_Temp?.value(forKey: "userName") as? String)?.capitalizingFirstLetter()
+            }
+            
+        }
         
         
         

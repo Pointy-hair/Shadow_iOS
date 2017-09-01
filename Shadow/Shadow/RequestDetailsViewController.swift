@@ -467,6 +467,7 @@ class RequestDetailsViewController: UIViewController {
         vc.user_Name =  self.navigationItem.title
         vc.request_id_fromRequestDetail = self.request_Id!
         vc.check_comingFromRequestDetail = "YES"
+        userIdFromSearch = Dict_Info.value(forKey: Global.macros.kotherUserId) as? NSNumber
         _ = self.navigationController?.pushViewController(vc, animated: true)
         
         
