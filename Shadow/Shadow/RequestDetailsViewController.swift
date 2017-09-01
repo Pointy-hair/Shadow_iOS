@@ -9,7 +9,7 @@
 import UIKit
 
 class RequestDetailsViewController: UIViewController {
-
+    
     @IBOutlet var scroll_View: UIScrollView!
     @IBOutlet var imgView_UserProfile: UIImageView!
     @IBOutlet var lbl_AverageRating: UILabel!
@@ -32,7 +32,14 @@ class RequestDetailsViewController: UIViewController {
     var request_Id:NSNumber?
     fileprivate var video_url : URL?
     fileprivate var Dict_Info  = NSDictionary()
-
+    
+    //Converts string into date
+    let formatter: DateFormatter =
+        {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return formatter
+    }()
     
     override func viewDidLayoutSubviews() {
         self.scroll_View.contentSize = CGSize.init(width: self.view.frame.width, height: 800)
@@ -41,10 +48,10 @@ class RequestDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         DispatchQueue.main.async {
             
-           // self.navigationItem.title = self.username!
+            // self.navigationItem.title = self.username!
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
             
@@ -66,11 +73,11 @@ class RequestDetailsViewController: UIViewController {
             self.btn_AcceptedRejected.layer.cornerRadius = 8.0
             self.btn_AcceptedRejected.layer.borderWidth = 1.0
             self.btn_AcceptedRejected.layer.borderColor = Global.macros.themeColor.cgColor
-
+            
             self.txtView_Message.layer.cornerRadius = 5.0
             self.txtView_Message.layer.borderWidth = 1.0
             self.txtView_Message.layer.borderColor = Global.macros.themeColor.cgColor
-
+            
             self.view_LblLocation.layer.cornerRadius = 5.0
             self.view_LblLocation.layer.borderWidth = 1.0
             self.view_LblLocation.layer.borderColor = Global.macros.themeColor.cgColor
@@ -78,26 +85,17 @@ class RequestDetailsViewController: UIViewController {
             self.view_LblVirtualMedium.layer.cornerRadius = 5.0
             self.view_LblVirtualMedium.layer.borderWidth = 1.0
             self.view_LblVirtualMedium.layer.borderColor = Global.macros.themeColor.cgColor
-            
-            //nav buttons
-            let btn_chat = UIButton(type: .custom)
-            btn_chat.setImage(UIImage(named: "chat-icon"), for: .normal)
-            btn_chat.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
-            btn_chat.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
-            let item_chat = UIBarButtonItem(customView: btn_chat)
-            //Right items
-            self.navigationItem.setRightBarButtonItems([item_chat], animated: true)
-            
+            self.calender.isUserInteractionEnabled = false
             
         }
         
         
         // Do any additional setup after loading the view.
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         self.setRequestData()
-
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -118,7 +116,7 @@ class RequestDetailsViewController: UIViewController {
             self.showAlert(Message: "No video to play yet.", vc: self)
         }
     }
-
+    
     @IBAction func action_Accept(_ sender: UIButton) {
         
         //selected button
@@ -128,7 +126,7 @@ class RequestDetailsViewController: UIViewController {
         //deselected button
         self.btn_Decline.setTitleColor(UIColor.lightGray, for: .normal)
         self.btn_Decline.backgroundColor = UIColor.white
-
+        
         self.request_AcceptReject(acceptStatus: "true", rejectStatus: "false")
         
         
@@ -142,25 +140,25 @@ class RequestDetailsViewController: UIViewController {
         //selected button
         self.btn_Decline.setTitleColor(UIColor.white, for: .normal)
         self.btn_Decline.backgroundColor = UIColor.lightGray
-
+        
         
         //deselected button
         self.btn_Accept.setTitleColor(UIColor.lightGray, for: .normal)
         self.btn_Accept.backgroundColor = UIColor.white
         
         self.request_AcceptReject(acceptStatus: "false", rejectStatus: "true")
-
+        
     }
     
     
     @IBAction func action_OpenRatings(_ sender: UIButton) {
         
-//        bool_UserIdComingFromSearch = true
-//        userIdFromSearch = self.Dict_Info.value(forKey: "userId") as? NSNumber
-//        //ratingview_name = self.Dict_Info.value(forKey: "userId") as? String
-//        
-//        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
-//        _ = self.navigationController?.pushViewController(vc, animated: true)
+        //        bool_UserIdComingFromSearch = true
+        //        userIdFromSearch = self.Dict_Info.value(forKey: "userId") as? NSNumber
+        //        //ratingview_name = self.Dict_Info.value(forKey: "userId") as? String
+        //
+        //        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+        //        _ = self.navigationController?.pushViewController(vc, animated: true)
         
     }
     
@@ -172,7 +170,7 @@ class RequestDetailsViewController: UIViewController {
         dict.setValue(user_Id, forKey: Global.macros.kUserId)
         dict.setValue(self.request_Id!, forKey: "id")
         print(dict)
-
+        
         if self.checkInternetConnection(){
             
             DispatchQueue.main.async {
@@ -180,7 +178,7 @@ class RequestDetailsViewController: UIViewController {
             }
             
             Requests_API.sharedInstance.viewRequest(completionBlock: { (status, dict_Info) in
-              
+                
                 DispatchQueue.main.async {
                     self.clearAllNotice()
                 }
@@ -190,9 +188,9 @@ class RequestDetailsViewController: UIViewController {
                 case 200:
                     
                     DispatchQueue.main.async {
-                       
-                      self.Dict_Info = dict_Info
-                      //Set Info of request
+                        
+                        self.Dict_Info = dict_Info
+                        //Set Info of request
                         //setting location
                         if dict_Info[Global.macros.klocation] != nil {
                             
@@ -210,28 +208,26 @@ class RequestDetailsViewController: UIViewController {
                             
                         }
                         
-                       //setting message
+                        //setting message
                         if dict_Info["message"] != nil &&  dict_Info["message"] as? String != ""{
                             
                             self.lbl_TxtView_Placeholder.isHidden = true
                             self.txtView_Message.text = dict_Info.value(forKey: "message") as? String
                         }
                         else{
-                            
                             self.lbl_TxtView_Placeholder.isHidden = false
- 
                         }
                         
                         //request status(Accepted,Rejected or pending)
                         //pending
                         if dict_Info.value(forKey: "reject") as? NSNumber == 0 &&  dict_Info.value(forKey: "accept") as? NSNumber == 0{
-                           
+                            
                             self.view_Buttons.isHidden = false
                             self.btn_AcceptedRejected.isHidden = true
-
+                            
                             
                         }
-                        //(Accepted)
+                            //(Accepted)
                         else if dict_Info.value(forKey: "reject") as? NSNumber == 0 &&  dict_Info.value(forKey: "accept") as? NSNumber == 1{
                             
                             self.view_Buttons.isHidden = true
@@ -239,7 +235,7 @@ class RequestDetailsViewController: UIViewController {
                             self.btn_AcceptedRejected.setTitle("Accepted", for: .normal)
                             self.btn_AcceptedRejected.backgroundColor = Global.macros.themeColor_Green
                         }
-                            //(Accepted)
+                            //(rejected)
                         else if dict_Info.value(forKey: "reject") as? NSNumber == 1 &&  dict_Info.value(forKey: "accept") as? NSNumber == 0{
                             
                             self.view_Buttons.isHidden = true
@@ -248,7 +244,7 @@ class RequestDetailsViewController: UIViewController {
                             self.btn_AcceptedRejected.backgroundColor = Global.macros.themeColor_Red
                             
                         }
-
+                        
                         //set profile image
                         let str_profileImage = (dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "profileImageUrl") as? String
                         if str_profileImage != nil{
@@ -268,17 +264,13 @@ class RequestDetailsViewController: UIViewController {
                         
                         let dbl = 2.0
                         
-                        if  dbl.truncatingRemainder(dividingBy: 1) == 0
-                        {
+                        if  dbl.truncatingRemainder(dividingBy: 1) == 0{
                             self.lbl_AverageRating.text = str_avgRating! + ".0"
-                            
                         }
-                        else {
-                            
+                        else{
                             self.lbl_AverageRating.text = str_avgRating!
-                            
                         }
-
+                        
                         //get video url
                         let str_video =  dict_Info.value(forKey: "videoUrl") as? String  //Video url to play video
                         if str_video != nil {
@@ -287,41 +279,89 @@ class RequestDetailsViewController: UIViewController {
                         else{
                             self.video_url = nil
                         }
-
+                        
                         //setting username
                         
-                        
                         if  (dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: Global.macros.krole) as? String == "USER"{
-                           
+                            
                             self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "userName") as? String)?.capitalizingFirstLetter()
                         }
                         else if (dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: Global.macros.krole) as? String == "SCHOOL"{
                             
-                             self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "name") as? String
+                            self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "name") as? String
                             
                         }else if (dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: Global.macros.krole) as? String == "COMPANY"{
                             
-                             self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "name") as? String
+                            self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "name") as? String
                             
                         }
-
+                        
                         ratingview_name = self.navigationItem.title
                         
+                        //setting date on calender
+                        if dict_Info[Global.macros.k_SelectedDate] != nil{
+                        let str_date =   dict_Info.value(forKey: Global.macros.k_SelectedDate) as? String
+                        let sdate = self.formatter.date(from: str_date!)
+                        self.calender.deselect(sdate!)
+                        self.calender.select(sdate!, scrollToDate: true)
                         
+                        }
                         
-                    }
+                        if My_Request_Selected_Status == false{
+                            
+                            if dict_Info.value(forKey: "reject") as? NSNumber == 0 &&  dict_Info.value(forKey: "accept") as? NSNumber == 0{
+                                
+                                
+                                //Nav buttons if coming from shadow requests(requests you send) when they are pending
+                                //nav buttons
+                                let btn_chat = UIButton(type: .custom)
+                                btn_chat.setImage(UIImage(named: "chat-icon"), for: .normal)
+                                btn_chat.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
+                                btn_chat.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
+                                let item_chat = UIBarButtonItem(customView: btn_chat)
+                                
+                                let btn_Edit = UIButton(type: .custom)
+                                btn_Edit.setImage(UIImage(named: "pencil-edit-button"), for: .normal)
+                                btn_Edit.frame = CGRect(x: self.view.frame.size.width - 40, y: 0, width: 20, height: 25)
+                                btn_Edit.addTarget(self, action: #selector(self.editBtnPressed), for: .touchUpInside)
+                                let item_Edit = UIBarButtonItem(customView: btn_Edit)
+                                
+                                //Right items
+                                self.navigationItem.setRightBarButtonItems([item_chat,item_Edit], animated: true)
+                            }
+                                //Nav buttons if coming from shadow requests(requests you send) when they are not pending
+                            else{
+                                //nav buttons
+                                let btn_chat = UIButton(type: .custom)
+                                btn_chat.setImage(UIImage(named: "chat-icon"), for: .normal)
+                                btn_chat.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
+                                btn_chat.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
+                                let item_chat = UIBarButtonItem(customView: btn_chat)
+                                self.navigationItem.setRightBarButtonItems([item_chat], animated: true)
+                            }
+                            
+                        }
+                        else{
+                            
+                            //nav buttons
+                            let btn_chat = UIButton(type: .custom)
+                            btn_chat.setImage(UIImage(named: "chat-icon"), for: .normal)
+                            btn_chat.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
+                            btn_chat.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
+                            let item_chat = UIBarButtonItem(customView: btn_chat)
+                            self.navigationItem.setRightBarButtonItems([item_chat], animated: true)
+                            
+                        }
+                     }
                     
                     break
                     
                 case 404:
                     
                     DispatchQueue.main.async {
-                        
-                        
+                        self.showAlert(Message: Global.macros.kError, vc: self)
+
                     }
-                    
-                    
-                    
                     
                     break
                 default:
@@ -329,7 +369,7 @@ class RequestDetailsViewController: UIViewController {
                     break
                     
                 }
-   
+                
                 
             }, errorBlock: { (error) in
                 DispatchQueue.main.async {
@@ -376,7 +416,7 @@ class RequestDetailsViewController: UIViewController {
                     
                     DispatchQueue.main.async {
                         if acceptStatus == "true"{
-                        self.showAlert(Message: "Successfully accepted", vc: self)
+                            self.showAlert(Message: "Successfully accepted", vc: self)
                         }else{
                             self.showAlert(Message: "Successfully rejected.", vc: self)
                         }
@@ -389,7 +429,7 @@ class RequestDetailsViewController: UIViewController {
                     
                     DispatchQueue.main.async {
                         self.showAlert(Message: Global.macros.kError, vc: self)
-
+                        
                     }
                     
                     break
@@ -414,19 +454,36 @@ class RequestDetailsViewController: UIViewController {
         }
         
     }
-
+    
     func chatBtnPressed(sender: AnyObject){
         self.showAlert(Message: "Coming Soon", vc: self)
         
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    func editBtnPressed(sender: AnyObject){
+        
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "send_request") as! SendRequestViewController
+        vc.user_Name =  self.navigationItem.title
+        vc.request_id_fromRequestDetail = self.request_Id!
+        vc.check_comingFromRequestDetail = "YES"
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        
+        
+        
+        
+        
     }
-    */
-
+    
+    
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

@@ -319,16 +319,21 @@ extension RatingViewController:UITableViewDelegate,UITableViewDataSource{
         
         let dict_Temp = (arr_GetRatingData[indexPath.row] as! NSDictionary)["userDTO"] as? NSDictionary
         
+        //setting name
         cell.lbl_name.text = dict_Temp?.value(forKey: "userName") as? String
         
         
+        
+        //setting profile image
         var profileurl =  dict_Temp?.value(forKey: "profileImageUrl") as? String
-        
         profileurl = profileurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        
         if profileurl != nil {
             cell.imgview_Profile.sd_setImage(with: URL(string:profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
         }
+        
+        
+        
+        //Setting time
         if (arr_GetRatingData[indexPath.row] as! NSDictionary)["timeAgo"] != nil {
         let time : NSString = (arr_GetRatingData[indexPath.row] as! NSDictionary)["timeAgo"] as! NSString
 

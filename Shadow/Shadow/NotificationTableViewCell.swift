@@ -36,6 +36,7 @@ class NotificationTableViewCell: UITableViewCell {
             
             let dict_UserInfo = (dict.value(forKey: "requestDTO") as! NSDictionary).value(forKey: "userDTO") as! NSDictionary
          
+            //setting profile image
             let str_profileImage = dict_UserInfo.value(forKey: "profileImageUrl") as? String
             if str_profileImage != nil{
                 
@@ -59,6 +60,9 @@ class NotificationTableViewCell: UITableViewCell {
                     
                     self.lbl_Notification.text = "\(username!) has rejected your request."
                 }
+                else{
+                    self.lbl_Notification.text = "\(username!) has updated a request."
+                }
             }
             //if role is school
             else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "SCHOOL"{
@@ -73,6 +77,12 @@ class NotificationTableViewCell: UITableViewCell {
                     
                     self.lbl_Notification.text = "\(school_name!) has rejected your request."
                 }
+                else{
+                    self.lbl_Notification.text = "\(school_name!) has updated a request."
+
+                }
+                
+                
             }
             //if role is company
             else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "COMPANY"{
@@ -87,6 +97,10 @@ class NotificationTableViewCell: UITableViewCell {
                 else if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 0 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 1{
                     
                     self.lbl_Notification.text = "\(company_name!) has rejected your request."
+                }
+                else{
+                    self.lbl_Notification.text = "\(company_name!) has updated a request."
+
                 }
             }
         }

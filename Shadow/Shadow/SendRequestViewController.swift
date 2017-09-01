@@ -11,6 +11,7 @@ import CoreLocation
 import GooglePlaces
 import GooglePlacePicker
 
+
 class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerDelegate {
     
     @IBOutlet var imgView_InPerson: UIImageView!
@@ -24,6 +25,9 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     @IBOutlet var scrollView: UIScrollView!
     
     var user_Name:String?
+    
+    var request_id_fromRequestDetail:NSNumber?
+    var check_comingFromRequestDetail:String = "NO"
     
     fileprivate var str_date_selected:String? = ""
     
@@ -57,6 +61,9 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             self.txtView_Message.layer.borderWidth = 1.0
             self.txtView_Message.layer.borderColor = Global.macros.themeColor.cgColor
             
+            self.calender.layer.borderColor = UIColor.darkGray.cgColor
+            self.calender.layer.borderWidth = 1.0
+            
             
             self.CreateNavigationBackBarButton()
             
@@ -69,6 +76,10 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             let item2 = UIBarButtonItem(customView: btn2)
             //Right items
             self.navigationItem.setRightBarButtonItems([item2], animated: true)
+            
+            if self.check_comingFromRequestDetail == "YES"{
+                self.setRequestData()
+            }
             
         }
         // Do any additional setup after loading the view.
@@ -191,9 +202,19 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                 
             }
             
+            
+            
+            if self.check_comingFromRequestDetail == "YES"{
+                dict.setValue(self.request_id_fromRequestDetail!, forKey: Global.macros.kId)
+
+            }
+
+            
             dict.setValue(str_date_selected!, forKey: Global.macros.k_SelectedDate)
             dict.setValue(txtView_Message.text!, forKey: Global.macros.k_message)
             print(dict)
+            
+            
             
             Requests_API.sharedInstance.sendRequest(completionBlock: { (status, dict_Info) in
                 
@@ -213,7 +234,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                     
                     break
                     
-                case 406:
+                case 400:
                     DispatchQueue.main.async {
                         
                         self.showAlert(Message: "Your previous request is pending.", vc: self)
@@ -242,6 +263,100 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
         }
     }
     
+    func setRequestData()  {
+        
+        let dict = NSMutableDictionary()
+        let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+        dict.setValue(user_Id, forKey: Global.macros.kUserId)
+        dict.setValue(self.request_id_fromRequestDetail!, forKey: "id")
+        print(dict)
+        
+        
+        if self.checkInternetConnection(){
+            
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            }
+            
+            Requests_API.sharedInstance.viewRequest(completionBlock: { (status, dict_Info) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                }
+                switch status{
+                    
+                case 200:
+                    
+                    DispatchQueue.main.async {
+                        
+                        //setting radio button according to selected method to meet
+                        //if video call is selected
+                        if dict_Info[Global.macros.k_mediumOfCommunication] != nil{
+                            
+                        self.imgView_InPerson.image = UIImage.init(named: "unchecked")
+                        self.imgView_Virtually.image = UIImage.init(named: "checked")
+                            
+                            
+                            
+                        }
+                        else if dict_Info[Global.macros.k_location] != nil{
+                            
+                        self.imgView_InPerson.image = UIImage.init(named: "checked")
+                        self.imgView_Virtually.image = UIImage.init(named: "unchecked")
+                        self.btn_SelectLocation.setTitle(dict_Info.value(forKey:Global.macros.k_location) as? String, for: .normal)
+                            
+                            
+                        }
+                        
+                        
+                        //setting date on calender
+                        if dict_Info[Global.macros.k_SelectedDate] != nil{
+                            
+                            let str_date =   dict_Info.value(forKey: Global.macros.k_SelectedDate) as? String
+                            let sdate = self.formatter.date(from: str_date!)
+                            self.calender.deselect(sdate!)
+                            self.calender.select(sdate!, scrollToDate: true)
+                            
+                        }
+                        
+                        //setting message
+                        if dict_Info["message"] != nil &&  dict_Info["message"] as? String != ""{
+                            
+                            self.lbl_MessagePlaceholder.isHidden = true
+                            self.txtView_Message.text = dict_Info.value(forKey: "message") as? String
+                        }
+                        else{
+                            self.lbl_MessagePlaceholder.isHidden = false
+                        }
+                        
+                    }
+                    break
+                    
+                case 404:
+                    DispatchQueue.main.async {
+                        self.showAlert(Message: Global.macros.kError, vc: self)
+                        
+                    }
+                    
+                default:
+                    DispatchQueue.main.async {
+                        self.showAlert(Message: Global.macros.kError, vc: self)
+
+                    }
+                    break
+                }
+                
+            }, errorBlock: { (error) in
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.showAlert(Message: Global.macros.kError, vc: self)
+                }
+            }, dictionary: dict)
+        }
+        else{
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+        }
+
+    }
     
     // MARK: - Delegate GMSAutocompleteViewController
     // Handle the user's selection.

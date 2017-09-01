@@ -39,9 +39,16 @@ class RequestsListViewController: UIViewController {
         
         
         super.viewDidLoad()
+       
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
         DispatchQueue.main.async {
             
-
+            
             self.navigationItem.title = "My Request"//self.user_Name!
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
@@ -63,11 +70,11 @@ class RequestsListViewController: UIViewController {
             
             self.view_MainButtons.layer.borderWidth = 1.5
             self.view_MainButtons.layer.borderColor = Global.macros.themeColor.cgColor
-
+            
             //setting default selected button for request
             self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
             self.btn_ShadowRequest.setTitleColor(UIColor.black, for: .normal)
-
+            
             
             //setting default selected filter button
             //Showing line and color of accepted button
@@ -81,15 +88,10 @@ class RequestsListViewController: UIViewController {
             self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
             self.lbl_btn_Declined.isHidden = true
             
-            //initialy my request keyword at server end is "send"
             
         }
 
-        
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        //initialy my request keyword at server end is "send"
         self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
 
     }

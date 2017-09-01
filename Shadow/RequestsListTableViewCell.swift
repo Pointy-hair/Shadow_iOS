@@ -121,46 +121,41 @@ class RequestsListTableViewCell: UITableViewCell {
             }else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "COMPANY"{
                 
                 self.lbl_UserName.text = (dict_UserInfo.value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "name") as? String
-                
             }
-            
-            
             
                 let str_profileImage = dict_UserInfo.value(forKey: "profileImageUrl") as? String
                 if str_profileImage != nil{
                     self.imgView_UserProfile.sd_setImage(with: URL.init(string: str_profileImage!), placeholderImage: UIImage.init(named: "dummySearch"))
-                    
                 }
                 
                 self.lbl_TotalRatingCount.text = "\((dict_UserInfo).value(forKey: "ratingCount")!)"
                 
-                
-                
                 let str_avgRating = ((dict_UserInfo).value(forKey: "avgRating") as? NSNumber)?.stringValue
                 
                 let dbl = 2.0
-                
-                if  dbl.truncatingRemainder(dividingBy: 1) == 0
-                {
+                if  dbl.truncatingRemainder(dividingBy: 1) == 0{
                     self.lbl_AverageRating.text = str_avgRating! + ".0"
-                    
                 }
-                else {
-                    
+                else{
                     self.lbl_AverageRating.text = str_avgRating!
                 }
             
             //setting date
-            let date_String = dictionary.value(forKey: "selectedDate") as? String
-            if date_String != nil{
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let s = dateFormatter.date(from: date_String!)
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMMM dd,yyyy"
-            self.lbl_Date.text = formatter.string(from: s!).uppercased()
+            if  dictionary["selectedDate"] != nil{
+                let date_String = dictionary.value(forKey: "selectedDate") as? String
+                if date_String != nil{
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    let s = dateFormatter.date(from: date_String!)
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "MMMM dd,yyyy"
+                    self.lbl_Date.text = formatter.string(from: s!).uppercased()
+                }
             }
-                
+            else{
+                self.lbl_Date.text = ""
+            }
+            
                 
                 
                 
