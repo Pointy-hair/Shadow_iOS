@@ -28,6 +28,9 @@ class OccupationDetailViewController: UIViewController {
      var arr_company = NSMutableArray()
     public var occupationId : NSNumber?
     
+    @IBOutlet weak var kheightViewBehindCompany: NSLayoutConstraint!
+    
+    @IBOutlet weak var kheightViewBehindSchool: NSLayoutConstraint!
     @IBOutlet weak var lbl_RatingCount: UILabel!
     
 
@@ -251,9 +254,9 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             
             if arr_company.count > 0 {
                 
-               let dict = (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO")as? NSMutableDictionary
+               let dict = (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSMutableDictionary
                 
-                 company_cell.lbl_CompanyName.text = dict?.value(forKey: "companyName") as! String?
+                 company_cell.lbl_CompanyName.text = dict?.value(forKey: "companyName") as? String
             }
             
             cell = company_cell
