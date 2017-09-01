@@ -14,7 +14,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     @IBOutlet var lbl_NoNotifications: UILabel!
     
     fileprivate var array_allNotifications = NSMutableArray()
-    fileprivate var item_request = UIBarButtonItem()
+    fileprivate var item_trash = UIBarButtonItem()
     
     
     override func viewDidLoad() {
@@ -26,12 +26,12 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
             self.getAllNotifications()
             
             //navigation clear button
-            let btn_request = UIButton(type: .custom)
-            btn_request.setImage(UIImage(named: "chat-icon"), for: .normal)
-            btn_request.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
-            btn_request.addTarget(self, action: #selector(self.btn_Clear), for: .touchUpInside)
-            self.item_request = UIBarButtonItem(customView: btn_request)
-            self.navigationItem.setRightBarButtonItems([self.item_request], animated: true)
+            let btn_trash = UIButton(type: .custom)
+            btn_trash.setImage(UIImage(named: "trash"), for: .normal)
+            btn_trash.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
+            btn_trash.addTarget(self, action: #selector(self.btn_Clear), for: .touchUpInside)
+            self.item_trash = UIBarButtonItem(customView: btn_trash)
+            self.navigationItem.setRightBarButtonItems([self.item_trash], animated: true)
             
             //adding view to table footer
             self.tblView_Notifications.tableFooterView = UIView()
@@ -76,7 +76,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
                         self.tblView_Notifications.isHidden = false
                         self.tblView_Notifications.reloadData()
                         self.lbl_NoNotifications.isHidden = true
-                        self.item_request.isEnabled = true
+                        self.item_trash.isEnabled = true
                         self.tblView_Notifications.reloadData()
                     }
                     
@@ -86,7 +86,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
                     DispatchQueue.main.async {
                         self.tblView_Notifications.isHidden = true
                         self.lbl_NoNotifications.isHidden = false
-                        self.item_request.isEnabled = false
+                        self.item_trash.isEnabled = false
                     }
                     
                     break

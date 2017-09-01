@@ -242,7 +242,6 @@ class ProfileVC: UIViewController {
                         self.lbl_NoOfRating.text = "\((response.1).value(forKey: "ratingCount")!)"
                         
                         
-                        
                          array_public_UserSocialSites.removeAll()
                         //getting social sites urls from response
                         for v in self.array_ActualSocialSites
@@ -847,8 +846,13 @@ class ProfileVC: UIViewController {
     
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
+        
+        if self.lbl_NoOfRating.text != "0"{
+        
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
         _ = self.navigationController?.pushViewController(vc, animated: true)
+       
+        }
 
     }
     

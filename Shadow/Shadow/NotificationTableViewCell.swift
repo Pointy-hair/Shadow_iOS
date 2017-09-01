@@ -17,6 +17,10 @@ class NotificationTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        DispatchQueue.main.async {
+            self.imgView_Notification.layer.cornerRadius = 30.0
+            self.imgView_Notification.clipsToBounds = true
+        }
         // Initialization code
     }
 
@@ -36,62 +40,55 @@ class NotificationTableViewCell: UITableViewCell {
             if str_profileImage != nil{
                 
                 self.imgView_Notification.sd_setImage(with: URL.init(string: str_profileImage!), placeholderImage: UIImage.init(named: "dummySearch"))
-                
             }
             
             //setting user info
+            let dict_RequestDTO = dict.value(forKey: "requestDTO") as! NSDictionary
+            
+            //if role is user
             if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "USER"{
                 
-                if dict.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict.value(forKey: Global.macros.kAccept) as? NSNumber == 0{
+                let username = dict_UserInfo.value(forKey: Global.macros.kUserName) as? String
+
+                if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 0{
                     
+                    self.lbl_Notification.text = "\(username!) has accepted your request."
+
                 }
-                else if dict.value(forKey: Global.macros.kAccept) as? NSNumber == 0 && dict.value(forKey: Global.macros.kAccept) as? NSNumber == 1{
+                else if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 0 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 1{
                     
+                    self.lbl_Notification.text = "\(username!) has rejected your request."
                 }
-                else{
-                    
-                }
-               
             }
+            //if role is school
             else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "SCHOOL"{
                 
                 let school_name = dict_UserInfo.value(forKey: Global.macros.kschoolName) as? String
                 
-                if dict.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict.value(forKey: Global.macros.kAccept) as? NSNumber == 0{
-                    self.lbl_Notification.text = "\(school_name) has accepted your request."
-                }
-                else if dict.value(forKey: Global.macros.kAccept) as? NSNumber == 0 && dict.value(forKey: Global.macros.kAccept) as? NSNumber == 1{
-                    self.lbl_Notification.text = "\(school_name) has rejected your request."
-                }
-                else{
+                if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 0{
                     
+                    self.lbl_Notification.text = "\(school_name!) has accepted your request."
                 }
-                
-            }else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "COMPANY"{
+                else if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 0 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 1{
+                    
+                    self.lbl_Notification.text = "\(school_name!) has rejected your request."
+                }
+            }
+            //if role is company
+            else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "COMPANY"{
                 
                 let company_name = dict_UserInfo.value(forKey: Global.macros.kcompanyName) as? String
 
-                if dict.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict.value(forKey: Global.macros.kAccept) as? NSNumber == 0{
-                    self.lbl_Notification.text = "\(company_name) has accepted your request."
-
-                }
-                else if dict.value(forKey: Global.macros.kAccept) as? NSNumber == 0 && dict.value(forKey: Global.macros.kAccept) as? NSNumber == 1{
-                    self.lbl_Notification.text = "\(company_name) has rejected your request."
-
-                }
-                else{
+                if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 0{
                     
+                    self.lbl_Notification.text = "\(company_name!) has accepted your request."
+
                 }
-                
+                else if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 0 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 1{
+                    
+                    self.lbl_Notification.text = "\(company_name!) has rejected your request."
+                }
             }
-            
-            
-            
         }
-        
-        
-        
     }
-    
-    
 }

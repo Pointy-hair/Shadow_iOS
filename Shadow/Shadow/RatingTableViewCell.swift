@@ -28,8 +28,6 @@ class RatingTableViewCell: UITableViewCell {
         DispatchQueue.main.async {
             self.imgview_Profile.layer.cornerRadius = 20.0
             self.imgview_Profile.clipsToBounds = true
-//            self.imgview_Profile.layer.borderColor = UIColor.init(red: 176.0/255.0, green: 93.0/255.0, blue: 206.0/255.0, alpha: 1.0).cgColor
-//            self.imgview_Profile.layer.borderWidth = 2.0
         }
         
     }

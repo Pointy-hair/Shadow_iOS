@@ -34,9 +34,8 @@ class RatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.automaticallyAdjustsScrollViewInsets = false
+       // self.automaticallyAdjustsScrollViewInsets = false
         self.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.navigationBar.isTranslucent = true
         self.tabBarController?.tabBar.isTranslucent = true
 
     }
@@ -83,10 +82,6 @@ class RatingViewController: UIViewController {
         }
         
         
-        if ratingview_imgurl != nil {
-            self.imgView_Profile.sd_setImage(with: URL(string:ratingview_imgurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
-        }
-        
         tblView_Rating.tableFooterView = UIView()
         
         self.navigationItem.setHidesBackButton(false, animated:true)
@@ -95,19 +90,16 @@ class RatingViewController: UIViewController {
         
        // navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
         
-        if ratingview_name == "" || ratingview_name == nil {
-            
-            lbl_name.text = "NA"
- 
-        }
-        else {
-            lbl_name.text = ratingview_name
-            self.title = ratingview_name?.capitalizingFirstLetter()
-        }
+//        if ratingview_name == "" || ratingview_name == nil {
+//            
+//            lbl_name.text = "NA"
+// 
+//        }
+//        else {
+//            lbl_name.text = ratingview_name
+//            self.title = ratingview_name?.capitalizingFirstLetter()
+//        }
     }
-    
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -116,65 +108,6 @@ class RatingViewController: UIViewController {
     
     
     //MARK: - Functions
-    func SetRatingView (Number:String) {
-        
-        DispatchQueue.main.async {
-            switch Number {
-                
-            case "0":
-                self.imageView1?.image = UIImage(named: "StarEmpty")
-                self.imageView2?.image = UIImage(named: "StarEmpty")
-                self.imageView3?.image = UIImage(named: "StarEmpty")
-                self.imageView4?.image = UIImage(named: "StarEmpty")
-                self.imageView5?.image = UIImage(named: "StarEmpty")
-                
-            case "1":
-                self.imageView1?.image = UIImage(named: "StarFull")
-                self.imageView2?.image = UIImage(named: "StarEmpty")
-                self.imageView3?.image = UIImage(named: "StarEmpty")
-                self.imageView4?.image = UIImage(named: "StarEmpty")
-                self.imageView5?.image = UIImage(named: "StarEmpty")
-                
-            case "2":
-                self.imageView1?.image = UIImage(named: "StarFull")
-                self.imageView2?.image = UIImage(named: "StarFull")
-                self.imageView3?.image = UIImage(named: "StarEmpty")
-                self.imageView4?.image = UIImage(named: "StarEmpty")
-                self.imageView5?.image = UIImage(named: "StarEmpty")
-                
-            case "3":
-                self.imageView1?.image = UIImage(named: "StarFull")
-                self.imageView2?.image = UIImage(named: "StarFull")
-                self.imageView3?.image = UIImage(named: "StarFull")
-                self.imageView4?.image = UIImage(named: "StarEmpty")
-                self.imageView5?.image = UIImage(named: "StarEmpty")
-                
-            case "4":
-                self.imageView1?.image = UIImage(named: "StarFull")
-                self.imageView2?.image = UIImage(named: "StarFull")
-                self.imageView3?.image = UIImage(named: "StarFull")
-                self.imageView4?.image = UIImage(named: "StarFull")
-                self.imageView5?.image = UIImage(named: "StarEmpty")
-                
-            case "5":
-                self.imageView1?.image = UIImage(named: "StarFull")
-                self.imageView2?.image = UIImage(named: "StarFull")
-                self.imageView3?.image = UIImage(named: "StarFull")
-                self.imageView4?.image = UIImage(named: "StarFull")
-                self.imageView5?.image = UIImage(named: "StarFull")
-                
-                
-                
-            default:
-                break
-            }
-            
-        }
-        
-    }
-    
-    
-    
     
     func ShowRatingData() {
         
@@ -186,8 +119,6 @@ class RatingViewController: UIViewController {
             }
             
             let dic:NSMutableDictionary = NSMutableDictionary()
-            
-            
             dic.setValue(SavedPreferences.value(forKey: Global.macros.kUserId)as! NSNumber, forKey: Global.macros.kUserId)
             if bool_UserIdComingFromSearch == true  {
                 
@@ -216,9 +147,9 @@ class RatingViewController: UIViewController {
                     let arr  = (response.value(forKey: "data") as? NSDictionary)?.mutableCopy() as! NSMutableDictionary
                     DispatchQueue.main.async {
                         
+                        //setting rating
                         if arr.value(forKey: "avgRating") != nil {
                            
-                            
                             ratingview_ratingNumber = "\(arr.value(forKey: "avgRating")!)"
                             
                             if "\(arr.value(forKey: "avgRating")!)" != "" &&  (arr.value(forKey: "avgRating")) != nil {
@@ -239,12 +170,29 @@ class RatingViewController: UIViewController {
                             }
                          }
                         
+                        //setting rating count members
                          self.lbl_totalRatingCount.text = "\(arr.value(forKey: "ratingCount")!)"
                         
+                        //setting title
+                        if arr["ratedUserName"] != nil{
+                            //if it is user
+                        self.title = (arr.value(forKey: "ratedUserName") as? String)?.capitalizingFirstLetter()
+                        }
+                        else {
+                            //if it is school or company
+                            self.title = (arr.value(forKey: "name") as? String)?.capitalizingFirstLetter()
+ 
+                        }
                         
-                        self.title = (arr.value(forKey: "name") as? String)?.capitalizingFirstLetter()
+                        //set profile image
+                        if ratingview_imgurl != nil {
+                    
+                            self.imgView_Profile.sd_setImage(with: URL(string:ratingview_imgurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
+                            
+                        }
                     }
                     
+                    //getting array of users who rated
                     if (arr.value(forKey: "userRatings") as? NSArray) != nil {
                         
                         self.arr_GetRatingData = (arr.value(forKey: "userRatings") as? NSArray)?.mutableCopy() as! NSMutableArray
@@ -329,47 +277,6 @@ class RatingViewController: UIViewController {
         
     }
     
-    // Rating stars on navigation bar
-    func custom_StarView () {
-        
-        let view_stars = UIView()
-        view_stars.frame = CGRect(x: 0, y: 10, width: 110, height: 25)
-        view_stars.backgroundColor = UIColor.clear
-        self.view.addSubview(view_stars)
-        
-        let imageName = "StarEmpty"
-        let image = UIImage(named: imageName)
-        
-        imageView1 = UIImageView(image: image!)
-        imageView1?.frame = CGRect(x: 5, y: 0, width: 20, height: 20)
-        
-        imageView2 = UIImageView(image: image!)
-        imageView2?.frame = CGRect(x: 25, y: 0, width: 20, height: 20)
-        
-        imageView3 = UIImageView(image: image!)
-        imageView3?.frame = CGRect(x: 45, y: 0, width: 20, height: 20)
-        
-        
-        imageView4 = UIImageView(image: image!)
-        imageView4?.frame = CGRect(x: 65, y: 0, width: 20, height: 20)
-        
-        
-        imageView5 = UIImageView(image: image!)
-        imageView5?.frame = CGRect(x: 85, y: 0, width: 20, height: 20)
-        
-        
-        
-        view_stars.addSubview(imageView1!)
-        view_stars.addSubview(imageView2!)
-        view_stars.addSubview(imageView3!)
-        view_stars.addSubview(imageView4!)
-        view_stars.addSubview(imageView5!)
-        
-        self.navigationItem.titleView = view_stars
-        
-    }
-    
-    
     func PushAddRatingScreen() {
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "addrating") as! AddRatingViewController
         _ = self.navigationController?.pushViewController(vc, animated: true)
@@ -425,6 +332,7 @@ extension RatingViewController:UITableViewDelegate,UITableViewDataSource{
         if (arr_GetRatingData[indexPath.row] as! NSDictionary)["timeAgo"] != nil {
         let time : NSString = (arr_GetRatingData[indexPath.row] as! NSDictionary)["timeAgo"] as! NSString
 
+        print(time)
         let delimiter = " "
         var token = time.components(separatedBy: delimiter)
         
@@ -436,6 +344,11 @@ extension RatingViewController:UITableViewDelegate,UITableViewDataSource{
             else if token[1].contains("d") {
   
                cell.lbl_time.text = (token[0]) + "d"
+                
+            }
+            else if token[1].contains("h") {
+                
+                cell.lbl_time.text = (token[0]) + "h"
                 
             }
             

@@ -1066,6 +1066,8 @@ class ComapanySchoolViewController: UIViewController{
     
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
+        
+        
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
         _ = self.navigationController?.pushViewController(vc, animated: true)
         
