@@ -70,7 +70,6 @@ class OccupationDetailViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = leftBackBarButton
        
         // Do any additional setup after loading the view.
-        setChart()
  
     }
     
@@ -129,7 +128,8 @@ class OccupationDetailViewController: UIViewController {
                         self.arr_company = (self.dic_Occupation.value(forKey: "companys") as! NSArray).mutableCopy() as! NSMutableArray
                         self.arr_school = (self.dic_Occupation.value(forKey: "schools") as! NSArray).mutableCopy() as! NSMutableArray
 
-                        
+                        self.setChart()
+
                         self.collectionViewSchool.reloadData()
                         self.collectionViewCompany.reloadData()
                     }
@@ -253,10 +253,13 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             let company_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "company", for: indexPath)as! CompanyCollectionViewCell
             
             if arr_company.count > 0 {
+                if (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSMutableDictionary != nil {
                 
-               let dict = (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSMutableDictionary
+               let dict = (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as! NSMutableDictionary
                 
-                 company_cell.lbl_CompanyName.text = dict?.value(forKey: "companyName") as? String
+                 company_cell.lbl_CompanyName.text = dict.value(forKey: "companyName") as? String
+                    
+                }
             }
             
             cell = company_cell
@@ -267,11 +270,12 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             let school_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "school", for: indexPath)as! SchoolCollectionViewCell
             
             if arr_school.count > 0 {
-                
+                if (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSMutableDictionary != nil {
+
                 let dict = (arr_school[indexPath.row]as! NSDictionary).value(forKey: "userDTO")as? NSMutableDictionary
                 
-             //   school_cell.lbl_SchoolName.text = dict?.value(forKey: "schoolName") as! String?
-                
+               school_cell.lbl_SchoolName.text = dict?.value(forKey: "schoolName") as? String
+                }
             }
             
             cell = school_cell
