@@ -32,7 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         //Code for push notifications
-        
+        application.applicationIconBadgeNumber = 10
+
         let settings = UIUserNotificationSettings(types: [.alert,.badge,.sound], categories: nil)
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
@@ -142,8 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
      
-        let badgeCount = 0
-        UIApplication.shared.applicationIconBadgeNumber += badgeCount
+//        let badgeCount = 0
+//        UIApplication.shared.applicationIconBadgeNumber += badgeCount
         print(userInfo)
         
         //  bool_FromNotification = true

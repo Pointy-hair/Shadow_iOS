@@ -39,7 +39,7 @@ class TabbarController: UITabBarController {
             
             self.viewControllers = [SearchScreen, HomeScreen]
             self.selectedIndex = 1
-            
+            bool_UserIdComingFromSearch = false
             
         }
             
@@ -69,7 +69,8 @@ class TabbarController: UITabBarController {
             
             self.viewControllers = [SearchScreen, HomeScreen]
             self.selectedIndex = 1
-            
+            bool_UserIdComingFromSearch = false
+
             
         }
      
