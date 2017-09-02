@@ -2033,6 +2033,11 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                     }
                     
                 }
+                    else {
+                        cell.lbl_LocNcom.isHidden = true
+                        cell.img_LocNcom.isHidden = true
+                        
+                    }
                 }
                 else {
                     
@@ -2053,6 +2058,13 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                         }
                        
                     }
+                        
+                        
+                         else {
+                            cell.lbl_LocNcom.isHidden = true
+                            cell.img_LocNcom.isHidden = true
+                            
+                        }
                     }
                         
                     else {
@@ -2068,7 +2080,7 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                 
             else {
                 
-                
+                if bool_Occupation == false {
                 
                 if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" {
                     cell.lbl_LocNcom.text = dict_Temp?.value(forKey: "location") as? String
@@ -2080,7 +2092,13 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                     cell.img_LocNcom.image = UIImage.init(named: "")
                     
                 }
-                
+            }
+                else {
+                    cell.lbl_LocNcom.isHidden = true
+                    cell.img_LocNcom.isHidden = true
+                    
+                }
+            
             }
             
             

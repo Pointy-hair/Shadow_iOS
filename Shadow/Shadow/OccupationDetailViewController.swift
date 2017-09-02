@@ -129,10 +129,14 @@ class OccupationDetailViewController: UIViewController {
                             self.lbl_AvgSalary.text = self.suffixNumber(number: myNumber) as String
                             print(self.lbl_AvgSalary.text!) //companys
                         
-                        
+                        if self.dic_Occupation.value(forKey: "companys") != nil {
                         self.arr_company = (self.dic_Occupation.value(forKey: "companys") as! NSArray).mutableCopy() as! NSMutableArray
+                            
+                            }
+                            
+                      if self.dic_Occupation.value(forKey: "schools") != nil {
                         self.arr_school = (self.dic_Occupation.value(forKey: "schools") as! NSArray).mutableCopy() as! NSMutableArray
-                        
+                            }
 
                         self.setChart()
 

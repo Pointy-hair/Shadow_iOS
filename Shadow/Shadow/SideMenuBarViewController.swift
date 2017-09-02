@@ -145,7 +145,6 @@ extension SideMenuBarViewController:UITableViewDataSource,UITableViewDelegate{
                 
                  let shadow_Status = SavedPreferences.value(forKey: Global.macros.kotherUsersShadowYou) as? NSNumber
                 
-                print(shadow_Status!)
                 
                 if shadow_Status == 1{
                     cell.btn_Switch.isOn = true
