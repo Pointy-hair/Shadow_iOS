@@ -13,7 +13,7 @@ import UIKit
 var video_url : URL?
 var bool_PlayFromProfile : Bool?
 
-public var bool_UserIdComingFromSearch : Bool? //When we come from search screen
+public var bool_UserIdComingFromSearch : Bool? = false//When we come from search screen
 public var userIdFromSearch : NSNumber?
 public var dic_DataOfProfileForOtherUser : NSMutableDictionary = NSMutableDictionary()
 public var array_public_UserSocialSites = [[String:Any]]()

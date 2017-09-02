@@ -111,6 +111,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        
+        application.applicationIconBadgeNumber = 0
+
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     
@@ -134,13 +137,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         deviceTokenString = "b43c88327277116c7eb398395a96907e744d04ebb288efc970658b63498014ec"
-        // print(error.localizedDescription)
         
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
-        
-        print("notifications")
+     
+        let badgeCount = 0
+        UIApplication.shared.applicationIconBadgeNumber += badgeCount
         print(userInfo)
         
         //  bool_FromNotification = true

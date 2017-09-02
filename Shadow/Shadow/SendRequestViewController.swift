@@ -229,8 +229,29 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                     
                     DispatchQueue.main.async {
                         
-                        self.showAlert(Message: "Request successfully sent.", vc: self)
-                        _ = self.navigationController?.popToRootViewController(animated: true)
+                        let TitleString = NSAttributedString(string: "Shadow", attributes: [
+                            NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+                            NSForegroundColorAttributeName : Global.macros.themeColor_pink
+                            ])
+                        let MessageString = NSAttributedString(string: "Request successfully sent.", attributes: [
+                            NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+                            NSForegroundColorAttributeName : Global.macros.themeColor_pink
+                            ])
+                        
+                            let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {(action) in
+                            
+                                _ = self.navigationController?.popToRootViewController(animated: true)
+                            
+                            }))
+                            alert.view.layer.cornerRadius = 10.0
+                            alert.view.clipsToBounds = true
+                            alert.view.backgroundColor = UIColor.white
+                            alert.view.tintColor = Global.macros.themeColor_pink
+                            
+                            alert.setValue(TitleString, forKey: "attributedTitle")
+                            alert.setValue(MessageString, forKey: "attributedMessage")
+                            self.present(alert, animated: true, completion: nil)
                     }
                     
                     break
@@ -238,10 +259,32 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                 case 400:
                     DispatchQueue.main.async {
                         
-                        self.showAlert(Message: "Your previous request is pending.", vc: self)
-                        _ = self.navigationController?.popToRootViewController(animated: true)
-
-                    }
+                            let TitleString = NSAttributedString(string: "Shadow", attributes: [
+                                NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+                                NSForegroundColorAttributeName : Global.macros.themeColor_pink
+                                ])
+                            let MessageString = NSAttributedString(string: "Your previous request is pending.", attributes: [
+                                NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+                                NSForegroundColorAttributeName : Global.macros.themeColor_pink
+                                ])
+                        
+                                let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {(action) in
+                                    
+                                _ = self.navigationController?.popToRootViewController(animated: true)
+                                    
+                                }))
+                                alert.view.layer.cornerRadius = 10.0
+                                alert.view.clipsToBounds = true
+                                alert.view.backgroundColor = UIColor.white
+                                alert.view.tintColor = Global.macros.themeColor_pink
+                                
+                                alert.setValue(TitleString, forKey: "attributedTitle")
+                                alert.setValue(MessageString, forKey: "attributedMessage")
+                                self.present(alert, animated: true, completion: nil)
+                                
+                            }
+                        
                     break
                 default:
                     self.showAlert(Message: Global.macros.kError, vc: self)

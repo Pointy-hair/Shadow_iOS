@@ -61,7 +61,13 @@ class NotificationTableViewCell: UITableViewCell {
                     self.lbl_Notification.text = "\(username!) has rejected your request."
                 }
                 else{
-                    self.lbl_Notification.text = "\(username!) has updated a request."
+                    
+                    if dict["type"] as? String == "Send"{
+                        self.lbl_Notification.text = "\(username!) has send you a request."
+                    }else{
+                        self.lbl_Notification.text = "\(username!) has updated a request."
+ 
+                    }
                 }
             }
             //if role is school
@@ -78,8 +84,14 @@ class NotificationTableViewCell: UITableViewCell {
                     self.lbl_Notification.text = "\(school_name!) has rejected your request."
                 }
                 else{
-                    self.lbl_Notification.text = "\(school_name!) has updated a request."
+                    
+                    if dict["type"] as? String == "Send"{
+                        self.lbl_Notification.text = "\(school_name!) has send you a request."
 
+                    }else{
+
+                    self.lbl_Notification.text = "\(school_name!) has updated a request."
+                    }
                 }
                 
                 
@@ -99,8 +111,12 @@ class NotificationTableViewCell: UITableViewCell {
                     self.lbl_Notification.text = "\(company_name!) has rejected your request."
                 }
                 else{
-                    self.lbl_Notification.text = "\(company_name!) has updated a request."
+                    if dict["type"] as? String == "Send"{
+                        self.lbl_Notification.text = "\(company_name!) has send you a request."
 
+                    }else{
+                    self.lbl_Notification.text = "\(company_name!) has updated a request."
+                    }
                 }
             }
         }

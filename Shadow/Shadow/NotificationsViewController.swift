@@ -96,6 +96,13 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
                     
                     break
                     
+                case 401:
+                    DispatchQueue.main.async {
+
+                    self.AlertSessionExpire()
+                    }
+                    break
+                    
                 default:
                     self.showAlert(Message: Global.macros.kError, vc: self)
                     break
