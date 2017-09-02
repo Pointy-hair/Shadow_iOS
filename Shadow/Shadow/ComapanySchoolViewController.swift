@@ -131,8 +131,9 @@ class ComapanySchoolViewController: UIViewController{
             
             DispatchQueue.main.async {
                 
-//                let desiredOffset = CGPoint(x: 0, y: -250)
-//                self.Scroll_View.setContentOffset(desiredOffset, animated: false)
+                self.Scroll_View.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+                self.automaticallyAdjustsScrollViewInsets = false
+                self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
                 
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.navigationItem.setHidesBackButton(false, animated:true)

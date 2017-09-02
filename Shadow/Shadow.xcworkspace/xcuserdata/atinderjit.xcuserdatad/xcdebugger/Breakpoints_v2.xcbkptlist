@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526025718.930318"
+            timestampString = "526045911.400411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1138"
-            endingLineNumber = "1138"
+            startingLineNumber = "1147"
+            endingLineNumber = "1147"
             landmarkName = "scrollViewDidEndDecelerating(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/OccupationDetailViewController.swift"
-            timestampString = "526034740.036431"
+            timestampString = "526037992.537378"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "370"
-            endingLineNumber = "370"
+            startingLineNumber = "369"
+            endingLineNumber = "369"
             landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
             <Locations>
@@ -52,7 +52,7 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526028640.303936"
+                  timestampString = "526043206.102605"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -67,11 +67,11 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526028640.307921"
+                  timestampString = "526043206.105582"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "367"
-                  endingLineNumber = "367"
+                  startingLineNumber = "373"
+                  endingLineNumber = "373"
                   offsetFromSymbolStart = "12">
                </Location>
             </Locations>
@@ -116,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526028638.624918"
+            timestampString = "526045911.400411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2915"
-            endingLineNumber = "2915"
+            startingLineNumber = "2925"
+            endingLineNumber = "2925"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -132,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526028638.624918"
+            timestampString = "526045911.400411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2921"
-            endingLineNumber = "2921"
+            startingLineNumber = "2931"
+            endingLineNumber = "2931"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -148,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526028229.909502"
+            timestampString = "526045911.400411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2022"
-            endingLineNumber = "2022"
+            startingLineNumber = "2032"
+            endingLineNumber = "2032"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -164,11 +164,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526028638.624918"
+            timestampString = "526045911.400411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2044"
-            endingLineNumber = "2044"
+            startingLineNumber = "2054"
+            endingLineNumber = "2054"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -180,13 +180,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526028279.819336"
+            timestampString = "526045911.400411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2026"
-            endingLineNumber = "2026"
+            startingLineNumber = "2036"
+            endingLineNumber = "2036"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shadow.CustomSearchViewController.tableView (__ObjC.UITableView, cellForRowAt : Foundation.IndexPath) -&gt; __ObjC.UITableViewCell"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
+                  timestampString = "526043206.13695"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2034"
+                  endingLineNumber = "2034"
+                  offsetFromSymbolStart = "3770">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shadow.CustomSearchViewController.tableView (__ObjC.UITableView, cellForRowAt : Foundation.IndexPath) -&gt; __ObjC.UITableViewCell"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
+                  timestampString = "526043206.139199"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2034"
+                  endingLineNumber = "2034"
+                  offsetFromSymbolStart = "49935">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -196,13 +228,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526028638.624918"
+            timestampString = "526045911.400411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2049"
-            endingLineNumber = "2049"
+            startingLineNumber = "2059"
+            endingLineNumber = "2059"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shadow.CustomSearchViewController.tableView (__ObjC.UITableView, cellForRowAt : Foundation.IndexPath) -&gt; __ObjC.UITableViewCell"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
+                  timestampString = "526043206.144075"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2057"
+                  endingLineNumber = "2057"
+                  offsetFromSymbolStart = "7165">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shadow.CustomSearchViewController.tableView (__ObjC.UITableView, cellForRowAt : Foundation.IndexPath) -&gt; __ObjC.UITableViewCell"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
+                  timestampString = "526043206.146494"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2057"
+                  endingLineNumber = "2057"
+                  offsetFromSymbolStart = "49954">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

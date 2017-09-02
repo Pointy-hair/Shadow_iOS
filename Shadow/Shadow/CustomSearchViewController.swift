@@ -936,12 +936,20 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                 
                 if str_role == "USER" {
                     
-                    let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC
-                    _ = self.navigationController?.pushViewController(vc, animated: true)
-                   // vc.edgesForExtendedLayout = .top
-                     vc.extendedLayoutIncludesOpaqueBars = true
-                   // self.tabBarController?.tabBar.isTranslucent = false
-                   // self.navigationController?.navigationBar.isTranslucent = false
+                    DispatchQueue.main.async {
+                        
+                        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC
+                        _ = self.navigationController?.pushViewController(vc, animated: true)
+                        vc.extendedLayoutIncludesOpaqueBars = true
+                        self.automaticallyAdjustsScrollViewInsets = false
+                        //self.navigationController?.navigationBar.isTranslucent = false
+                    }
+                    
+                    //self.edgesForExtendedLayout = UIRectEdgeNone;
+                    // self.edgesForExtendedLayout = UIRectEdge.top
+                    
+                    // self.tabBarController?.tabBar.isTranslucent = false
+                    // self.navigationController?.navigationBar.isTranslucent = false
                     //arr_SearchData.removeAllObjects()
                     
                 }
@@ -950,8 +958,9 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                     let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
                     _ = self.navigationController?.pushViewController(vc, animated: true)
                     vc.extendedLayoutIncludesOpaqueBars = true
-                   // self.tabBarController?.tabBar.isTranslucent = false
-                   // self.navigationController?.navigationBar.isTranslucent = false
+                    self.automaticallyAdjustsScrollViewInsets = false
+                    // self.tabBarController?.tabBar.isTranslucent = false
+                    // self.navigationController?.navigationBar.isTranslucent = false
                     
                     //arr_SearchData.removeAllObjects()
                     

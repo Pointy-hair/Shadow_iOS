@@ -120,6 +120,11 @@ class ProfileVC: UIViewController {
             
             DispatchQueue.main.async {
                 
+                
+                self.scrollbar.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+                self.automaticallyAdjustsScrollViewInsets = false
+                self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
+                
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.view.endEditing(true)
                 self.CreateNavigationBackBarButton() //Create custom back button
