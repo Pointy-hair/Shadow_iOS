@@ -43,6 +43,10 @@ class OccupationDetailViewController: UIViewController {
         
         super.viewDidLoad()
         
+        
+        GetData()
+
+        
         self.barChartView.xAxis.drawGridLinesEnabled = false
         self.barChartView.rightAxis.drawGridLinesEnabled = false
         self.barChartView.rightAxis.drawAxisLineEnabled = false
@@ -60,7 +64,6 @@ class OccupationDetailViewController: UIViewController {
       
         self.txtfield_Occupation.setContentOffset(CGPoint.zero, animated: false)
 
-        GetData()
 
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
