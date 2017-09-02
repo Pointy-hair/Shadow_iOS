@@ -11,7 +11,8 @@ import Charts
 
 class OccupationDetailViewController: UIViewController {
     
-     var months: [String]!
+  //   var NoOfEmployees: [String]!
+    
     
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var lbl_avgRating: UILabel!
@@ -26,6 +27,10 @@ class OccupationDetailViewController: UIViewController {
     var dic_Occupation = NSMutableDictionary()
      var arr_school = NSMutableArray()
      var arr_company = NSMutableArray()
+    
+    var arr_NoOfEmployees = NSMutableArray() //x axis
+    var arr_Salary = NSMutableArray() //y axis
+    
     public var occupationId : NSNumber?
     
     @IBOutlet weak var kheightViewBehindCompany: NSLayoutConstraint!
@@ -109,7 +114,6 @@ class OccupationDetailViewController: UIViewController {
                       // print(self.suffixNumber(number: NSNumber(long: 24000)));
                         
                       
-                        let morePrecisePI = Double((self.dic_Occupation.value(forKey: "salary") as? String)!)
                         
                         self.lbl_UsersWithThisOccupation.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
                         self.lbl_UserThatShadowedThis.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
@@ -117,7 +121,8 @@ class OccupationDetailViewController: UIViewController {
                         self.txtfield_Occupation.text = (self.dic_Occupation.value(forKey: "description") as? String)
                         
                         
-                        
+                        let morePrecisePI = Double((self.dic_Occupation.value(forKey: "salary") as? String)!)
+
                          let myInteger = Int(morePrecisePI!)
                             let myNumber = NSNumber(value:myInteger)
                             print(myNumber)
@@ -127,6 +132,7 @@ class OccupationDetailViewController: UIViewController {
                         
                         self.arr_company = (self.dic_Occupation.value(forKey: "companys") as! NSArray).mutableCopy() as! NSMutableArray
                         self.arr_school = (self.dic_Occupation.value(forKey: "schools") as! NSArray).mutableCopy() as! NSMutableArray
+                        
 
                         self.setChart()
 

@@ -132,8 +132,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-   
+       
         self.bool_Search = true           //When we come back from view full profile.
         bool_UserIdComingFromSearch = false
         dic_DataOfProfileForOtherUser.removeAllObjects()
@@ -627,6 +626,27 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         }
         
     }
+    
+    func suffixNumber(number:NSNumber) -> NSString {
+        
+        var num:Double = number.doubleValue;
+        let sign = ((num < 0) ? "-" : "" );
+        
+        num = fabs(num);
+        
+        if (num < 1000.0){
+            return "\(sign)\(num)" as NSString;
+        }
+        
+        let exp:Int = Int(log10(num) / 3.0 ); //log10(1000));
+        
+        let units:[String] = ["K","M","G","T","P","E"];
+        
+        let roundedNum:Double = round(10 * num / pow(1000.0,Double(exp))) / 10;
+        
+        return "\(sign)\(roundedNum)\(units[exp-1])" as NSString;
+    }
+
     
     
     //MARK: Action of Buttons
@@ -1633,58 +1653,77 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                         } //a
                             
                             else {
-                                cell?.view_MainOccupation.isHidden = false
-                                cell?.setChart()
+                                DispatchQueue.main.async {
+                                    
+                                    cell?.view_MainOccupation.isHidden = false
+                                    cell?.setChart()
+                                    
+                                    if self.arr_SearchData.count > 0 {
+                                        
+                                        self.dicUrl.removeAllObjects()
+                                        
+                                        if (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] != nil || (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String != "" {
+                                            cell?.lbl_CompanySchoolUserName.text = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String
+                                            cell?.lbl_Abt.text = "About" + " " + "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"]!)"
+                                            
+                                        }
+                                        else {
+                                            
+                                            cell?.lbl_CompanySchoolUserName.text = "NA"
+                                            cell?.lbl_Abt.text = "About"
+                                        }
+                                        
+                                        let rating_number = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["avgRating"]!)"
+                                        
+                                        let dbl = 2.0
+                                        
+                                        if  dbl.truncatingRemainder(dividingBy: 1) == 0
+                                        {
+                                            cell?.lbl_Rating.text = rating_number + ".0"
+                                            
+                                        }
+                                        else {
+                                            cell?.lbl_Rating.text = rating_number
+                                        }
+                                        
+                                        if (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["occupationDTO"] as? NSDictionary != nil {
+                                            
+                                            
+                                             let dict_Temp = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["occupationDTO"] as! NSDictionary
+                                            
+                                            let str_bio = dict_Temp.value(forKey: "description") as? String
+                                            
+                                            if str_bio == "" || str_bio == nil {
+                                                cell?.txtView_Description.text = "No biography to show..."
+                                            }
+                                            else {
+                                                cell?.txtView_Description.text = str_bio
+                                            }
 
-                                if self.arr_SearchData.count > 0 {
-                                    
-                                    self.dicUrl.removeAllObjects()
-                                    
-                                    if (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] != nil || (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String != "" {
-                                        cell?.lbl_CompanySchoolUserName.text = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String
-                                        cell?.lbl_Abt.text = "About" + " " + "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"]!)"
-                                    }
-                                    else {
+                                            let morePrecisePI = Double((dict_Temp.value(forKey: "salary") as? String)!)
+                                            
+                                            let myInteger = Int(morePrecisePI!)
+                                            let myNumber = NSNumber(value:myInteger)
+                                            print(myNumber)
+                                            cell?.lbl_avgSalary.text = self.suffixNumber(number: myNumber) as String
+
+                                            
+                                        }
                                         
-                                        cell?.lbl_CompanySchoolUserName.text = "NA"
-                                        cell?.lbl_Abt.text = "About"
-                                    }
-                                    
-                                    let rating_number = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["avgRating"]!)"
-                                    
-                                    let dbl = 2.0
-                                    
-                                    if  dbl.truncatingRemainder(dividingBy: 1) == 0
-                                    {
-                                        cell?.lbl_Rating.text = rating_number + ".0"
+                                        cell?.lbl_RatingCount.text = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["ratingCount"]!)"
                                         
+                                        cell?.lbl_Growth.text = "NA"
+                                        
+                                        cell?.lbl_UserWithOccupation.text = "0"
+                                        cell?.lbl_UserShadowed.text = "0"
+                                        
+                                        
+                                        
+                                       
                                     }
-                                    else {
-                                        cell?.lbl_Rating.text = rating_number
-                                    }
-                                    
-                                    
-                                    cell?.lbl_Rating.text = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["ratingCount"]!)"
-                                    cell?.lbl_avgSalary.text = "NA"
-                                    cell?.lbl_Growth.text = "NA"
-                                    cell?.lbl_UserWithOccupation.text = "7"
-                                    cell?.lbl_UserShadowed.text = "8"
-                                    
-                                    let dict_Temp = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary
-                                    let str_bio = dict_Temp?.value(forKey: "bio") as? String
-                                    
-                                    if str_bio == "" || str_bio == nil {
-                                        cell?.txtView_Description.text = "No biography to show..."
-                                    }
-                                    else {
-                                        cell?.txtView_Description.text = str_bio
-                                    }
-                                    
-                                    
                                     
                                 }
-
-                            }
+                            } //
                         }
                         
                         
@@ -1980,6 +2019,9 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                 
                 
                 if dict_Temp?.value(forKey: "companyName") != nil {
+                    
+                    if bool_Occupation == false {
+                    
                     let companyName =  dict_Temp?.value(forKey: "companyName") as! String
                     
                     if companyName != ""    {
@@ -1989,10 +2031,14 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                     else {
                         cell.lbl_LocNcom.text  = ""
                     }
+                    
+                }
                 }
                 else {
                     
+                    
                     if dict_Temp?.value(forKey: "schoolName") != nil {
+                         if bool_Occupation == false {
                         
                         let schoolName = dict_Temp?.value(forKey: "schoolName") as! String
                         
@@ -2005,7 +2051,8 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                         else {
                             cell.lbl_LocNcom.text = ""
                         }
-                        
+                       
+                    }
                     }
                         
                     else {
@@ -2020,6 +2067,8 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
             }
                 
             else {
+                
+                
                 
                 if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" {
                     cell.lbl_LocNcom.text = dict_Temp?.value(forKey: "location") as? String
@@ -2787,7 +2836,9 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                 }
             }   //at
                 else {
-                   
+             
+                    DispatchQueue.main.async {
+    
                     cell.view_MainOccupation.isHidden = false
                     cell.setChart()
 
@@ -2818,30 +2869,43 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                         else {
                             cell.lbl_Rating.text = rating_number
                         }
+                        if (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] as? NSDictionary != nil {
+                           
+                            
+                            let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] as! NSDictionary
+
+                            let str_bio = dict_Temp.value(forKey: "description") as? String
+                            
+                            if str_bio == "" || str_bio == nil {
+                                cell.txtView_Description.text = "No biography to show..."
+                            }
+                            else {
+                                cell.txtView_Description.text = str_bio
+                            }
+
+                            
+                            let morePrecisePI = Double((dict_Temp.value(forKey: "salary") as? String)!)
+                            let myInteger = Int(morePrecisePI!)
+                            let myNumber = NSNumber(value:myInteger)
+                            print(myNumber)
+                            cell.lbl_avgSalary.text = self.suffixNumber(number: myNumber) as String
+
+                        }
                         
-                        let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["userDTO"] as? NSDictionary
   
-                        cell.lbl_Rating.text = "\((self.arr_SearchData[(indexPath.row)] as! NSDictionary)["ratingCount"]!)"
-                         cell.lbl_avgSalary.text = "NA"
+                        cell.lbl_RatingCount.text = "\((self.arr_SearchData[(indexPath.row)] as! NSDictionary)["ratingCount"]!)"
+                       
                         cell.lbl_Growth.text = "NA"
                        
-                        cell.lbl_UserWithOccupation.text = "8"
-                        cell.lbl_UserShadowed.text = "7"
+                        cell.lbl_UserWithOccupation.text = "0"
+                        cell.lbl_UserShadowed.text = "0"
                         
-                        let str_bio = dict_Temp?.value(forKey: "bio") as? String
                         
-                        if str_bio == "" || str_bio == nil {
-                            cell.txtView_Description.text = "No biography to show..."
-                        }
-                        else {
-                            cell.txtView_Description.text = str_bio
-                        }
-
  
-                        
+                       
                     }
   
-                    
+                }
                 }
             }
         }

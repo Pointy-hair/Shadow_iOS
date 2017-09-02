@@ -71,11 +71,28 @@ class CustomCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var lbl_Abt: UILabel!
     
+    @IBOutlet weak var lbl_RatingCount: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         DispatchQueue.main.async {
+            
+            
+            self.barChartView.xAxis.drawGridLinesEnabled = false
+            self.barChartView.rightAxis.drawGridLinesEnabled = false
+            self.barChartView.rightAxis.drawAxisLineEnabled = false
+            self.barChartView.rightAxis.drawLabelsEnabled = false
+            self.barChartView.leftAxis.drawGridLinesEnabled = false
+            self.barChartView.leftAxis.drawAxisLineEnabled = false
+            self.barChartView.leftAxis.drawLabelsEnabled = false
+            self.barChartView.xAxis.drawAxisLineEnabled = false
+            self.barChartView.xAxis.drawLabelsEnabled = false
+            //chartDataSet.colors = [.green, .yellow, .red]
+            self.barChartView.legend.enabled = false
+            self.barChartView.highlightPerTapEnabled = false
+            self.barChartView.highlightFullBarEnabled = false
+
             
             self.imgView_ProfilePic.layer.cornerRadius = 60.0
             self.imgView_ProfilePic.clipsToBounds = true
