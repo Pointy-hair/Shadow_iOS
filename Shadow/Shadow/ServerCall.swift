@@ -178,7 +178,7 @@ extension ServerCall
         
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(DeviceType, forHTTPHeaderField: "Device-Type")
-        request.setValue(DeviceToken, forHTTPHeaderField: "Device-Token")
+        request.setValue(deviceTokenString, forHTTPHeaderField: "Device-Token")
         request.setValue("IPHONE_6zJxK4AMDpahM3Yd7xARGPfRhcWbAkcY9dsfhu1sdF", forHTTPHeaderField: "Application-Token")
         request.setValue("IPHONE", forHTTPHeaderField: "Application-Type")
         request.setValue("sdbfkjsdj", forHTTPHeaderField: "Vendor-Token")
@@ -231,7 +231,7 @@ extension ServerCall
         request.setValue("Keep Alive", forHTTPHeaderField: "Connection")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(DeviceType, forHTTPHeaderField: "Device-Type")
-        request.setValue(DeviceToken, forHTTPHeaderField: "Device-Token")
+        request.setValue(deviceTokenString, forHTTPHeaderField: "Device-Token")
         request.setValue("IPHONE_6zJxK4AMDpahM3Yd7xARGPfRhcWbAkcY9dsfhu1sdF", forHTTPHeaderField: "Application-Token")
         request.setValue("IPHONE", forHTTPHeaderField: "Application-Type")
         request.setValue("sdbfkjsdj", forHTTPHeaderField: "Vendor-Token")

@@ -10,10 +10,9 @@ import UIKit
 import GooglePlaces
 import GooglePlacePicker
 
-var deviceTokenString : String?       // Device token string used in login and sign ups
+var deviceTokenString = String()       // Device token string used in login and sign ups
 
 public var DeviceType:String = "0"
-public var DeviceToken:String = "123456"
 public var bool_Backntn : Bool = false
 public var str_Confirmation:String = ""
 
@@ -121,13 +120,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     
     //MARK: Push notifications delegates
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
-        var token: String = ""
+     
+        deviceTokenString = ""
         
-        for i in 0 ..< deviceToken.count {
-            token += String(format: "%02.2hhx", arguments: [deviceToken[i]])
+        for i in 0..<deviceToken.count{
+            
+            deviceTokenString = deviceTokenString + String(format: "%02.2hhx", arguments: [deviceToken[i]])
         }
-        deviceTokenString = token
         
+        print("Device Token is \(deviceTokenString)")
+        UIPasteboard.general.string = deviceTokenString
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

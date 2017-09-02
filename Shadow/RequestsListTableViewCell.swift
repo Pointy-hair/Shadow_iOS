@@ -73,8 +73,6 @@ class RequestsListTableViewCell: UITableViewCell {
                     self.btn_Accept.isHidden = false
                     
                 }
-                
-                
             }
                 
             else{
@@ -88,7 +86,6 @@ class RequestsListTableViewCell: UITableViewCell {
                     self.btn_Accept.isHidden = true
                 }
             }
-            
             
             //if request is accepted
             if dictionary.value(forKey: "accept") as? NSNumber == 1 &&  dictionary.value(forKey: "reject") as? NSNumber == 0{
@@ -157,7 +154,36 @@ class RequestsListTableViewCell: UITableViewCell {
                 self.lbl_Date.text = ""
             }
             
+            //Setting time
+            if dictionary["timeAgo"] != nil {
+                let time : NSString = dictionary["timeAgo"] as! NSString
                 
+                print(time)
+                let delimiter = " "
+                var token = time.components(separatedBy: delimiter)
+                
+                if token[1].contains("m")
+                {
+                    self.lbl_Time.text = (token[0]) + "m"
+                    
+                }
+                else if token[1].contains("d") {
+                    
+                    self.lbl_Time.text = (token[0]) + "d"
+                    
+                }
+                else if token[1].contains("h") {
+                    
+                    self.lbl_Time.text = (token[0]) + "h"
+                    
+                }
+                    
+                else {
+                    self.lbl_Time.text = "Now"
+                    
+                }
+
+            }
                 
                 
             }

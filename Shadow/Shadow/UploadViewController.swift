@@ -186,7 +186,7 @@ class UploadViewController: UIViewController {
                     "Application-Token" : "IPHONE_6zJxK4AMDpahM3Yd7xARGPfRhcWbAkcY9dsfhu1sdF",
                     "Application-Type" : "IPHONE",
                     "Session-Token" :(SavedPreferences.value(forKey:"sessionToken")as? String)!,
-                    "Device-Token":DeviceToken
+                    "Device-Token":deviceTokenString
                 ]
                 
                 print(headers)

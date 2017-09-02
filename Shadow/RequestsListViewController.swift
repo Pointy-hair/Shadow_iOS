@@ -62,7 +62,7 @@ class RequestsListViewController: UIViewController {
             btn_delete.addTarget(self, action: #selector(self.delete(_:)), for: .touchUpInside)
             let item2 = UIBarButtonItem(customView: btn_delete)
             //Right items
-            self.navigationItem.setRightBarButtonItems([item2], animated: true)
+          //  self.navigationItem.setRightBarButtonItems([item2], animated: true)
             
             
             //adding view to table
