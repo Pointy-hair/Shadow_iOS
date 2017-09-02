@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/ProfileVC.swift"
-            timestampString = "525938890.876021"
+            timestampString = "526037155.123789"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "954"
-            endingLineNumber = "954"
+            startingLineNumber = "952"
+            endingLineNumber = "952"
             landmarkName = "ProfileVC"
             landmarkType = "3">
          </BreakpointContent>
@@ -64,6 +64,22 @@
             startingLineNumber = "192"
             endingLineNumber = "192"
             landmarkName = "SendRequest_Service()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/ComapanySchoolViewController.swift"
+            timestampString = "526037442.199485"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

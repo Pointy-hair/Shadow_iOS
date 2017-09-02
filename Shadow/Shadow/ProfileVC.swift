@@ -124,8 +124,6 @@ class ProfileVC: UIViewController {
                 self.view.endEditing(true)
                 self.CreateNavigationBackBarButton() //Create custom back button
                 
-//                let desiredOffset = CGPoint(x: 0, y: -60)
-//                self.scrollbar.setContentOffset(desiredOffset, animated: true)
                 
                 self.user_IdMyProfile = userIdFromSearch
                 let btn2 = UIButton(type: .custom)

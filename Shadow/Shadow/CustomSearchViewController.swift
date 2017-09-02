@@ -938,9 +938,10 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                     
                     let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC
                     _ = self.navigationController?.pushViewController(vc, animated: true)
-                    vc.extendedLayoutIncludesOpaqueBars = true
-                    self.tabBarController?.tabBar.isTranslucent = false
-                    self.navigationController?.navigationBar.isTranslucent = false
+                   // vc.edgesForExtendedLayout = .top
+                     vc.extendedLayoutIncludesOpaqueBars = true
+                   // self.tabBarController?.tabBar.isTranslucent = false
+                   // self.navigationController?.navigationBar.isTranslucent = false
                     //arr_SearchData.removeAllObjects()
                     
                 }
@@ -949,8 +950,8 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                     let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
                     _ = self.navigationController?.pushViewController(vc, animated: true)
                     vc.extendedLayoutIncludesOpaqueBars = true
-                    self.tabBarController?.tabBar.isTranslucent = false
-                    self.navigationController?.navigationBar.isTranslucent = false
+                   // self.tabBarController?.tabBar.isTranslucent = false
+                   // self.navigationController?.navigationBar.isTranslucent = false
                     
                     //arr_SearchData.removeAllObjects()
                     
@@ -967,9 +968,9 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
             vc.occupationId = (arr_SearchData[sender.tag] as! NSDictionary)["id"]! as? NSNumber
             _ = self.navigationController?.pushViewController(vc, animated: true)
-            vc.extendedLayoutIncludesOpaqueBars = true
-            self.tabBarController?.tabBar.isTranslucent = false
-            self.navigationController?.navigationBar.isTranslucent = false
+           // vc.extendedLayoutIncludesOpaqueBars = true
+           // self.tabBarController?.tabBar.isTranslucent = false
+           // self.navigationController?.navigationBar.isTranslucent = false
             
         }
     }
@@ -2025,7 +2026,7 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                     let companyName =  dict_Temp?.value(forKey: "companyName") as! String
                     
                     if companyName != ""    {
-                        cell.lbl_LocNcom.text = companyName
+                        cell.lbl_LocNcom.text = companyName.capitalizingFirstLetter()
                         cell.img_LocNcom.image = UIImage.init(named: "company-icon")
                     }
                     else {
@@ -2049,7 +2050,7 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                         
                         if schoolName != ""
                         {
-                            cell.lbl_LocNcom.text = schoolName
+                            cell.lbl_LocNcom.text = schoolName.capitalizingFirstLetter()
                             cell.img_LocNcom.image = UIImage.init(named: "company-icon")
                             
                         }
@@ -2128,7 +2129,7 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
             
             if self.arr_SearchData.count > 0 {
                 
-                cell.lbl_Name.text = (arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String
+                cell.lbl_Name.text = ((arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String)?.capitalizingFirstLetter()
                 let rating_number = "\((arr_SearchData[indexPath.row] as! NSDictionary)["avgRating"]!)"
                 
                 //print(rating_number)
