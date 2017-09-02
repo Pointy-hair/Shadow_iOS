@@ -120,7 +120,11 @@ class ProfileVC: UIViewController {
             
             DispatchQueue.main.async {
                 
+                if self.revealViewController() != nil {
+                    
+                    self.revealViewController().panGestureRecognizer().isEnabled = false
                 
+                }
                 self.scrollbar.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
                 self.automaticallyAdjustsScrollViewInsets = false
                 self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)

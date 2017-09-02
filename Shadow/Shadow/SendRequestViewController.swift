@@ -142,7 +142,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                         self.SendRequest_Service()
                         
                     }else{
-                        self.showAlert(Message: "Please write some message.", vc: self)
+                        self.showAlert(Message: "Please write message.", vc: self)
                     }
                 }
                 else{
@@ -160,7 +160,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                         
                     }
                     else{
-                        self.showAlert(Message: "Please write some message.", vc: self)
+                        self.showAlert(Message: "Please write message.", vc: self)
                     }
                     
                 } else{

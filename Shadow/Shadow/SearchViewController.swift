@@ -48,7 +48,8 @@ class SearchViewController: UIViewController {
         self.navigationItem.setHidesBackButton(false, animated:true)
         self.tabBarController?.tabBar.isHidden = false
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
+        bool_UserIdComingFromSearch = false
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {

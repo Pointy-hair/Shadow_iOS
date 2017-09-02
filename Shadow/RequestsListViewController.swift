@@ -309,8 +309,13 @@ class RequestsListViewController: UIViewController {
                         self.lbl_NoRequests.isHidden = false
                         
                     }
+                    break
                     
+                case 401:
                     
+                    DispatchQueue.main.async {
+                        self.AlertSessionExpire()
+                    }
                     
                     
                     break

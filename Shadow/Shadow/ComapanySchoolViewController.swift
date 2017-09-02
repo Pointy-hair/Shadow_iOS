@@ -117,7 +117,10 @@ class ComapanySchoolViewController: UIViewController{
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
-        
+        self.Scroll_View.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
+       
         dicUrl.removeAllObjects()
         ratingview_ratingNumber = ""
         
@@ -134,6 +137,14 @@ class ComapanySchoolViewController: UIViewController{
                 self.Scroll_View.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
                 self.automaticallyAdjustsScrollViewInsets = false
                 self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
+                
+                if self.revealViewController() != nil {
+                    
+                    self.revealViewController().panGestureRecognizer().isEnabled = false
+                    
+                }
+                
+                
                 
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.navigationItem.setHidesBackButton(false, animated:true)

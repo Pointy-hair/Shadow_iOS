@@ -4111,7 +4111,7 @@
                                                         </connections>
                                                     </textView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write something.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5e5-28-PzW">
-                                                        <rect key="frame" x="8" y="35" width="231" height="21"/>
+                                                        <rect key="frame" x="14" y="40" width="231" height="21"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="21" id="FTi-Cd-Awc"/>
                                                             <constraint firstAttribute="width" constant="231" id="dMG-95-0Vw"/>
@@ -4128,9 +4128,9 @@
                                                     <constraint firstItem="yuY-qn-ZWb" firstAttribute="top" secondItem="s9L-i9-dxp" secondAttribute="bottom" constant="6" id="N9S-Ce-Exa"/>
                                                     <constraint firstItem="s9L-i9-dxp" firstAttribute="top" secondItem="uyl-FB-xwc" secondAttribute="top" constant="8" id="Tqq-jn-WIu"/>
                                                     <constraint firstAttribute="height" constant="296" id="cxj-UK-1sJ"/>
-                                                    <constraint firstItem="5e5-28-PzW" firstAttribute="top" secondItem="s9L-i9-dxp" secondAttribute="bottom" constant="6" id="e7Y-Wd-bIS"/>
+                                                    <constraint firstItem="5e5-28-PzW" firstAttribute="top" secondItem="s9L-i9-dxp" secondAttribute="bottom" constant="11" id="e7Y-Wd-bIS"/>
                                                     <constraint firstAttribute="trailing" secondItem="yuY-qn-ZWb" secondAttribute="trailing" constant="8" id="qmw-EY-KWt"/>
-                                                    <constraint firstItem="5e5-28-PzW" firstAttribute="leading" secondItem="uyl-FB-xwc" secondAttribute="leading" constant="8" id="zcr-Vh-eIL"/>
+                                                    <constraint firstItem="5e5-28-PzW" firstAttribute="leading" secondItem="uyl-FB-xwc" secondAttribute="leading" constant="14" id="zcr-Vh-eIL"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
