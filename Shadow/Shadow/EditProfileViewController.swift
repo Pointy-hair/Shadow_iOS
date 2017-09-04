@@ -50,6 +50,7 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
     @IBOutlet var k_Constraint_ViewTxtview_Top: NSLayoutConstraint!
     @IBOutlet weak var lbl_Counter: UILabel!
     
+    @IBOutlet weak var lbl_noOccupation: UILabel!
     
     @IBOutlet weak var kheightViewBehindOccupation: NSLayoutConstraint!
     
@@ -163,6 +164,11 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
                 
                 if self.array_UserOccupations.count  > 0{
                     self.collection_View_Occupation.reloadData()
+                }
+                else {
+                    
+                    self.lbl_noOccupation.isHidden = false
+                   // self.collection_View_Occupation.isHidden = true
                 }
                 
                 //setting profile pic

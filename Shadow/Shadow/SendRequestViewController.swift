@@ -32,7 +32,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     fileprivate var str_date_selected:String? = ""
     
     override func viewWillLayoutSubviews() {
-        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 700)
+        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: 720)
     }
     
     //Converts string into date
@@ -67,7 +67,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             
             self.CreateNavigationBackBarButton()
             
-            
+            if SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber != userIdFromSearch {
             //Adding button to navigation bar
             let btn2 = UIButton(type: .custom)
             btn2.setImage(UIImage(named: "send_white"), for: .normal)
@@ -76,6 +76,8 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             let item2 = UIBarButtonItem(customView: btn2)
             //Right items
             self.navigationItem.setRightBarButtonItems([item2], animated: true)
+            
+            }
             
             if self.check_comingFromRequestDetail == "YES"{
                 self.setRequestData()

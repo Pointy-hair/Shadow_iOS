@@ -153,6 +153,8 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         
         bool_LastResultSearch = false
         bool_Occupation = false
+        //self.arr_SearchData.removeAllObjects()
+       self.searchBar.text = ""
 
     }
     
@@ -381,7 +383,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                         self.bool_Search = true
                         self.tblview_AllSearchResult.reloadData()
                         self.customCollectionView.reloadData()
-                        self.showAlert(Message: "No more data to show.", vc: self)
+                     //   self.showAlert(Message: "No more data to show.", vc: self)
                         
                         
                     }
@@ -483,7 +485,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                         self.bool_Search = true
                         self.tblview_AllSearchResult.reloadData()
                         self.customCollectionView.reloadData()
-                        self.showAlert(Message: "No more data to show.", vc: self)
+                      //  self.showAlert(Message: "No more data to show.", vc: self)
                     }
                     
                 case 401 :
@@ -1027,9 +1029,10 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     }
     
     
-    @IBAction func Action_ViewProfileOccupation(_ sender: Any) {
+    @IBAction func Action_ViewProfileOccupation(_ sender: UIButton) {
         
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+        vc.occupationId = (arr_SearchData[sender.tag] as! NSDictionary)["id"]! as? NSNumber
         _ = self.navigationController?.pushViewController(vc, animated: true)
         vc.extendedLayoutIncludesOpaqueBars = true
         self.tabBarController?.tabBar.isTranslucent = false
@@ -1722,7 +1725,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                         
                                         cell?.lbl_RatingCount.text = "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["ratingCount"]!)"
                                         
-                                        cell?.lbl_Growth.text = "NA"
+                                        cell?.lbl_Growth.text = "15%"
                                         
                                         cell?.lbl_UserWithOccupation.text = "0"
                                         cell?.lbl_UserShadowed.text = "0"
@@ -1755,14 +1758,15 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
             
           if bool_Occupation == false {
                 cell?.customScrollView.contentSize = CGSize.init(width: self.view.frame.size.width, height:  950)
-                
+            cell?.customScrollView.isScrollEnabled = true
+
             }
-                
+            
             else{
                 
                 cell?.customScrollView.contentSize = CGSize.init(width: self.view.frame.size.width, height:  750)
-                
-                
+            
+                cell?.customScrollView.isScrollEnabled = false
             }
             
             if scrollView == self.customCollectionView {
@@ -1774,7 +1778,8 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                         cell?.customScrollView.contentSize = CGSize.init(width: self.view.frame.size.width, height:  950)
                         cell?.customScrollView.contentOffset = CGPoint.zero
                         cell?.customScrollView.contentInset = UIEdgeInsets.zero
-                        
+                        cell?.customScrollView.isScrollEnabled = true
+
                     }
                 }
                     
@@ -1895,11 +1900,12 @@ extension CustomSearchViewController:UISearchBarDelegate{
         }
         else  if ((self.str_searchText?.length)! == 0 ) {
             
-            self.arr_SearchData.removeAllObjects()
             
             if bool_AllTypeOfSearches == true {
                 pageIndex = 0
                 DispatchQueue.main.async {
+                    self.arr_SearchData.removeAllObjects()
+
                     self.bool_Search = true
                     self.getSearchData()
                 }
@@ -1908,6 +1914,8 @@ extension CustomSearchViewController:UISearchBarDelegate{
             else  if bool_LocationFilter == true {
                 pageIndex = 0
                 DispatchQueue.main.async {
+                    self.arr_SearchData.removeAllObjects()
+
                     self.bool_Search = true
                     self.GetSearchDataAccordingToLocation()
                 }
@@ -1916,6 +1924,8 @@ extension CustomSearchViewController:UISearchBarDelegate{
             else if bool_CompanySchoolTrends == true{
                 pageIndex = 0
                 DispatchQueue.main.async {
+                    self.arr_SearchData.removeAllObjects()
+
                     self.bool_Search = true
                     self.GetOnlyCompanyData()
                 }
@@ -1924,7 +1934,8 @@ extension CustomSearchViewController:UISearchBarDelegate{
             else {
                 
                 DispatchQueue.main.async {
-                    
+                    self.arr_SearchData.removeAllObjects()
+
                     self.tblview_AllSearchResult.reloadData()
                     self.customCollectionView.reloadData()
                     
@@ -1938,9 +1949,9 @@ extension CustomSearchViewController:UISearchBarDelegate{
             
         }
         else{
-            self.arr_SearchData.removeAllObjects()
             DispatchQueue.main.async {
-                
+                self.arr_SearchData.removeAllObjects()
+
                 self.tblview_AllSearchResult.reloadData()
                 self.customCollectionView.reloadData()
                 
@@ -2923,7 +2934,7 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
   
                         cell.lbl_RatingCount.text = "\((self.arr_SearchData[(indexPath.row)] as! NSDictionary)["ratingCount"]!)"
                        
-                        cell.lbl_Growth.text = "NA"
+                        cell.lbl_Growth.text = "15"
                        
                         cell.lbl_UserWithOccupation.text = "0"
                         cell.lbl_UserShadowed.text = "0"

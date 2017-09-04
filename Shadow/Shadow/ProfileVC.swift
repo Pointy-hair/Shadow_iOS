@@ -523,8 +523,11 @@ class ProfileVC: UIViewController {
                             for value in tmp_arr_occ{
                                 
                                 let name = (value as! NSDictionary).value(forKey: "name") as? String
+                              //  let id = (value as! NSDictionary).value(forKey: "id") as? NSNumber
                                 let dict = NSMutableDictionary()
                                 dict.setValue(name, forKey: "name")
+                             //   dict.setValue(id, forKey: "id")
+                                 print(dict)
                                 if self.array_UserSkills.contains(dict) {
                                     break
                                 }
@@ -1174,6 +1177,17 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
         
         return count!
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        
+//        if collectionView == collectionView_Skills {
+//        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+//        vc.occupationId = (array_UserSkills[indexPath.row] as! NSDictionary)["id"]! as? NSNumber
+//        _ = self.navigationController?.pushViewController(vc, animated: true)
+//        }
+//       
+//    }
+    
     
 }
 

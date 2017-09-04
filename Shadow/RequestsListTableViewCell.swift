@@ -20,6 +20,7 @@ class RequestsListTableViewCell: UITableViewCell {
     @IBOutlet var btn_Accept: UIButton!
     @IBOutlet var btn_Decline: UIButton!
     
+    @IBOutlet weak var lbl_Ratings: UILabel!
     
     
     override func awakeFromNib() {
@@ -81,7 +82,7 @@ class RequestsListTableViewCell: UITableViewCell {
                     
                     self.lbl_RequestStatus.isHidden = false
                     self.lbl_RequestStatus.text = "PENDING"
-                    self.lbl_RequestStatus.textColor = UIColor.yellow
+                    self.lbl_RequestStatus.textColor = UIColor.orange
                     self.btn_Decline.isHidden = true
                     self.btn_Accept.isHidden = true
                 }
@@ -127,6 +128,13 @@ class RequestsListTableViewCell: UITableViewCell {
                 }
                 
                 self.lbl_TotalRatingCount.text = "\((dict_UserInfo).value(forKey: "ratingCount")!)"
+            
+            if self.lbl_TotalRatingCount.text == "0" || self.lbl_TotalRatingCount.text == "1" {
+                self.lbl_Ratings.text = "rating"
+            }
+            else {
+                 self.lbl_Ratings.text = "ratings"
+            }
                 
                 let str_avgRating = ((dict_UserInfo).value(forKey: "avgRating") as? NSNumber)?.stringValue
                 

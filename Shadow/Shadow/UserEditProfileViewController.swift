@@ -108,7 +108,7 @@ class UserEditProfileViewController: UIViewController {
     //MARK: - View Default methods
     override func viewWillLayoutSubviews() {
         
-        DispatchQueue.main.async {
+      /*  DispatchQueue.main.async {
             
             if Global.DeviceType.IS_IPHONE_6 || Global.DeviceType.IS_IPHONE_6P{
                 self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: 1200)
@@ -116,7 +116,7 @@ class UserEditProfileViewController: UIViewController {
             else {
                 self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: 1000)
             }
-        }
+        } */
         
     }
     
@@ -1554,7 +1554,7 @@ extension UserEditProfileViewController:UICollectionViewDataSource,UICollectionV
             }
             else {
                 
-                self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(12)
+                self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(10)
                 
             }
             
@@ -1597,7 +1597,7 @@ extension UserEditProfileViewController:UICollectionViewDataSource,UICollectionV
             }
             
         }
-        self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindOccupation.constant + self.kheightViewBehindInterest.constant + 15)
+        self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindOccupation.constant + self.kheightViewBehindInterest.constant + 30)
         
         return count!
 

@@ -118,7 +118,6 @@ class ComapanySchoolViewController: UIViewController{
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
         self.Scroll_View.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.automaticallyAdjustsScrollViewInsets = false
         self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
        
         dicUrl.removeAllObjects()

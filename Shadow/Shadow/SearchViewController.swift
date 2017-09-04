@@ -41,7 +41,7 @@ class SearchViewController: UIViewController {
         
         //creating button on search
         let btn_OnSearch = UIButton()
-        btn_OnSearch.frame = CGRect(x: 0, y: 20 , width: self.view.frame.width, height: 40)
+        btn_OnSearch.frame = CGRect(x: 0, y: 5 , width: self.view.frame.width, height: 40)
         btn_OnSearch.addTarget(self, action: #selector(self.next_View), for: .touchUpInside)
         self.searchBar.addSubview(btn_OnSearch)
         

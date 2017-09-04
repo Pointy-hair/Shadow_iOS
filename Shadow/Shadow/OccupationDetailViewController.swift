@@ -43,8 +43,9 @@ class OccupationDetailViewController: UIViewController {
         
         super.viewDidLoad()
         
-        
-        GetData()
+        DispatchQueue.main.async {
+            self.GetData()
+        }
 
         
         self.barChartView.xAxis.drawGridLinesEnabled = false
@@ -134,6 +135,8 @@ class OccupationDetailViewController: UIViewController {
                         
                         if self.dic_Occupation.value(forKey: "companys") != nil {
                         self.arr_company = (self.dic_Occupation.value(forKey: "companys") as! NSArray).mutableCopy() as! NSMutableArray
+                            print("atinder")
+                            print( self.arr_company)
                             
                             }
                             
@@ -146,6 +149,7 @@ class OccupationDetailViewController: UIViewController {
                         self.collectionViewSchool.reloadData()
                         self.collectionViewCompany.reloadData()
                     }
+                    
                     break
                     
                 case 404:
@@ -266,11 +270,14 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             let company_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "company", for: indexPath)as! CompanyCollectionViewCell
             
             if arr_company.count > 0 {
-                if (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSMutableDictionary != nil {
                 
-               let dict = (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as! NSMutableDictionary
-                
-                 company_cell.lbl_CompanyName.text = dict.value(forKey: "companyName") as? String
+                if  let dict =  (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
+                    DispatchQueue.main.async {
+                        //let dict = (self.arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as! NSMutableDictionary
+                        
+                        company_cell.lbl_CompanyName.text = dict.value(forKey: "companyName") as? String
+
+                    }
                     
                 }
             }
@@ -283,11 +290,12 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             let school_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "school", for: indexPath)as! SchoolCollectionViewCell
             
             if arr_school.count > 0 {
-                if (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSMutableDictionary != nil {
-
-                let dict = (arr_school[indexPath.row]as! NSDictionary).value(forKey: "userDTO")as? NSMutableDictionary
+                if  let dict =  (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
+                    DispatchQueue.main.async {
+               
                 
-               school_cell.lbl_SchoolName.text = dict?.value(forKey: "schoolName") as? String
+               school_cell.lbl_SchoolName.text = dict.value(forKey: "schoolName") as? String
+                    }
                 }
             }
             
