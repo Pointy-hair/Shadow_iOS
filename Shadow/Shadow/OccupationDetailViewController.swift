@@ -290,7 +290,7 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             let school_cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "school", for: indexPath)as! SchoolCollectionViewCell
             
             if arr_school.count > 0 {
-                if  let dict =  (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
+                if  let dict =  (arr_school[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
                     DispatchQueue.main.async {
                
                 

@@ -258,7 +258,6 @@ class RequestDetailsViewController: UIViewController {
                         //setting ratings
                         self.lbl_RatingPersonCount.text = "\((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "ratingCount")!)"
                         
-                        
                         //setting average rating
                         let str_avgRating = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "avgRating") as? NSNumber)?.stringValue
                         
