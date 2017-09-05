@@ -167,14 +167,14 @@ class ProfileVC: UIViewController {
                 
                 let btn4 = UIButton(type: .custom)
                 btn4.setImage(UIImage(named: "notifications-button"), for: .normal)
-                btn4.frame = CGRect(x:self.view.frame.size.width - 40, y: 0, width: 20, height: 25)
+                btn4.frame = CGRect(x:self.view.frame.size.width - 40, y: 0, width: 25, height: 25)
                 btn4.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
                 let item4 = UIBarButtonItem(customView: btn4)
                 
                 
                 let btn3 = UIButton(type: .custom)
                 btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
-                btn3.frame = CGRect(x: self.view.frame.size.width - 60, y: 0, width: 20, height: 25)
+                btn3.frame = CGRect(x: self.view.frame.size.width - 60, y: 0, width: 25, height: 25)
                 btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
                 let item3 = UIBarButtonItem(customView: btn3)
 
@@ -856,31 +856,36 @@ class ProfileVC: UIViewController {
     
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
-        
-        if self.lbl_NoOfRating.text != "0"{
-        
-        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
-        _ = self.navigationController?.pushViewController(vc, animated: true)
-       
+        DispatchQueue.main.async {
+            
+            if bool_UserIdComingFromSearch == true{
+                
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+                _ = self.navigationController?.pushViewController(vc, animated: true)
+                
+            }else{
+                if self.lbl_NoOfRating.text != "0"{
+                    
+                    let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+                    _ = self.navigationController?.pushViewController(vc, animated: true)
+                    
+                }else{
+                    self.showAlert(Message: "No ratings yet.", vc: self)
+                }
+            }
         }
-
     }
     
     
     @IBAction func Open_ProfileImage(_ sender: UIButton) {
         
-//        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
-//        statusBar.backgroundColor = UIColor.clear
-//        UIApplication.shared.statusBarStyle = .lightContent
-//        
+        Global.macros.statusBar.isHidden = true
         let imgdata = UIImageJPEGRepresentation(imageView_ProfilePic.image!, 0.5)
         let photos = self.ArrayOfPhotos(data: imgdata!)
         let vc: NYTPhotosViewController = NYTPhotosViewController(photos: photos as? [NYTPhoto])
         vc.rightBarButtonItem = nil
         self.present(vc, animated: true, completion: nil)
        
-      
-
         
     }
     

@@ -260,6 +260,8 @@ static const UIEdgeInsets NYTPhotosViewControllerCloseButtonImageInsets = {3, 0,
 }
 
 - (void)doneButtonTapped:(id)sender {
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self dismissViewControllerAnimated:YES userInitiated:YES completion:nil];
 }
 

@@ -1077,10 +1077,28 @@ class ComapanySchoolViewController: UIViewController{
     
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
-        
-        
-        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
-        _ = self.navigationController?.pushViewController(vc, animated: true)
+        DispatchQueue.main.async {
+            
+            
+            if bool_UserIdComingFromSearch == true {
+                
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+                _ = self.navigationController?.pushViewController(vc, animated: true)
+                
+            }
+            else{
+                
+                if self.lbl_Count_Users.text != "0"{
+                    
+                    let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+                    _ = self.navigationController?.pushViewController(vc, animated: true)
+                    
+                }else{
+                    self.showAlert(Message: "No ratings yet.", vc: self)
+                    
+                }
+            }
+        }
         
     }
     

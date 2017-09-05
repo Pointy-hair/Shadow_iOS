@@ -117,6 +117,7 @@ class UploadViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
+        Global.macros.statusBar.isHidden = false
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationItem.setHidesBackButton(true, animated:true)
 

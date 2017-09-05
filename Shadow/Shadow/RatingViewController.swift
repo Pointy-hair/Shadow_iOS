@@ -236,6 +236,9 @@ class RatingViewController: UIViewController {
                     
                     self.arr_GetRatingData.removeAllObjects()
                     DispatchQueue.main.async {
+                        
+                        
+                        
                         self.tblView_Rating.isHidden = true
                         self.tblView_Rating.reloadData()
                         

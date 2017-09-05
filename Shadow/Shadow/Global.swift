@@ -89,7 +89,8 @@ class Global: NSObject {
         static let kError:String = "Error Occurred. \n Please try again later."
         static let kInternetConnection:String = "Please check your Internet Connection."
         static let kIncorrectCredentials:String = "Please enter correct credentials."
-        
+        static let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+
         
         //Keywords
         static let kschoolName:String = "schoolName"

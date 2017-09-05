@@ -40,8 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         application.registerForRemoteNotifications() */
         
 
-        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
-        statusBar.backgroundColor = Global.macros.themeColor_pink
+        Global.macros.statusBar.backgroundColor = Global.macros.themeColor_pink
         UIApplication.shared.statusBarStyle = .lightContent
 
         

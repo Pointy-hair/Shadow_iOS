@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/ProfileVC.swift"
-            timestampString = "526047488.960928"
+            timestampString = "526303872.243583"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "956"
-            endingLineNumber = "956"
-            landmarkName = "ActionSocialMedia2(_:)"
+            startingLineNumber = "976"
+            endingLineNumber = "976"
+            landmarkName = "Action_openSchoolCompany(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Shadow/AppDelegate.swift"
-            timestampString = "526290176.030494"
+            filePath = "Shadow/RatingViewController.swift"
+            timestampString = "526304788.328624"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
-            landmarkName = "applicationWillTerminate(_:)"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "ShowRatingData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/RatingViewController.swift"
+            timestampString = "526304816.412817"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
+            landmarkName = "ShowRatingData()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

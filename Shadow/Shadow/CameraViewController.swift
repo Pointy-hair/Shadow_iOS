@@ -56,7 +56,8 @@ class CameraViewController: UIViewController,AVCaptureFileOutputRecordingDelegat
     
     override func viewWillAppear(_ animated: Bool) {
       
-         loadCamera()
+        Global.macros.statusBar.isHidden = true
+        loadCamera()
     }
     
     override func didReceiveMemoryWarning() {
@@ -257,16 +258,13 @@ class CameraViewController: UIViewController,AVCaptureFileOutputRecordingDelegat
     
     @IBAction func action_CloseCameraView(_ sender: UIButton) {
       
-        
+        Global.macros.statusBar.isHidden = false
+
         if SavedPreferences.value(forKey: Global.macros.krole) as? String == "USER"{
             self.performSegue(withIdentifier: "edit_User", sender: self)
- 
         }
         else {
-            
-           
             self.performSegue(withIdentifier: "edit_Company", sender: self)
-
         }
     }
     
