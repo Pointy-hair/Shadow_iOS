@@ -33,11 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         //Code for push notifications
-        application.applicationIconBadgeNumber = 10
+        /*    application.applicationIconBadgeNumber = 1
 
         let settings = UIUserNotificationSettings(types: [.alert,.badge,.sound], categories: nil)
         application.registerUserNotificationSettings(settings)
-        application.registerForRemoteNotifications()
+        application.registerForRemoteNotifications() */
+        
 
         let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
         statusBar.backgroundColor = Global.macros.themeColor_pink
@@ -51,13 +52,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         GMSServices.provideAPIKey("AIzaSyCywl2nqZ6x_NOMRNSGufIF7RKVe-pgj2w")
         GMSPlacesClient.provideAPIKey("AIzaSyCywl2nqZ6x_NOMRNSGufIF7RKVe-pgj2w")
         
-        //My current Location
+    /*    //My current Location
         locManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locManager.delegate = self
             locManager.desiredAccuracy = kCLLocationAccuracyBest
             locManager.startUpdatingLocation()
-        }
+        } */
         
         if SavedPreferences.value(forKey: "userId")as? NSNumber != nil
         {
@@ -97,15 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         return true
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        // print("locations = \(locValue.latitude) \(locValue.longitude)")
-        
-        myCurrentLat = locValue.latitude
-        myCurrentLong = locValue.longitude
-        
-    }
+
     
 //    @available(iOS 9.0, *)
 //    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {

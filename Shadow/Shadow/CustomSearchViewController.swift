@@ -78,8 +78,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
             let image:UIImage = UIImage(named: "customsearch")!
             let imageView:UIImageView = UIImageView.init(image: image)
             searchTextField.leftView = imageView
-            searchTextField.attributedPlaceholder = NSAttributedString(string: "Search",
-                                                                       attributes: [NSForegroundColorAttributeName: UIColor.white])
+            searchTextField.attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSForegroundColorAttributeName: UIColor.white])
             searchTextField.leftViewMode = UITextFieldViewMode.always
             searchTextField.rightView = nil
             searchTextField.backgroundColor = UIColor.init(red: 144.0/255.0, green: 20.0/255.0, blue: 151.0/255.0, alpha: 1.0)
@@ -1051,7 +1050,6 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
         
         //Custom indexpath and cell formation
         let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)

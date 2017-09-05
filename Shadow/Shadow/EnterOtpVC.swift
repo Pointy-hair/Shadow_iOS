@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import AVFoundation
+import GooglePlaces
+import GooglePlacePicker
 
-class EnterOtpVC: UIViewController {
+
+class EnterOtpVC: UIViewController ,CLLocationManagerDelegate {
 
     @IBOutlet var btn_ResendOtp: UIButton!
     @IBOutlet var lbl_OtpSource:UILabel!
@@ -21,6 +25,11 @@ class EnterOtpVC: UIViewController {
     public var country_Code:String?
     public var Phonenumber:String?
 
+    public var myCurrentLat : Double?
+    public var myCurrentLong : Double?
+    
+    var locManager = CLLocationManager()
+    var currentLocation = CLLocation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +48,16 @@ class EnterOtpVC: UIViewController {
         
         textfield_Otp.addTarget(self, action: #selector(self.textFieldDidChange), for: UIControlEvents.editingChanged)
         
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        // print("locations = \(locValue.latitude) \(locValue.longitude)")
+        
+        myCurrentLat = locValue.latitude
+        myCurrentLong = locValue.longitude
         
     }
   
@@ -245,6 +264,22 @@ class EnterOtpVC: UIViewController {
                     SavedPreferences.set("yes", forKey: "user_verified")
                     self.navigationController?.navigationBar.isHidden = true
                     self.performSegue(withIdentifier: "email_present_reveal", sender: self)
+                    
+                    //Code for push notifications
+                    UIApplication.shared.applicationIconBadgeNumber = 1
+                    
+                    let settings = UIUserNotificationSettings(types: [.alert,.badge,.sound], categories: nil)
+                    UIApplication.shared.registerUserNotificationSettings(settings)
+                    UIApplication.shared.registerForRemoteNotifications()
+                    
+                    //My current Location
+                    self.locManager.requestWhenInUseAuthorization()
+                    if CLLocationManager.locationServicesEnabled()
+                    {   self.locManager.delegate = self
+                        self.locManager.desiredAccuracy = kCLLocationAccuracyBest
+                        self.locManager.startUpdatingLocation()
+                    }
+
 
                     
                 }
@@ -365,7 +400,6 @@ class EnterOtpVC: UIViewController {
         else
         {
             self.showAlert(Message: "Please enter otp.", vc: self)
-            
             
         }
         
