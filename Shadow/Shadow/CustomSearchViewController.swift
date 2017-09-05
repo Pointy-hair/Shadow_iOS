@@ -69,20 +69,23 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         
         super.viewDidLoad()
         
-        showSearchBar()    //Custom search bar
-        let searchTextField:UITextField = searchBar.subviews[0].subviews.last as! UITextField         //Custom Designs for search bar
-        searchTextField.layer.cornerRadius = 8
-        searchTextField.textAlignment = NSTextAlignment.left
-        searchTextField.textColor = UIColor.white
-        let image:UIImage = UIImage(named: "customsearch")!
-        let imageView:UIImageView = UIImageView.init(image: image)
-        searchTextField.leftView = imageView
-        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search",
-                                                                   attributes: [NSForegroundColorAttributeName: UIColor.white])
-        searchTextField.leftViewMode = UITextFieldViewMode.always
-        searchTextField.rightView = nil
-        searchTextField.backgroundColor = UIColor.init(red: 144.0/255.0, green: 20.0/255.0, blue: 151.0/255.0, alpha: 1.0)
-        self.searchBar.endEditing(true)
+        
+            self.showSearchBar()    //Custom search bar
+            let searchTextField:UITextField = self.searchBar.subviews[0].subviews.last as! UITextField         //Custom Designs for search bar
+            searchTextField.layer.cornerRadius = 8
+            searchTextField.textAlignment = NSTextAlignment.left
+            searchTextField.textColor = UIColor.white
+            let image:UIImage = UIImage(named: "customsearch")!
+            let imageView:UIImageView = UIImageView.init(image: image)
+            searchTextField.leftView = imageView
+            searchTextField.attributedPlaceholder = NSAttributedString(string: "Search",
+                                                                       attributes: [NSForegroundColorAttributeName: UIColor.white])
+            searchTextField.leftViewMode = UITextFieldViewMode.always
+            searchTextField.rightView = nil
+            searchTextField.backgroundColor = UIColor.init(red: 144.0/255.0, green: 20.0/255.0, blue: 151.0/255.0, alpha: 1.0)
+            self.searchBar.endEditing(true)
+      
+       
         
         tblview_AllSearchResult.tableFooterView = UIView()  //Set table extra rows eliminate
         
@@ -216,7 +219,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
             
             searchBar.frame = CGRect(x: 40, y: self.view_BehindSearchView.frame.origin.y + 18, width: self.view_BehindSearchView.frame.width - 140, height: 45)
             
-            btn_back.frame = CGRect(x: 0, y: 20, width: 42, height: 42)
+            btn_back.frame = CGRect(x: 0, y: 18, width: 42, height: 42)
             btn_back.setImage(UIImage(named:"back-new"), for: .normal)
             _ = UIBarButtonItem(customView: btn_back)
             btn_back.addTarget(self, action: #selector(self.PopView), for: .touchUpInside)

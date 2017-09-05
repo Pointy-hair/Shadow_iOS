@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1159"
-            endingLineNumber = "1159"
+            startingLineNumber = "1162"
+            endingLineNumber = "1162"
             landmarkName = "scrollViewDidEndDecelerating(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -52,12 +52,12 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526194559.335316"
+                  timestampString = "526283134.758789"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
                   endingLineNumber = "0"
-                  offsetFromSymbolStart = "12">
+                  offsetFromSymbolStart = "4">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -67,26 +67,11 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526194559.337532"
+                  timestampString = "526283134.762267"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "382"
                   endingLineNumber = "382"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(extension in Shadow):Charts.BarChartView.BarChartFormatter.__allocating_init () -&gt; (extension in Shadow):Charts.BarChartView.BarChartFormatter"
-                  moduleName = "Shadow"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526194559.340596"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
                   offsetFromSymbolStart = "12">
                </Location>
             </Locations>
@@ -131,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2945"
-            endingLineNumber = "2945"
+            startingLineNumber = "2948"
+            endingLineNumber = "2948"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -147,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2951"
-            endingLineNumber = "2951"
+            startingLineNumber = "2954"
+            endingLineNumber = "2954"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -163,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2052"
-            endingLineNumber = "2052"
+            startingLineNumber = "2055"
+            endingLineNumber = "2055"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -179,11 +164,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2074"
-            endingLineNumber = "2074"
+            startingLineNumber = "2077"
+            endingLineNumber = "2077"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -195,11 +180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2056"
-            endingLineNumber = "2056"
+            startingLineNumber = "2059"
+            endingLineNumber = "2059"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -211,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2079"
-            endingLineNumber = "2079"
+            startingLineNumber = "2082"
+            endingLineNumber = "2082"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -307,11 +292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1915"
-            endingLineNumber = "1915"
+            startingLineNumber = "1918"
+            endingLineNumber = "1918"
             landmarkName = "searchBar(_:shouldChangeTextIn:replacementText:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -323,11 +308,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1929"
-            endingLineNumber = "1929"
+            startingLineNumber = "1932"
+            endingLineNumber = "1932"
             landmarkName = "searchBar(_:shouldChangeTextIn:replacementText:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -339,11 +324,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1967"
-            endingLineNumber = "1967"
+            startingLineNumber = "1970"
+            endingLineNumber = "1970"
             landmarkName = "searchBar(_:textDidChange:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -355,11 +340,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/CustomSearchViewController.swift"
-            timestampString = "526066367.157601"
+            timestampString = "526283701.099235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1844"
-            endingLineNumber = "1844"
+            startingLineNumber = "1847"
+            endingLineNumber = "1847"
             landmarkName = "searchBar(_:shouldChangeTextIn:replacementText:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -371,13 +356,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/ProfileVC.swift"
-            timestampString = "526063393.934293"
+            timestampString = "526294857.270424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1185"
-            endingLineNumber = "1185"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
-            landmarkType = "7">
+            startingLineNumber = "1190"
+            endingLineNumber = "1190"
+            landmarkName = "ProfileVC"
+            landmarkType = "4">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -419,12 +404,12 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526194559.313847"
+                  timestampString = "526283134.853662"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "293"
                   endingLineNumber = "293"
-                  offsetFromSymbolStart = "2032">
+                  offsetFromSymbolStart = "2534">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -434,12 +419,12 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526194559.316302"
+                  timestampString = "526283134.855947"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "293"
                   endingLineNumber = "293"
-                  offsetFromSymbolStart = "2780">
+                  offsetFromSymbolStart = "3483">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -457,6 +442,22 @@
             startingLineNumber = "272"
             endingLineNumber = "272"
             landmarkName = "collectionView(_:cellForItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/RequestDetailsViewController.swift"
+            timestampString = "526283029.01906"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "setRequestData()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

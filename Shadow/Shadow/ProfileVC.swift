@@ -869,11 +869,18 @@ class ProfileVC: UIViewController {
     
     @IBAction func Open_ProfileImage(_ sender: UIButton) {
         
+//        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+//        statusBar.backgroundColor = UIColor.clear
+//        UIApplication.shared.statusBarStyle = .lightContent
+//        
         let imgdata = UIImageJPEGRepresentation(imageView_ProfilePic.image!, 0.5)
         let photos = self.ArrayOfPhotos(data: imgdata!)
         let vc: NYTPhotosViewController = NYTPhotosViewController(photos: photos as? [NYTPhoto])
         vc.rightBarButtonItem = nil
         self.present(vc, animated: true, completion: nil)
+       
+      
+
         
     }
     
@@ -881,8 +888,6 @@ class ProfileVC: UIViewController {
     func ArrayOfPhotos(data:Data)->(NSArray)
     {
         self.scrollbar.contentInset = UIEdgeInsets.init(top: 10, left: 0, bottom: 0, right: 0)
- 
-        
         let photos:NSMutableArray = NSMutableArray()
         let photo:NYTExamplePhoto = NYTExamplePhoto()
         photo.imageData = data
