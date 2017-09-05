@@ -1140,7 +1140,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
             }
             else {
                 
-                self.kheightViewBehindSkill.constant = CGFloat(count! * 32) + CGFloat(10)
+                self.kheightViewBehindSkill.constant = CGFloat(count! * 32) + CGFloat(8)
 
             }
             
@@ -1168,7 +1168,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
 
             }
             else {
-                self.kheightViewBehindInterest.constant = CGFloat(count! * 32) + CGFloat(10)
+                self.kheightViewBehindInterest.constant = CGFloat(count! * 32) + CGFloat(8)
 
             }
             
@@ -1183,7 +1183,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
             }
     
         }
-       self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant + 15)
+       self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: 230 + self.k_Constraint_ViewDescHeight.constant + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant)
         
         return count!
     }
