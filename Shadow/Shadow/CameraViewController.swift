@@ -68,6 +68,15 @@ class CameraViewController: UIViewController,AVCaptureFileOutputRecordingDelegat
     //MARK: - Functions
     func loadCamera(){
         
+        let audio_Session = AVAudioSession.sharedInstance()
+        if audio_Session.isOtherAudioPlaying{
+            
+            _ = try? audio_Session.setCategory(AVAudioSessionCategoryAmbient, with: AVAudioSessionCategoryOptions.mixWithOthers)
+            
+        }
+        
+        
+        
         displayTimeLabel.text = "00:00"
         captureSession = AVCaptureSession()
         captureSession!.sessionPreset = AVCaptureSessionPresetHigh
@@ -122,6 +131,15 @@ class CameraViewController: UIViewController,AVCaptureFileOutputRecordingDelegat
             print("Can't run on simulator")
         }
         else{
+            
+            
+            let audio_Session = AVAudioSession.sharedInstance()
+            if audio_Session.isOtherAudioPlaying{
+                
+                _ = try? audio_Session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: AVAudioSessionCategoryOptions.mixWithOthers)
+                
+            }
+            
             captureSession?.beginConfiguration()
             delegate = self
             let formatter: DateFormatter = DateFormatter()
@@ -205,6 +223,7 @@ class CameraViewController: UIViewController,AVCaptureFileOutputRecordingDelegat
     
     
     @IBAction func action_changeCameraType(_ sender: UIButton) {
+        
         let VideoDevices = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo)
         self.previewLayer?.removeFromSuperlayer()
         if backcameraOn{

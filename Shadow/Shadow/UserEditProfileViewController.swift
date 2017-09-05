@@ -229,6 +229,7 @@ class UserEditProfileViewController: UIViewController {
             }
             
             //getting user occupation
+            if dictionary_user_Info[Global.macros.koccupation] != nil{
             let tmp_arr_occ = (dictionary_user_Info.value(forKey: Global.macros.koccupation) as? NSArray)?.mutableCopy() as! NSMutableArray
             for value in tmp_arr_occ{
                 
@@ -243,8 +244,11 @@ class UserEditProfileViewController: UIViewController {
                     
                 }
             }
+            }
             
             //getting user interests
+            if dictionary_user_Info[Global.macros.kinterest] != nil{
+
             let tmp_arr_Int = (dictionary_user_Info.value(forKey: Global.macros.kinterest) as! NSArray).mutableCopy() as! NSMutableArray
             
             for value in tmp_arr_Int{
@@ -258,6 +262,7 @@ class UserEditProfileViewController: UIViewController {
                 else{
                     self.array_UserInterests.add(dict)
                 }
+            }
             }
             
             //setting user occupation in collection view

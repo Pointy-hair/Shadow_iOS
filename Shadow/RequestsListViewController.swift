@@ -108,7 +108,7 @@ class RequestsListViewController: UIViewController {
     
     @IBAction func Action_MyRequests(_ sender: UIButton) {//requests to me
         
-        self.navigationItem.title = "My Request"
+        self.navigationItem.title = "Received Requests"
         self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
         self.btn_ShadowRequest.setTitleColor(UIColor.black, for: .normal)
 
@@ -133,7 +133,7 @@ class RequestsListViewController: UIViewController {
 
     @IBAction func Action_ShadowRequests(_ sender: UIButton) {//requests that I have send
         
-        self.navigationItem.title = "Shadow Request"
+        self.navigationItem.title = "Sent Requests"
         self.btn_MyRequest.setTitleColor(UIColor.black, for: .normal)
         self.btn_ShadowRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
 

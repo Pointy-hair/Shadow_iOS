@@ -271,7 +271,7 @@ class RequestDetailsViewController: UIViewController {
                         }
                         
                         //get video url
-                        let str_video =  dict_Info.value(forKey: "videoUrl") as? String  //Video url to play video
+                        let str_video =  (dict_Info.value(forKey: "userDTO") as? NSDictionary)?.value(forKey: "videoUrl") as? String  //Video url to play video
                         if str_video != nil {
                             self.video_url = NSURL(string: str_video!) as? URL
                         }

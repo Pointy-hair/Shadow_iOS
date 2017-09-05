@@ -9,6 +9,7 @@
 import UIKit
 import GooglePlaces
 import GooglePlacePicker
+import AVFoundation
 
 var deviceTokenString = String()       // Device token string used in login and sign ups
 
@@ -74,6 +75,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
             }
         }
         
+        //Audio
+//        let audio_Session = AVAudioSession.sharedInstance()
+//        if audio_Session.isOtherAudioPlaying{
+//            
+//            _ = try? audio_Session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: AVAudioSessionCategoryOptions.mixWithOthers)
+//            
+//        }
+        if application.applicationState == .active{
+            
+            let audio_Session = AVAudioSession.sharedInstance()
+                    if audio_Session.isOtherAudioPlaying{
+            
+                        _ = try? audio_Session.setCategory(AVAudioSessionCategoryAmbient, with: AVAudioSessionCategoryOptions.mixWithOthers)
+                        
+                    }
+            
+        }
+        
+        
         return true
     }
     
@@ -98,16 +118,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
 //    }
     
     func applicationWillResignActive(_ application: UIApplication) {
+        
+        let audio_Session = AVAudioSession.sharedInstance()
+        if audio_Session.isOtherAudioPlaying{
+            
+            _ = try? audio_Session.setCategory(AVAudioSessionCategoryAmbient, with: AVAudioSessionCategoryOptions.mixWithOthers)
+            
+        }
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
+        
+        let audio_Session = AVAudioSession.sharedInstance()
+        if audio_Session.isOtherAudioPlaying{
+            
+            _ = try? audio_Session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: AVAudioSessionCategoryOptions.mixWithOthers)
+            
+        }
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
+        
+                let audio_Session = AVAudioSession.sharedInstance()
+                if audio_Session.isOtherAudioPlaying{
+        
+                    _ = try? audio_Session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: AVAudioSessionCategoryOptions.mixWithOthers)
+                    
+                }
+
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
     
@@ -119,6 +161,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
+        
+        let audio_Session = AVAudioSession.sharedInstance()
+        if audio_Session.isOtherAudioPlaying{
+            
+            _ = try? audio_Session.setCategory(AVAudioSessionCategoryAmbient, with: AVAudioSessionCategoryOptions.mixWithOthers)
+            
+        }
+        
+        
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
