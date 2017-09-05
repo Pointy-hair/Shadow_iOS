@@ -41,13 +41,10 @@ class RatingViewController: UIViewController {
     }
     
     
-  
-    
     override func viewWillAppear(_ animated: Bool) {
         
         
         DispatchQueue.main.async {
-            
             
             self.imgView_Profile.layer.cornerRadius = 60.0
             self.imgView_Profile.clipsToBounds = true
@@ -237,8 +234,21 @@ class RatingViewController: UIViewController {
                     self.arr_GetRatingData.removeAllObjects()
                     DispatchQueue.main.async {
                         
+                        if ratingview_imgurl != nil {
+                            
+                            self.imgView_Profile.sd_setImage(with: URL(string:ratingview_imgurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
+                            
+                        }
                         
+                        if ratingview_name != nil {
+                            self.title = (ratingview_name!).capitalized
+                        }
+                        else{
+                            self.title = ""
+                        }
                         
+                        self.lbl_totalRatingCount.text = "0"
+                        self.lbl_RatingsCount.text = "0.0"
                         self.tblView_Rating.isHidden = true
                         self.tblView_Rating.reloadData()
                         
