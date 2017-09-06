@@ -60,6 +60,9 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var kheightViewBehindInterest: NSLayoutConstraint!
     @IBOutlet weak var kheightViewBehindSkill: NSLayoutConstraint!
     
+    @IBOutlet weak var kheightCollectionViewOccupation: NSLayoutConstraint!
+    @IBOutlet weak var kheightCollectionViewInterestHeight: NSLayoutConstraint!
+    
     var imageView1 : UIImageView?
     var imageView2 : UIImageView?
     var imageView3 : UIImageView?
@@ -1140,7 +1143,14 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
             }
             else {
                 
-                self.kheightViewBehindSkill.constant = CGFloat(count! * 32) + CGFloat(8)
+                
+                DispatchQueue.main.async {
+                    
+                    self.kheightCollectionViewOccupation.constant = self.collectionView_Skills.contentSize.height
+                    
+                    self.kheightViewBehindSkill.constant = self.collectionView_Skills.contentSize.height + 30
+                }
+              
 
             }
             
@@ -1160,6 +1170,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
         if collectionView == collectionView_Interests{
             
             count = array_UserInterests.count
+            
             if count! <= 2 {
                 self.kheightViewBehindInterest.constant = 100
             }
@@ -1168,8 +1179,10 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
 
             }
             else {
-                self.kheightViewBehindInterest.constant = CGFloat(count! * 32) + CGFloat(8)
-
+                DispatchQueue.main.async {
+                self.kheightCollectionViewInterestHeight.constant = self.collectionView_Interests.contentSize.height
+                self.kheightViewBehindInterest.constant = self.collectionView_Interests.contentSize.height + 35
+                }
             }
             
             if Global.DeviceType.IS_IPHONE_5 {
@@ -1183,7 +1196,9 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
             }
     
         }
+         DispatchQueue.main.async {
        self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: 230 + self.k_Constraint_ViewDescHeight.constant + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant)
+        }
         
         return count!
     }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fzx-XX-5se">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fzx-XX-5se">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -5260,6 +5260,9 @@
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6kB-qD-w2R">
                                                         <rect key="frame" x="4" y="32" width="350" height="111"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="111" id="bEK-t2-XLo"/>
+                                                        </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="fgq-Kk-3U2">
                                                             <size key="itemSize" width="142" height="50"/>
                                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -5341,6 +5344,9 @@
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vEY-Z6-aP5">
                                                         <rect key="frame" x="4" y="32" width="350" height="111"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="111" id="Elz-iN-UqE"/>
+                                                        </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Pft-qz-gmH">
                                                             <size key="itemSize" width="140" height="52"/>
                                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -5512,6 +5518,8 @@
                         <outlet property="k_Constraint_Height_TableView" destination="ltZ-3O-bIH" id="xjQ-0T-IsR"/>
                         <outlet property="k_Constraint_ViewDescHeight" destination="mQQ-1k-1Ca" id="tVZ-lg-MAF"/>
                         <outlet property="k_Constraint_tblViewTop" destination="T6M-XN-JcP" id="fjo-x9-6U3"/>
+                        <outlet property="kheightCollectionViewInterestHeight" destination="Elz-iN-UqE" id="jg9-Uf-0cG"/>
+                        <outlet property="kheightCollectionViewOccupation" destination="bEK-t2-XLo" id="xXK-IJ-DVm"/>
                         <outlet property="kheightViewBehindInterest" destination="Mlh-A9-kv2" id="dx4-jL-0bz"/>
                         <outlet property="kheightViewBehindSkill" destination="v7j-a4-bof" id="9Bn-rg-dmC"/>
                         <outlet property="lbl_Company" destination="4EB-Wl-qIc" id="GzA-JY-7o5"/>
@@ -7692,6 +7700,9 @@
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WbF-Dy-KVh">
                                                         <rect key="frame" x="6" y="34" width="347" height="115"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="115" id="MDV-m8-dP3"/>
+                                                        </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="CoF-hS-Le1">
                                                             <size key="itemSize" width="150" height="52"/>
                                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -7745,7 +7756,6 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="WbF-Dy-KVh" secondAttribute="bottom" constant="9" id="7kz-ME-rrv"/>
                                                     <constraint firstItem="lKW-sC-oym" firstAttribute="leading" secondItem="EXM-16-BVr" secondAttribute="leading" constant="7" id="E34-fk-5YV"/>
                                                     <constraint firstAttribute="height" constant="158" id="JHQ-an-mHH"/>
                                                     <constraint firstItem="hJS-fG-2aX" firstAttribute="leading" secondItem="EXM-16-BVr" secondAttribute="leading" constant="5" id="O0r-64-7PW"/>
@@ -7863,6 +7873,7 @@
                         <outlet property="imgView_Location" destination="72b-Sg-9iM" id="4jW-qI-roJ"/>
                         <outlet property="imgView_ProfilePic" destination="obn-fp-C2T" id="VDa-22-mGT"/>
                         <outlet property="imgView_Url" destination="bn8-8G-rD6" id="0ph-cc-GVW"/>
+                        <outlet property="kHeightCollectionView" destination="MDV-m8-dP3" id="DnH-7N-GRK"/>
                         <outlet property="k_Constraint_Height_tblView" destination="Wow-Ne-C1z" id="VCV-Vk-DZC"/>
                         <outlet property="k_Constraint_Top_imgViewUrl" destination="yso-Bk-i00" id="g8j-LG-IMp"/>
                         <outlet property="k_Constraint_Top_lblUrl" destination="o1d-kM-rRj" id="SkT-8M-ZIE"/>

@@ -1057,6 +1057,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
         if indexPath != nil {
             let cell = self.customCollectionView.cellForItem(at: indexPath!) as? CustomCollectionViewCell
+          
             if cell != nil {
                 
                 if scrollView == self.tblview_AllSearchResult {       //Pagination for tableview

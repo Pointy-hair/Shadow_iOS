@@ -52,6 +52,8 @@ class ComapanySchoolViewController: UIViewController{
     @IBOutlet var lbl_totalRatingCount: UILabel!
     @IBOutlet weak var kheightViewBehindOccupation: NSLayoutConstraint!
     
+    @IBOutlet weak var kHeightCollectionView: NSLayoutConstraint!
+    
     //MARK: - Variables
     var linkForOpenWebsite : String?
     var rating_number  : String?
@@ -1197,10 +1199,7 @@ extension ComapanySchoolViewController:UICollectionViewDelegate,UICollectionView
             cell.lbl_Skill.text = (array_UserOccupations[indexPath.row]as! NSDictionary).value(forKey: "name")as? String
             
         }
-        
-        
-        
-        
+      
         return cell
     }
     
@@ -1222,7 +1221,11 @@ extension ComapanySchoolViewController:UICollectionViewDelegate,UICollectionView
         }
         else {
             
-            self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(18)
+          //  self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(18)
+            
+            self.kHeightCollectionView.constant = self.collection_View.contentSize.height
+            
+            self.kheightViewBehindOccupation.constant = self.collection_View.contentSize.height + 30
             
         }
         
@@ -1236,7 +1239,7 @@ extension ComapanySchoolViewController:UICollectionViewDelegate,UICollectionView
         }
         
         
-        self.Scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindOccupation.constant  + 80)
+        self.Scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: 265 + self.k_Constraint_ViewDescriptionHeight.constant + self.kheightViewBehindOccupation.constant)
          return count!
     }
     
