@@ -32,7 +32,7 @@ class RequestsListViewController: UIViewController {
     var user_Name:String?
     fileprivate var requestID:NSNumber?
     fileprivate var array_Requests = NSMutableArray()
-    
+    fileprivate var colorCode_light = UIColor.init(red: 237.0/255.0, green: 237.0/255.0, blue: 237.0/255.0, alpha: 1.0)
     
     
     override func viewDidLoad() {
@@ -49,7 +49,7 @@ class RequestsListViewController: UIViewController {
         DispatchQueue.main.async {
             
             
-            self.navigationItem.title = "My Request"//self.user_Name!
+            self.navigationItem.title = "Received Request"//self.user_Name!
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
             self.tabBarController?.tabBar.isHidden = true
@@ -79,15 +79,19 @@ class RequestsListViewController: UIViewController {
             //setting default selected filter button
             //Showing line and color of accepted button
             self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-            self.lbl_btn_All.isHidden = false
+           // self.lbl_btn_All.isHidden = false
+            self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
+
             
             //hiding the lines and changing color unselected buttons
             self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-            self.lbl_btn_Accepted.isHidden = true
-            
+            //self.lbl_btn_Accepted.isHidden = true
+            self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
+
             self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-            self.lbl_btn_Declined.isHidden = true
-            
+           // self.lbl_btn_Declined.isHidden = true
+            self.lbl_btn_Declined.backgroundColor = self.colorCode_light
+
             
         }
 
@@ -114,14 +118,20 @@ class RequestsListViewController: UIViewController {
 
         //Showing line and color of accepted button
         self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_All.isHidden = false
+        //self.lbl_btn_All.isHidden = false
+        self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
+
         
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_Accepted.isHidden = true
+        //self.lbl_btn_Accepted.isHidden = true
+        self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
+
         
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_Declined.isHidden = true
+        //self.lbl_btn_Declined.isHidden = true
+        self.lbl_btn_Declined.backgroundColor = self.colorCode_light
+
         
         
         self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
@@ -138,16 +148,25 @@ class RequestsListViewController: UIViewController {
         self.btn_ShadowRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
 
         
+        
+        
+        
         //Showing line and color of accepted button
         self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_All.isHidden = false
+       // self.lbl_btn_All.isHidden = false
+        self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
+
         
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_Accepted.isHidden = true
+       // self.lbl_btn_Accepted.isHidden = true
+        self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
+
         
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_Declined.isHidden = true
+        //self.lbl_btn_Declined.isHidden = true
+        self.lbl_btn_Declined.backgroundColor = self.colorCode_light
+
         
         self.getRequestsByType(Type: Global.macros.kReceived,SubType:Global.macros.kAll)
         My_Request_Selected_Status = false
@@ -158,14 +177,21 @@ class RequestsListViewController: UIViewController {
         
         //Showing line and color of accepted button
         self.btn_Accepted.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_Accepted.isHidden = false
+        //self.lbl_btn_Accepted.isHidden = false
+        self.lbl_btn_Accepted.backgroundColor = Global.macros.themeColor_pink
+
         
         //hiding the lines and changing color unselected buttons
         self.btn_All.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_All.isHidden = true
+       // self.lbl_btn_All.isHidden = true
+        self.lbl_btn_All.backgroundColor = self.colorCode_light
 
+
+        
+        
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_Declined.isHidden = true
+        //self.lbl_btn_Declined.isHidden = true
+        self.lbl_btn_Declined.backgroundColor = self.colorCode_light
 
 
         //getting requests according to type(My request or shadow request)
@@ -184,14 +210,20 @@ class RequestsListViewController: UIViewController {
         
         //Showing line and color of accepted button
         self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_All.isHidden = false
+       // self.lbl_btn_All.isHidden = false
+        self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
+
         
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_Accepted.isHidden = true
+      //  self.lbl_btn_Accepted.isHidden = true
+        self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
+
         
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_Declined.isHidden = true
+       // self.lbl_btn_Declined.isHidden = true
+        self.lbl_btn_Declined.backgroundColor = self.colorCode_light
+
         
         //getting requests according to type(My request or shadow request)
         if My_Request_Selected_Status == true{//My request is selected
@@ -209,14 +241,19 @@ class RequestsListViewController: UIViewController {
         
         //Showing line and color of accepted button
         self.btn_Declined.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_Declined.isHidden = false
-        
+        //self.lbl_btn_Declined.isHidden = false
+        self.lbl_btn_Declined.backgroundColor = Global.macros.themeColor_pink
+
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_Accepted.isHidden = true
+        //self.lbl_btn_Accepted.isHidden = true
+        self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
+
         
         self.btn_All.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_All.isHidden = true
+        //self.lbl_btn_All.isHidden = true
+        self.lbl_btn_All.backgroundColor = self.colorCode_light
+
 
         //getting requests according to type(My request or shadow request)
         if My_Request_Selected_Status == true{//My request is selected
@@ -484,17 +521,21 @@ extension RequestsListViewController:UITableViewDelegate,UITableViewDataSource{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RequestsListTableViewCell
         
-        cell.btn_Accept.tag = indexPath.row
-        cell.btn_Decline.tag = indexPath.row
+        cell.btn_Accept.tag = indexPath.section
+        cell.btn_Decline.tag = indexPath.section
         
         
-        cell.DataToCell(dictionary: array_Requests.object(at: indexPath.row) as! NSDictionary)
+       // cell.contentView.layer.borderWidth = 1.0
+       // cell.contentView.layer.borderColor = Global.macros.themeColor.cgColor
+        cell.contentView.layer.cornerRadius = 5.0
+        
+        cell.DataToCell(dictionary: array_Requests.object(at: indexPath.section) as! NSDictionary)
         
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         
         if array_Requests.count > 0{
             return array_Requests.count
@@ -502,16 +543,40 @@ extension RequestsListViewController:UITableViewDelegate,UITableViewDataSource{
         else{
             return 0
         }
+
     }
     
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return 1
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.requestID = (array_Requests.object(at: indexPath.row) as! NSDictionary).value(forKey: "id") as? NSNumber
-        //print(requestID!)
+        self.requestID = (array_Requests.object(at: indexPath.section) as! NSDictionary).value(forKey: "id") as? NSNumber
         self.performSegue(withIdentifier: "myrequests_to_requestdetail", sender: self)
 
-
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 5.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let header = UIView()
+        header.backgroundColor = UIColor.clear
+        return header
+      
+//        let view:UIView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: self.view.bounds.size.width, height: 10))
+//        view.backgroundColor = .clear
+//        
+//        return view
+    }
+    
+    
+    
     
 }

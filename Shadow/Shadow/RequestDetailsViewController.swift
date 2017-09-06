@@ -51,6 +51,9 @@ class RequestDetailsViewController: UIViewController {
         
         DispatchQueue.main.async {
             
+            self.calender.appearance.headerMinimumDissolvedAlpha = 0.0
+
+            
             // self.navigationItem.title = self.username!
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
@@ -60,7 +63,7 @@ class RequestDetailsViewController: UIViewController {
             
             self.calender.layer.borderWidth = 1.0
             self.calender.layer.borderColor = UIColor.darkGray.cgColor
-            self.calender.layer.cornerRadius = 3.0
+            self.calender.layer.cornerRadius = 8.0
             
             self.btn_Accept.layer.cornerRadius = 8.0
             self.btn_Accept.layer.borderWidth = 1.0
@@ -74,9 +77,9 @@ class RequestDetailsViewController: UIViewController {
             self.btn_AcceptedRejected.layer.borderWidth = 1.0
             self.btn_AcceptedRejected.layer.borderColor = Global.macros.themeColor.cgColor
             
-            self.txtView_Message.layer.cornerRadius = 5.0
-            self.txtView_Message.layer.borderWidth = 1.0
-            self.txtView_Message.layer.borderColor = Global.macros.themeColor.cgColor
+//            self.txtView_Message.layer.cornerRadius = 5.0
+//            self.txtView_Message.layer.borderWidth = 1.0
+//            self.txtView_Message.layer.borderColor = Global.macros.themeColor.cgColor
             
             self.view_LblLocation.layer.cornerRadius = 5.0
             self.view_LblLocation.layer.borderWidth = 1.0
@@ -86,6 +89,8 @@ class RequestDetailsViewController: UIViewController {
             self.view_LblVirtualMedium.layer.borderWidth = 1.0
             self.view_LblVirtualMedium.layer.borderColor = Global.macros.themeColor.cgColor
             self.calender.isUserInteractionEnabled = false
+            self.calender.reloadData()
+            
             
         }
         
@@ -283,15 +288,15 @@ class RequestDetailsViewController: UIViewController {
                         
                         if  (dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: Global.macros.krole) as? String == "USER"{
                             
-                            self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "userName") as? String)?.capitalizingFirstLetter()
+                            self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "userName") as? String)?.capitalized
                         }
                         else if (dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: Global.macros.krole) as? String == "SCHOOL"{
                             
-                            self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "name") as? String
+                            self.navigationItem.title = (((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "name") as? String)?.capitalized
                             
                         }else if (dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: Global.macros.krole) as? String == "COMPANY"{
                             
-                            self.navigationItem.title = ((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "name") as? String
+                            self.navigationItem.title = (((dict_Info.value(forKey: "userDTO")as! NSDictionary).value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "name") as? String)?.capitalized
                             
                         }
                         
@@ -469,12 +474,7 @@ class RequestDetailsViewController: UIViewController {
         userIdFromSearch = Dict_Info.value(forKey: Global.macros.kotherUserId) as? NSNumber
         _ = self.navigationController?.pushViewController(vc, animated: true)
         
-        
-        
-        
-        
     }
-    
     
     /*
      // MARK: - Navigation
@@ -486,4 +486,29 @@ class RequestDetailsViewController: UIViewController {
      }
      */
     
+}
+extension RequestDetailsViewController:FSCalendarDelegate,FSCalendarDataSource,FSCalendarDelegateAppearance{
+    
+    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
+        
+        if date == calender.today
+        {
+            return "Today"
+        }
+        else{
+            return nil
+        }
+    }
+    
+
+//    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+//        
+//        if date < calender.currentPage {
+//            
+//            return UIColor.clear
+//        }
+//        else{
+//            return UIColor.black
+//        }
+//    }
 }

@@ -57,13 +57,13 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             self.btn_SelectVirtualOption.layer.borderWidth = 1.0
             
             
-            self.txtView_Message.layer.cornerRadius = 5.0
-            self.txtView_Message.layer.borderWidth = 1.0
-            self.txtView_Message.layer.borderColor = Global.macros.themeColor.cgColor
+//            self.txtView_Message.layer.cornerRadius = 5.0
+//            self.txtView_Message.layer.borderWidth = 1.0
+//            self.txtView_Message.layer.borderColor = Global.macros.themeColor.cgColor
             
             self.calender.layer.borderColor = UIColor.darkGray.cgColor
             self.calender.layer.borderWidth = 1.0
-            self.calender.layer.cornerRadius = 5.0
+            self.calender.layer.cornerRadius = 8.0
             
             self.CreateNavigationBackBarButton()
             
@@ -467,26 +467,20 @@ extension SendRequestViewController:UITextViewDelegate{
         
         lbl_MessagePlaceholder.isHidden = true
         
-        if Global.DeviceType.IS_IPHONE_5 || Global.DeviceType.IS_IPHONE_6{
+      //  if Global.DeviceType.IS_IPHONE_5 || Global.DeviceType.IS_IPHONE_6{
             DispatchQueue.main.async {
                 
                 self.animateTextView(textView: textView, up: true, movementDistance: textView.frame.maxY, scrollView:self.scrollView)
                 
-                UIView.animate(withDuration: 1.0, animations: {
-                    //self.k_Constraint_ScroolViewTop.constant = -170.0
-                    
-                })
-            }
+//                UIView.animate(withDuration: 1.0, animations: {
+//                    //self.k_Constraint_ScroolViewTop.constant = -170.0
+//                    
+//                })
+           // }
             
             
         }
-        if Global.DeviceType.IS_IPHONE_4_OR_LESS{
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 1.0, animations: {
-                    //self.k_Constraint_ScroolViewTop.constant = -200
-                })
-            }
-        }
+        
     }
     
     
@@ -504,7 +498,7 @@ extension SendRequestViewController:UITextViewDelegate{
             txtView_Message.text = textView.text
         }
         
-        if Global.DeviceType.IS_IPHONE_5{
+      //  if Global.DeviceType.IS_IPHONE_5{
             DispatchQueue.main.async {
                 
                 self.animateTextView(textView: textView, up: false, movementDistance: textView.frame.minY, scrollView:self.scrollView)
@@ -515,7 +509,7 @@ extension SendRequestViewController:UITextViewDelegate{
             }
             
             
-        }
+       // }
         if Global.DeviceType.IS_IPHONE_4_OR_LESS{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 1.0, animations: {
