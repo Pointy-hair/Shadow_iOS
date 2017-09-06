@@ -119,8 +119,8 @@ class ComapanySchoolViewController: UIViewController{
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
-        self.Scroll_View.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
+       // self.Scroll_View.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+       // self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
        
         dicUrl.removeAllObjects()
         ratingview_ratingNumber = ""
@@ -1216,30 +1216,34 @@ extension ComapanySchoolViewController:UICollectionViewDelegate,UICollectionView
             
             
         else if count == 4 {
+            
             self.kheightViewBehindOccupation.constant = 160
             
         }
         else {
             
           //  self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(18)
-            
-            self.kHeightCollectionView.constant = self.collection_View.contentSize.height
-            
+            DispatchQueue.main.async {
+                self.kHeightCollectionView.constant = self.collection_View.contentSize.height
             self.kheightViewBehindOccupation.constant = self.collection_View.contentSize.height + 30
             
+            }
         }
         
         if Global.DeviceType.IS_IPHONE_5 {
             
             if count == 3 {
+                
                 self.kheightViewBehindOccupation.constant = 160
                 
             }
             
         }
         
-        
-        self.Scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: 265 + self.k_Constraint_ViewDescriptionHeight.constant + self.kheightViewBehindOccupation.constant)
+        DispatchQueue.main.async {
+
+        self.Scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height:  self.k_Constraint_ViewDescriptionHeight.constant + self.kheightViewBehindOccupation.constant + 400)
+        }
          return count!
     }
     

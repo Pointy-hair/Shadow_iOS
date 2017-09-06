@@ -32,69 +32,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Shadow/OccupationDetailViewController.swift"
-            timestampString = "526068147.665484"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "377"
-            endingLineNumber = "377"
-            landmarkName = "collectionView(_:numberOfItemsInSection:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(extension in Shadow):Charts.BarChartView.BarChartFormatter.__deallocating_deinit"
-                  moduleName = "Shadow"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526363528.264231"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "12">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(extension in Shadow):Charts.BarChartView.BarChartFormatter.init () -&gt; (extension in Shadow):Charts.BarChartView.BarChartFormatter"
-                  moduleName = "Shadow"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526363528.266471"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "382"
-                  endingLineNumber = "382"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(extension in Shadow):Charts.BarChartView.BarChartFormatter.__allocating_init () -&gt; (extension in Shadow):Charts.BarChartView.BarChartFormatter"
-                  moduleName = "Shadow"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526363528.268682"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "12">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -227,11 +164,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/UserEditProfileViewController.swift"
-            timestampString = "526051935.582202"
+            timestampString = "526384477.614382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1557"
-            endingLineNumber = "1557"
+            startingLineNumber = "1560"
+            endingLineNumber = "1560"
             landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -243,11 +180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/UserEditProfileViewController.swift"
-            timestampString = "526052376.313467"
+            timestampString = "526384477.614382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1544"
-            endingLineNumber = "1544"
+            startingLineNumber = "1547"
+            endingLineNumber = "1547"
             landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -259,11 +196,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/UserEditProfileViewController.swift"
-            timestampString = "526052410.108494"
+            timestampString = "526384477.614382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1537"
-            endingLineNumber = "1537"
+            startingLineNumber = "1540"
+            endingLineNumber = "1540"
+            landmarkName = "collectionView(_:cellForItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/UserEditProfileViewController.swift"
+            timestampString = "526384477.614382"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1553"
+            endingLineNumber = "1553"
             landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -275,27 +228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/UserEditProfileViewController.swift"
-            timestampString = "526052425.3075"
+            timestampString = "526384477.614382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1550"
-            endingLineNumber = "1550"
-            landmarkName = "collectionView(_:numberOfItemsInSection:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Shadow/UserEditProfileViewController.swift"
-            timestampString = "526052426.170897"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1552"
-            endingLineNumber = "1552"
+            startingLineNumber = "1555"
+            endingLineNumber = "1555"
             landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -387,11 +324,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/OccupationDetailViewController.swift"
-            timestampString = "526067817.742832"
+            timestampString = "526391915.926136"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -403,11 +340,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/OccupationDetailViewController.swift"
-            timestampString = "526194543.64137"
+            timestampString = "526391915.926136"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
+            startingLineNumber = "311"
+            endingLineNumber = "311"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
             <Locations>
@@ -419,12 +356,12 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526363528.356428"
+                  timestampString = "526391917.846758"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "293"
-                  endingLineNumber = "293"
-                  offsetFromSymbolStart = "2032">
+                  startingLineNumber = "311"
+                  endingLineNumber = "311"
+                  offsetFromSymbolStart = "2534">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -434,12 +371,12 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/OccupationDetailViewController.swift"
-                  timestampString = "526363528.358662"
+                  timestampString = "526391917.8504"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "293"
-                  endingLineNumber = "293"
-                  offsetFromSymbolStart = "2780">
+                  startingLineNumber = "311"
+                  endingLineNumber = "311"
+                  offsetFromSymbolStart = "3483">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -451,11 +388,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/OccupationDetailViewController.swift"
-            timestampString = "526194882.966335"
+            timestampString = "526391915.926136"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "272"
-            endingLineNumber = "272"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -479,22 +416,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Shadow/ComapanySchoolViewController.swift"
-            timestampString = "526363513.67232"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1225"
-            endingLineNumber = "1225"
-            landmarkName = "collectionView(_:numberOfItemsInSection:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -505,6 +426,38 @@
             startingLineNumber = "226"
             endingLineNumber = "226"
             landmarkName = "setRequestData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/OccupationDetailViewController.swift"
+            timestampString = "526391915.926136"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "GetData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/OccupationDetailViewController.swift"
+            timestampString = "526391915.926136"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "GetData()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

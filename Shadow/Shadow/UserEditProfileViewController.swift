@@ -59,8 +59,10 @@ class UserEditProfileViewController: UIViewController {
     @IBOutlet var btn_Done_Search: UIButton!
     
     @IBOutlet weak var kheightViewBehindOccupation: NSLayoutConstraint!
-    
     @IBOutlet weak var kheightViewBehindInterest: NSLayoutConstraint!
+    @IBOutlet weak var kheightCollectionViewOccupation: NSLayoutConstraint!
+    
+    @IBOutlet weak var kheightCollectionViewInterest: NSLayoutConstraint!
     
     
     @IBOutlet weak var lbl_Counter: UILabel!
@@ -649,6 +651,7 @@ class UserEditProfileViewController: UIViewController {
             
         }
         else{
+            
             self.CollectionView_Occupation.isHidden = true
             self.lbl_NoOccupationsYet.isHidden = false
         }
@@ -1559,8 +1562,11 @@ extension UserEditProfileViewController:UICollectionViewDataSource,UICollectionV
             }
             else {
                 
-                self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(10)
-                
+                DispatchQueue.main.async {
+                    
+                   self.kheightCollectionViewOccupation.constant =  self.CollectionView_Occupation.contentSize.height
+                self.kheightViewBehindOccupation.constant =  self.CollectionView_Occupation.contentSize.height + 35
+                }
             }
             
             if Global.DeviceType.IS_IPHONE_5 {
@@ -1587,8 +1593,13 @@ extension UserEditProfileViewController:UICollectionViewDataSource,UICollectionV
                 
             }
             else {
-                self.kheightViewBehindInterest.constant = CGFloat(count! * 32) + CGFloat(10)
+              
                 
+                DispatchQueue.main.async {
+                    
+                    self.kheightCollectionViewInterest.constant =  self.collectionview_Interests.contentSize.height
+                    self.kheightViewBehindInterest.constant =  self.collectionview_Interests.contentSize.height + 35
+                }
             }
             
             if Global.DeviceType.IS_IPHONE_5 {
@@ -1602,7 +1613,9 @@ extension UserEditProfileViewController:UICollectionViewDataSource,UICollectionV
             }
             
         }
-        self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindOccupation.constant + self.kheightViewBehindInterest.constant + 30)
+        DispatchQueue.main.async {
+        self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height:   300 + self.k_Constraint_ViewFields_Height.constant + self.kheightViewBehindOccupation.constant + self.kheightViewBehindInterest.constant)
+        }
         
         return count!
 

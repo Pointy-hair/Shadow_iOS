@@ -54,6 +54,9 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
     
     @IBOutlet weak var kheightViewBehindOccupation: NSLayoutConstraint!
     
+    @IBOutlet weak var kheightCollection_View: NSLayoutConstraint!
+    
+    
     //MARK: - Variables
     fileprivate var arrsearchActualOccupation : NSMutableArray = NSMutableArray()
     fileprivate var temp_arrOccupation : NSMutableArray = NSMutableArray()
@@ -1672,8 +1675,11 @@ extension EditProfileViewController:UICollectionViewDataSource,UICollectionViewD
         }
         else {
             
-            self.kheightViewBehindOccupation.constant = CGFloat(count! * 32) + CGFloat(18)
-            
+            DispatchQueue.main.async {
+                
+                self.kheightCollection_View.constant =  self.collection_View_Occupation.contentSize.height
+                self.kheightViewBehindOccupation.constant =  self.collection_View_Occupation.contentSize.height + 35
+            }
         }
         
         if Global.DeviceType.IS_IPHONE_5 {
@@ -1685,7 +1691,12 @@ extension EditProfileViewController:UICollectionViewDataSource,UICollectionViewD
             
         }
         
-        self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindOccupation.constant  + 60)
+        DispatchQueue.main.async {
+
+        self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: 210
+            + self.k_contraint_ViewFields_Height.constant + self.kheightViewBehindOccupation.constant )
+            
+        }
          return count!
 
     }

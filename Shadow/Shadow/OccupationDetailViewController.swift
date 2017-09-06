@@ -20,7 +20,7 @@ class OccupationDetailViewController: UIViewController {
     @IBOutlet weak var lbl_GrowthPercentage: UILabel!
     @IBOutlet weak var lbl_UsersWithThisOccupation: UILabel!
     @IBOutlet weak var lbl_UserThatShadowedThis: UILabel!
-    @IBOutlet weak var txtfield_Occupation: UITextView!
+    @IBOutlet weak var txtfield_Occupation: UILabel!
     @IBOutlet weak var scroll_View: UIScrollView!
     @IBOutlet weak var collectionViewCompany: UICollectionView!
     @IBOutlet weak var collectionViewSchool: UICollectionView!
@@ -36,6 +36,14 @@ class OccupationDetailViewController: UIViewController {
     @IBOutlet weak var kheightViewBehindCompany: NSLayoutConstraint!
     
     @IBOutlet weak var kheightViewBehindSchool: NSLayoutConstraint!
+    
+    @IBOutlet weak var kHeightCC: NSLayoutConstraint!
+    @IBOutlet weak var kHeightSC: NSLayoutConstraint!
+    
+    @IBOutlet weak var kheight_DescriptionView: NSLayoutConstraint!
+    @IBOutlet weak var kHeightlblDescription: NSLayoutConstraint!
+
+    
     @IBOutlet weak var lbl_RatingCount: UILabel!
     
 
@@ -63,7 +71,6 @@ class OccupationDetailViewController: UIViewController {
         self.barChartView.highlightFullBarEnabled = false
         
       
-        self.txtfield_Occupation.setContentOffset(CGPoint.zero, animated: false)
 
 
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -82,7 +89,7 @@ class OccupationDetailViewController: UIViewController {
  
     }
     
-    func GetData(){
+    func GetData() {
         
         let dict = NSMutableDictionary()
         dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
@@ -121,9 +128,12 @@ class OccupationDetailViewController: UIViewController {
                         
                         self.lbl_UsersWithThisOccupation.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
                         self.lbl_UserThatShadowedThis.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
-                        self.txtfield_Occupation.setContentOffset(CGPoint.zero, animated: false)
+                      
                         self.txtfield_Occupation.text = (self.dic_Occupation.value(forKey: "description") as? String)
-                        
+                        DispatchQueue.main.async {
+                       self.txtfield_Occupation.frame.size.height = self.txtfield_Occupation.intrinsicContentSize.height
+                        self.kheight_DescriptionView.constant = self.txtfield_Occupation.frame.size.height + 42
+                        }
                         
                         let morePrecisePI = Double((self.dic_Occupation.value(forKey: "salary") as? String)!)
 
@@ -139,10 +149,18 @@ class OccupationDetailViewController: UIViewController {
                             print( self.arr_company)
                             
                             }
+                       if  self.arr_company.count == 0 {
+                            
+                            self.collectionViewCompany.isHidden = true
+                        }
                             
                       if self.dic_Occupation.value(forKey: "schools") != nil {
                         self.arr_school = (self.dic_Occupation.value(forKey: "schools") as! NSArray).mutableCopy() as! NSMutableArray
                             }
+                      if self.arr_school.count == 0 {
+                        
+                         self.collectionViewSchool.isHidden = true
+                        }
 
                         self.setChart()
 
@@ -326,8 +344,11 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             }
             else {
                 
-                self.kheightViewBehindCompany.constant = CGFloat(count! * 32) + CGFloat(10)
-                
+                DispatchQueue.main.async {
+                    
+                    self.kHeightCC.constant =  self.collectionViewCompany.contentSize.height
+                    self.kheightViewBehindCompany.constant =  self.collectionViewCompany.contentSize.height + 35
+                }
             }
             
             if Global.DeviceType.IS_IPHONE_5 {
@@ -354,7 +375,11 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
                 
             }
             else {
-                self.kheightViewBehindSchool.constant = CGFloat(count! * 32) + CGFloat(10)
+                DispatchQueue.main.async {
+                    
+                    self.kHeightSC.constant =  self.collectionViewSchool.contentSize.height
+                    self.kheightViewBehindSchool.constant =  self.collectionViewSchool.contentSize.height + 35
+                }
                 
             }
             
@@ -364,16 +389,15 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
                     self.kheightViewBehindSchool.constant = 150
                     
                 }
-                
-                
             }
-            
         }
-        self.scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + self.kheightViewBehindCompany.constant + self.kheightViewBehindSchool.constant + 15)
+        
+         DispatchQueue.main.async {
+        self.scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: 350 + self.kheight_DescriptionView.constant + self.kheightViewBehindCompany.constant + self.kheightViewBehindSchool.constant)
+        }
         
         return count!
         
-        return 10
 
    }
 }

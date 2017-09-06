@@ -1197,7 +1197,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
     
         }
          DispatchQueue.main.async {
-       self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: 230 + self.k_Constraint_ViewDescHeight.constant + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant)
+       self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: 300 + self.k_Constraint_ViewDescHeight.constant + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant)
         }
         
         return count!
