@@ -1452,7 +1452,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.alacustomer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.shadow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "160d7275-d15c-4dc1-8700-f804e22dfa6c";
 				PROVISIONING_PROFILE_SPECIFIER = Ala_customer;
@@ -1482,7 +1482,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.alacustomer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.shadow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "160d7275-d15c-4dc1-8700-f804e22dfa6c";
 				PROVISIONING_PROFILE_SPECIFIER = Ala_customer;

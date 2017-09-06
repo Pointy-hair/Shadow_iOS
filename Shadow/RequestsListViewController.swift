@@ -57,12 +57,12 @@ class RequestsListViewController: UIViewController {
             
             //Adding button to navigation bar
             let btn_delete = UIButton(type: .custom)
-            btn_delete.setImage(UIImage(named: "send_white"), for: .normal)
+            btn_delete.setImage(UIImage(named: "trash"), for: .normal)
             btn_delete.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
-            btn_delete.addTarget(self, action: #selector(self.delete(_:)), for: .touchUpInside)
+            btn_delete.addTarget(self, action: #selector(self.delete_requests), for: .touchUpInside)
             let item2 = UIBarButtonItem(customView: btn_delete)
             //Right items
-          //  self.navigationItem.setRightBarButtonItems([item2], animated: true)
+            self.navigationItem.setRightBarButtonItems([item2], animated: true)
             
             
             //adding view to table
@@ -79,17 +79,13 @@ class RequestsListViewController: UIViewController {
             //setting default selected filter button
             //Showing line and color of accepted button
             self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-           // self.lbl_btn_All.isHidden = false
             self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
-
             
             //hiding the lines and changing color unselected buttons
             self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-            //self.lbl_btn_Accepted.isHidden = true
             self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
 
             self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-           // self.lbl_btn_Declined.isHidden = true
             self.lbl_btn_Declined.backgroundColor = self.colorCode_light
 
             
@@ -118,27 +114,20 @@ class RequestsListViewController: UIViewController {
 
         //Showing line and color of accepted button
         self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        //self.lbl_btn_All.isHidden = false
         self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
 
         
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-        //self.lbl_btn_Accepted.isHidden = true
         self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
 
         
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-        //self.lbl_btn_Declined.isHidden = true
         self.lbl_btn_Declined.backgroundColor = self.colorCode_light
 
-        
-        
         self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
         My_Request_Selected_Status = true
 
-        
-        
     }
 
     @IBAction func Action_ShadowRequests(_ sender: UIButton) {//requests that I have send
@@ -148,23 +137,17 @@ class RequestsListViewController: UIViewController {
         self.btn_ShadowRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
 
         
-        
-        
-        
         //Showing line and color of accepted button
         self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-       // self.lbl_btn_All.isHidden = false
         self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
 
         
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-       // self.lbl_btn_Accepted.isHidden = true
         self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
 
         
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-        //self.lbl_btn_Declined.isHidden = true
         self.lbl_btn_Declined.backgroundColor = self.colorCode_light
 
         
@@ -177,20 +160,17 @@ class RequestsListViewController: UIViewController {
         
         //Showing line and color of accepted button
         self.btn_Accepted.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        //self.lbl_btn_Accepted.isHidden = false
         self.lbl_btn_Accepted.backgroundColor = Global.macros.themeColor_pink
 
         
         //hiding the lines and changing color unselected buttons
         self.btn_All.setTitleColor(UIColor.black, for: .normal)
-       // self.lbl_btn_All.isHidden = true
         self.lbl_btn_All.backgroundColor = self.colorCode_light
 
 
         
         
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-        //self.lbl_btn_Declined.isHidden = true
         self.lbl_btn_Declined.backgroundColor = self.colorCode_light
 
 
@@ -210,18 +190,15 @@ class RequestsListViewController: UIViewController {
         
         //Showing line and color of accepted button
         self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-       // self.lbl_btn_All.isHidden = false
         self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
 
         
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-      //  self.lbl_btn_Accepted.isHidden = true
         self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
 
         
         self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-       // self.lbl_btn_Declined.isHidden = true
         self.lbl_btn_Declined.backgroundColor = self.colorCode_light
 
         
@@ -241,17 +218,14 @@ class RequestsListViewController: UIViewController {
         
         //Showing line and color of accepted button
         self.btn_Declined.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        //self.lbl_btn_Declined.isHidden = false
         self.lbl_btn_Declined.backgroundColor = Global.macros.themeColor_pink
 
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-        //self.lbl_btn_Accepted.isHidden = true
         self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
 
         
         self.btn_All.setTitleColor(UIColor.black, for: .normal)
-        //self.lbl_btn_All.isHidden = true
         self.lbl_btn_All.backgroundColor = self.colorCode_light
 
 
@@ -437,9 +411,114 @@ class RequestsListViewController: UIViewController {
     
     
     
-    func delete(){
+    func delete_requests(){
         
-        self.showAlert(Message: "Coming soon", vc: self)
+        
+        let TitleString = NSAttributedString(string: "Shadow", attributes: [
+            NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+            NSForegroundColorAttributeName : Global.macros.themeColor_pink
+            ])
+        let MessageString = NSAttributedString(string: "Are you sure you want to delete rejected requests?", attributes: [
+            NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+            NSForegroundColorAttributeName : Global.macros.themeColor_pink
+            ])
+        
+        DispatchQueue.main.async {
+            self.clearAllNotice()
+            
+            let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: {(action) in
+            
+                let dict = NSMutableDictionary()
+                let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+                dict.setValue(user_Id, forKey: Global.macros.kUserId)
+                print(dict)
+                
+                if self.checkInternetConnection(){
+                    
+                    DispatchQueue.main.async {
+                        self.pleaseWait()
+                    }
+                    
+                    Requests_API.sharedInstance.deleteRequests(completionBlock: { (status, dict_Info) in
+                        
+                        DispatchQueue.main.async {
+                            self.clearAllNotice()
+                        }
+                        
+                        switch status {
+                            
+                        case 200:
+                            
+                            DispatchQueue.main.async {
+                                
+                                My_Request_Selected_Status = true
+                                self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
+                                
+                                self.navigationItem.title = "Received Requests"
+                                //setting default selected button for request
+                                self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+                                self.btn_ShadowRequest.setTitleColor(UIColor.black, for: .normal)
+                                
+                                
+                                //setting default selected filter button
+                                //Showing line and color of accepted button
+                                self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+                                self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
+                                
+                                //hiding the lines and changing color unselected buttons
+                                self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
+                                self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
+                                
+                                self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
+                                self.lbl_btn_Declined.backgroundColor = self.colorCode_light
+                                
+                            }
+                            
+                            break
+                            
+                        case 404:
+                            
+                            DispatchQueue.main.async {
+                                
+                                self.showAlert(Message: "No requests to delete.", vc: self)
+                            }
+                            
+                             break
+                        default:
+                            self.showAlert(Message: Global.macros.kError, vc: self)
+                            break
+                            
+                        }
+                        
+                    }, errorBlock: { (error) in
+                        DispatchQueue.main.async {
+                            self.clearAllNotice()
+                            self.showAlert(Message: Global.macros.kError, vc: self)
+                            
+                        }
+                    }, dict: dict)
+                    
+                }else{
+                    self.showAlert(Message:Global.macros.kInternetConnection, vc: self)
+                }
+            
+              
+            
+            }))
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil))
+            alert.view.layer.cornerRadius = 10.0
+            alert.view.clipsToBounds = true
+            alert.view.backgroundColor = UIColor.white
+            alert.view.tintColor = Global.macros.themeColor_pink
+            
+            alert.setValue(TitleString, forKey: "attributedTitle")
+            alert.setValue(MessageString, forKey: "attributedMessage")
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+
+        
         
       /*  let dict = NSMutableDictionary()
         let  user_Id = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber

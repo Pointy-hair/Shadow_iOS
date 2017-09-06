@@ -498,27 +498,11 @@ extension SendRequestViewController:UITextViewDelegate{
             txtView_Message.text = textView.text
         }
         
-      //  if Global.DeviceType.IS_IPHONE_5{
             DispatchQueue.main.async {
                 
                 self.animateTextView(textView: textView, up: false, movementDistance: textView.frame.minY, scrollView:self.scrollView)
-                
-                UIView.animate(withDuration: 1.0, animations: {
-                    //self.k_Constraint_ScroolViewTop.constant = 0.0
-                })
             }
-            
-            
-       // }
-        if Global.DeviceType.IS_IPHONE_4_OR_LESS{
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 1.0, animations: {
-                    //self.k_Constraint_ScroolViewTop.constant = 0.0
-                })
-            }
-            
-            
-        }
+        
     }
     
 }

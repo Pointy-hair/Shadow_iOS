@@ -158,12 +158,12 @@ class RequestDetailsViewController: UIViewController {
     
     @IBAction func action_OpenRatings(_ sender: UIButton) {
         
-        //        bool_UserIdComingFromSearch = true
-        //        userIdFromSearch = self.Dict_Info.value(forKey: "userId") as? NSNumber
-        //        //ratingview_name = self.Dict_Info.value(forKey: "userId") as? String
-        //
-        //        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
-        //        _ = self.navigationController?.pushViewController(vc, animated: true)
+        bool_UserIdComingFromSearch = true
+        userIdFromSearch = self.Dict_Info.value(forKey: "userId") as? NSNumber
+        //ratingview_name = self.Dict_Info.value(forKey: "userId") as? String
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+        _ = self.navigationController?.pushViewController(vc, animated: true)
         
     }
     
