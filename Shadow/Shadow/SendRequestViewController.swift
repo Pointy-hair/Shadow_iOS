@@ -63,7 +63,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             
             self.calender.layer.borderColor = UIColor.darkGray.cgColor
             self.calender.layer.borderWidth = 1.0
-            
+            self.calender.layer.cornerRadius = 5.0
             
             self.CreateNavigationBackBarButton()
             
