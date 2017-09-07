@@ -55,13 +55,16 @@ class ProfileVC: UIViewController {
     @IBOutlet var tblView_SocialSites: UITableView!
     @IBOutlet var k_Constraint_tblViewTop: NSLayoutConstraint!
     @IBOutlet var k_Constraint_Height_TableView: NSLayoutConstraint!
-    @IBOutlet var txtView_Description: UITextView!
+    @IBOutlet var txtView_Description: UILabel!
     @IBOutlet weak var lbl_NoOfRating: UILabel!
     @IBOutlet weak var kheightViewBehindInterest: NSLayoutConstraint!
     @IBOutlet weak var kheightViewBehindSkill: NSLayoutConstraint!
     
     @IBOutlet weak var kheightCollectionViewOccupation: NSLayoutConstraint!
     @IBOutlet weak var kheightCollectionViewInterestHeight: NSLayoutConstraint!
+    
+    
+    @IBOutlet weak var kheightDescription: NSLayoutConstraint!
     
     var imageView1 : UIImageView?
     var imageView2 : UIImageView?
@@ -307,6 +310,25 @@ class ProfileVC: UIViewController {
                         }
                         
                         
+                        //setting description
+                        if (response.1).value(forKey: Global.macros.kbio) as? String != nil {
+                            
+                            self.txtView_Description.text = "\((response.1).value(forKey: Global.macros.kbio) as! String)"
+                            
+                            DispatchQueue.main.async {
+                                self.txtView_Description.frame.size.height = self.txtView_Description.intrinsicContentSize.height
+                             //   self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 10
+                                
+                            }
+                            
+                            self.lbl_Placeholder.isHidden = true
+                        }
+                        else {
+                            self.lbl_Placeholder.isHidden = false
+                            
+                        }
+                        
+                        
                         //setting company name
                         if (response.1).value(forKey: "companyName")as? String != ""  &&  (response.1).value(forKey: "companyName") != nil{
                             
@@ -362,9 +384,11 @@ class ProfileVC: UIViewController {
                                     self.tblView_SocialSites.reloadData()
                                     
                                 }else{
-                                   
+                                    DispatchQueue.main.async {
                                     self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = 160.0
+                                    //self.k_Constraint_ViewDescHeight.constant = 160.0
+                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 110
+                                    }
 
                                 }
                                 
@@ -405,8 +429,11 @@ class ProfileVC: UIViewController {
                                 }
                                 else{//social site nil
                                     
+                                    DispatchQueue.main.async{
+                    
                                     self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = 130.0
+                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 80
+                                    }
                                     
                                 }
                             }
@@ -502,19 +529,8 @@ class ProfileVC: UIViewController {
                             
                         }
                         
-                        
-                        
-                        
-                        //setting description
-                        if (response.1).value(forKey: Global.macros.kbio) as? String != nil {
-                        
-                            self.txtView_Description.text = "\((response.1).value(forKey: Global.macros.kbio) as! String)"
-                            self.lbl_Placeholder.isHidden = true
-                        }
-                        else {
-                            self.lbl_Placeholder.isHidden = false
-                            
-                        }
+       
+                  
                         
                         if (response.1).value(forKey: "occupations")as? NSArray != nil {
                             
