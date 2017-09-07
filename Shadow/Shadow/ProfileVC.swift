@@ -317,7 +317,6 @@ class ProfileVC: UIViewController {
                             
                             DispatchQueue.main.async {
                                 self.txtView_Description.frame.size.height = self.txtView_Description.intrinsicContentSize.height
-                             //   self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 10
                                 
                             }
                             
