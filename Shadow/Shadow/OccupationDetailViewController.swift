@@ -45,7 +45,7 @@ class OccupationDetailViewController: UIViewController {
 
     
     @IBOutlet weak var lbl_RatingCount: UILabel!
-    
+    @IBOutlet weak var lbl_About: UILabel!
 
     override func viewDidLoad() {
         
@@ -119,6 +119,7 @@ class OccupationDetailViewController: UIViewController {
                        DispatchQueue.main.async {
                     
                     self.navigationItem.title = (self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter()
+                    self.lbl_About.text = "About" + " " + ((self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter())!
                     self.lbl_avgRating.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
                      self.lbl_RatingCount.text = "\((self.dic_Occupation.value(forKey: "ratingCount")!))"
                     // self.lbl_AvgSalary.text = (self.dic_Occupation.value(forKey: "salary") as? String)
