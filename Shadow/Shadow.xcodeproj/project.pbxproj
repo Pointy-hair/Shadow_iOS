@@ -100,6 +100,8 @@
 		9A957E151F4D4CD500A5CCE5 /* CompanyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A957E141F4D4CD500A5CCE5 /* CompanyCollectionViewCell.swift */; };
 		9A957E171F4D4D0300A5CCE5 /* SchoolCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A957E161F4D4D0300A5CCE5 /* SchoolCollectionViewCell.swift */; };
 		9AA7B1A71F04C6080070A210 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA7B1A61F04C6080070A210 /* SearchTableViewCell.swift */; };
+		9AB57D4D1F60290000DC6571 /* ListingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB57D4C1F60290000DC6571 /* ListingViewController.swift */; };
+		9AB57D4F1F602D8B00DC6571 /* ListingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB57D4E1F602D8B00DC6571 /* ListingTableViewCell.swift */; };
 		9AB6C37F1EF15B8600D1E729 /* libTestFairy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB6C37C1EF15B8600D1E729 /* libTestFairy.a */; };
 		9AB6C3801EF15B8600D1E729 /* upload-dsym.sh in Resources */ = {isa = PBXBuildFile; fileRef = 9AB6C37E1EF15B8600D1E729 /* upload-dsym.sh */; };
 		9AC4FF201EEFF704002524DB /* NYTPhotoCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC4FF091EEFF704002524DB /* NYTPhotoCaptionView.m */; };
@@ -289,6 +291,8 @@
 		9A957E161F4D4D0300A5CCE5 /* SchoolCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchoolCollectionViewCell.swift; sourceTree = "<group>"; };
 		9A957E191F4D809A00A5CCE5 /* Shadow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shadow.entitlements; sourceTree = "<group>"; };
 		9AA7B1A61F04C6080070A210 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		9AB57D4C1F60290000DC6571 /* ListingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingViewController.swift; sourceTree = "<group>"; };
+		9AB57D4E1F602D8B00DC6571 /* ListingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTableViewCell.swift; sourceTree = "<group>"; };
 		9AB6C37C1EF15B8600D1E729 /* libTestFairy.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFairy.a; sourceTree = "<group>"; };
 		9AB6C37D1EF15B8600D1E729 /* TestFairy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFairy.h; sourceTree = "<group>"; };
 		9AB6C37E1EF15B8600D1E729 /* upload-dsym.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "upload-dsym.sh"; sourceTree = "<group>"; };
@@ -591,6 +595,7 @@
 		9A2276E81F32E28E0021B6A7 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				9AB57D4B1F6028C600DC6571 /* OpenListing Classes */,
 				490A2ED81F4D9859005ECA85 /* Requests */,
 				4997ABC01F287EBC00883476 /* Notifications */,
 				49D159111F275EA5009E94F0 /* Side Bar */,
@@ -787,6 +792,15 @@
 			);
 			name = "Search Classes";
 			path = Shadow;
+			sourceTree = "<group>";
+		};
+		9AB57D4B1F6028C600DC6571 /* OpenListing Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9AB57D4C1F60290000DC6571 /* ListingViewController.swift */,
+				9AB57D4E1F602D8B00DC6571 /* ListingTableViewCell.swift */,
+			);
+			name = "OpenListing Classes";
 			sourceTree = "<group>";
 		};
 		9AB6C37B1EF15B6900D1E729 /* TestFairySDK */ = {
@@ -1210,6 +1224,7 @@
 				9AEF842A1EF79BCC005DE879 /* RatingTableViewCell.swift in Sources */,
 				9AF6E6661F0A27DB002F20C9 /* CustomSearchViewController.swift in Sources */,
 				9A3BB94E1EDC014C00772FF5 /* AppDelegate.swift in Sources */,
+				9AB57D4D1F60290000DC6571 /* ListingViewController.swift in Sources */,
 				494C5A1E1F0666F6006436F1 /* Actual_OccupationsTableViewCell.swift in Sources */,
 				9A0E9E271F1393720019E3A5 /* UIImage+WebP.m in Sources */,
 				492805041F03685C000CB5ED /* SocialSitesTableViewCell.swift in Sources */,
@@ -1274,6 +1289,7 @@
 				492AD91C1F0A424600F102CC /* User_InterestsTableViewCell.swift in Sources */,
 				492805081F037ADB000CB5ED /* ActualSocialSitesTableViewCell.swift in Sources */,
 				9A0E9E1B1F1393720019E3A5 /* NSImage+WebCache.m in Sources */,
+				9AB57D4F1F602D8B00DC6571 /* ListingTableViewCell.swift in Sources */,
 				499BC7421F46B59F00159B58 /* FSCalendar.m in Sources */,
 				9A2422BA1EFA55780009D911 /* FloatRatingView.swift in Sources */,
 				9A2486331EDE99C2009DD210 /* EnterPasswordViewController.swift in Sources */,
@@ -1358,8 +1374,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Seasia Infotech Private Limited";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seasia Infotech Private Limited";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Gaurav Mantrao (3CJJMGUGEH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gaurav Mantrao (3CJJMGUGEH)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1381,7 +1397,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "5e8e7401-32c0-46df-bd0e-d2252392847c";
+				PROVISIONING_PROFILE = "160d7275-d15c-4dc1-8700-f804e22dfa6c";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1409,8 +1425,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Seasia Infotech Private Limited";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seasia Infotech Private Limited";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Gaurav Mantrao (3CJJMGUGEH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gaurav Mantrao (3CJJMGUGEH)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1425,7 +1441,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "5e8e7401-32c0-46df-bd0e-d2252392847c";
+				PROVISIONING_PROFILE = "160d7275-d15c-4dc1-8700-f804e22dfa6c";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
@@ -1452,7 +1468,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.shadow;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.alacustomer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "160d7275-d15c-4dc1-8700-f804e22dfa6c";
 				PROVISIONING_PROFILE_SPECIFIER = Ala_customer;
@@ -1482,7 +1498,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.shadow;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.alacustomer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "160d7275-d15c-4dc1-8700-f804e22dfa6c";
 				PROVISIONING_PROFILE_SPECIFIER = Ala_customer;
