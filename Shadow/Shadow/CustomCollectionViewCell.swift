@@ -65,7 +65,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lbl_avgSalary: UILabel!
     @IBOutlet weak var lbl_Growth: UILabel!
     @IBOutlet weak var lbl_UserWithOccupation: UILabel!
-    @IBOutlet weak var txtView_Description: UITextView!
+    @IBOutlet weak var txtView_Description: UILabel!
     @IBOutlet weak var lbl_UserShadowed: UILabel!
     
     @IBOutlet weak var barChartView: BarChartView!
