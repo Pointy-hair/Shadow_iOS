@@ -289,7 +289,7 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             
             if arr_company.count > 0 {
                 
-                if  let dict =  (arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
+                if  let dict =  (arr_company[indexPath.row] as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
                     DispatchQueue.main.async {
                         //let dict = (self.arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as! NSMutableDictionary
                         

@@ -957,7 +957,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                     //arr_SearchData.removeAllObjects()
                     
                 }
-                else {
+                else if str_role == "COMPANY" || str_role == "SCHOOL" {
                     
                     let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
                     _ = self.navigationController?.pushViewController(vc, animated: true)
@@ -968,6 +968,14 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                     
                     //arr_SearchData.removeAllObjects()
                     
+                }
+                
+                else {
+                    
+                    let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+                    vc.occupationId = (arr_SearchData[sender.tag] as! NSDictionary)["id"]! as? NSNumber
+                    _ = self.navigationController?.pushViewController(vc, animated: true)
+
                 }
             }
                 
@@ -1033,8 +1041,19 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     @IBAction func Action_ViewProfileOccupation(_ sender: UIButton) {
         
+        //Custom indexpath and cell formation
+        let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
-        vc.occupationId = (arr_SearchData[sender.tag] as! NSDictionary)["id"]! as? NSNumber
+
+        if indexPath != nil {
+            vc.occupationId = (arr_SearchData[(indexPath?.row)!] as! NSDictionary)["id"]! as? NSNumber
+        }
+        else {
+            vc.occupationId = 1
+        }
+        
         _ = self.navigationController?.pushViewController(vc, animated: true)
         vc.extendedLayoutIncludesOpaqueBars = true
         self.tabBarController?.tabBar.isTranslucent = false
@@ -1136,7 +1155,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                         DispatchQueue.main.async {
                           
                                 
-                            if bool_Occupation == false {
+                            if  (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["occupationDTO"] == nil{
 
                              cell?.view_MainOccupation.isHidden = true
                             cell?.btn_ViewFullProfile.tag = (indexPath?.row)!
@@ -1864,9 +1883,10 @@ extension CustomSearchViewController:UISearchBarDelegate{
             if bool_AllTypeOfSearches == true {
                 if bool_LastResultSearch == false {
                     
-                    self.arr_SearchData.removeAllObjects()
                     pageIndex = 0
                     DispatchQueue.main.async {
+                        self.arr_SearchData.removeAllObjects()
+
                         self.bool_Search = true
                         self.getSearchData()
                     }
@@ -1876,9 +1896,10 @@ extension CustomSearchViewController:UISearchBarDelegate{
             else if bool_LocationFilter == true {
                 
                 if bool_LastResultSearch == false {
-                    self.arr_SearchData.removeAllObjects()
                     pageIndex = 0
                     DispatchQueue.main.async {
+                        self.arr_SearchData.removeAllObjects()
+
                         self.bool_Search = true
                         self.GetSearchDataAccordingToLocation()
                     }
@@ -1888,9 +1909,10 @@ extension CustomSearchViewController:UISearchBarDelegate{
             else if bool_CompanySchoolTrends == true{
                 
                 if bool_LastResultSearch == false {
-                    self.arr_SearchData.removeAllObjects()
                     pageIndex = 0
                     DispatchQueue.main.async {
+                        self.arr_SearchData.removeAllObjects()
+
                         self.bool_Search = true
                         self.GetOnlyCompanyData()
                     }
@@ -2023,8 +2045,6 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
-        
         var main_cell = UITableViewCell()
         
         if tableView == tblview_AllSearchResult {
@@ -2033,7 +2053,8 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
             
             cell.btn_DidSelectRow.tag = indexPath.row
             
-            
+            DispatchQueue.main.async {
+           
             let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["userDTO"] as? NSDictionary
             let str_role = dict_Temp?.value(forKey: "role") as? String
             
@@ -2041,18 +2062,21 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
             if str_role == "USER" {
                 
                 
-                if dict_Temp?.value(forKey: "companyName") != nil {
+                if dict_Temp?.value(forKey: "companyName") != nil  && dict_Temp?.value(forKey: "companyName") as? String != ""  && dict_Temp?.value(forKey: "companyName") as? String != " " {
                     
-                    if bool_Occupation == false {
+                    if (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] == nil {
                     
                     let companyName =  dict_Temp?.value(forKey: "companyName") as! String
                     
-                    if companyName != ""    {
+                    if companyName != "" && dict_Temp?.value(forKey: "companyName") != nil && companyName != " " {
                         cell.lbl_LocNcom.text = companyName.capitalizingFirstLetter()
                         cell.img_LocNcom.image = UIImage.init(named: "company-icon")
                     }
                     else {
+                        
                         cell.lbl_LocNcom.text  = ""
+                        cell.img_LocNcom.isHidden = true
+
                     }
                     
                 }
@@ -2062,15 +2086,16 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                         
                     }
                 }
+                    
                 else {
                     
-                    
-                    if dict_Temp?.value(forKey: "schoolName") != nil {
-                         if bool_Occupation == false {
+                    if dict_Temp?.value(forKey: "schoolName") != nil && dict_Temp?.value(forKey: "schoolName") as? String != "" && dict_Temp?.value(forKey: "schoolName") as? String != " " {
+                        
+                        if (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] == nil {
                         
                         let schoolName = dict_Temp?.value(forKey: "schoolName") as! String
                         
-                        if schoolName != ""
+                        if schoolName != "" && dict_Temp?.value(forKey: "schoolName") != nil && schoolName != " "
                         {
                             cell.lbl_LocNcom.text = schoolName.capitalizingFirstLetter()
                             cell.img_LocNcom.image = UIImage.init(named: "company-icon")
@@ -2078,6 +2103,8 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                         }
                         else {
                             cell.lbl_LocNcom.text = ""
+                            cell.img_LocNcom.isHidden = true
+
                         }
                        
                     }
@@ -2092,8 +2119,8 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                         
                     else {
                         
-                        cell.lbl_LocNcom.text = ""
-                        
+                        cell.lbl_LocNcom.isHidden = true
+                        cell.img_LocNcom.isHidden = true
                         
                     }
                     
@@ -2103,16 +2130,21 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                 
             else {
                 
-                if bool_Occupation == false {
+                if (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] == nil   {
                 
-                if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" {
+                if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" && dict_Temp?.value(forKey: "location") as? String != " " {
+                    
                     cell.lbl_LocNcom.text = dict_Temp?.value(forKey: "location") as? String
                     cell.img_LocNcom.image = UIImage.init(named: "location-pin")
+                    
                 }
+                    
                 else {
                     
                     cell.lbl_LocNcom.text = ""
                     cell.img_LocNcom.image = UIImage.init(named: "")
+                    cell.img_LocNcom.isHidden = true
+
                     
                 }
             }
@@ -2130,10 +2162,10 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                 cell.lbl_Time.isHidden = false
                 
                 if self.arr_SearchData.count > 0 {
-                    let str_distance = (arr_SearchData[indexPath.row] as! NSDictionary)["distance"] as? NSString
+                    let str_distance = (self.arr_SearchData[indexPath.row] as! NSDictionary)["distance"] as? NSString
                     
                     if str_distance == "" || str_distance == nil {
-                        cell.lbl_Time.text = "0m"
+                        cell.lbl_Time.text = "0M"
                     }
                     else {
                         cell.lbl_Time.text = String(format: "%.0f", str_distance!.floatValue) + " " + "MILES"
@@ -2147,7 +2179,8 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                 cell.lbl_Time.isHidden = true
                 
             }
-            
+        }
+        
             
             if self.arr_SearchData.count > 0 {
                 
@@ -2346,11 +2379,13 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
         let desiredOffset = CGPoint(x: 0, y: -CGFloat((cell.customScrollView.contentInset.top )))
         cell.customScrollView.setContentOffset(desiredOffset, animated: true)
         
+       //  let dict_Occ = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] as! NSDictionary
+        
      
         DispatchQueue.main.async {
             if self.bool_Search == true {
                 
-                if bool_Occupation == false {
+                if (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] == nil {
                 cell.view_MainOccupation.isHidden = true
                 self.bool_Search = false
                 cell.btn_ViewFullProfile.tag = indexPath.row
@@ -2886,7 +2921,6 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                     if self.arr_SearchData.count > 0 {
                         
                         self.dicUrl.removeAllObjects()
-                        
                         if (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] != nil || (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String != "" {
                             cell.lbl_CompanySchoolUserName.text = (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String
                             cell.lbl_Abt.text = "About" + " " + "\((self.arr_SearchData[indexPath.row] as! NSDictionary)["name"]!)"
