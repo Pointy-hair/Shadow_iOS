@@ -10,8 +10,13 @@ import UIKit
 
 class ListingViewController: UIViewController {
 
+    @IBOutlet var tbl_View: UITableView!
+    
+    
     var type:String?
     var navigation_title:String?
+    fileprivate var array_userList = NSMutableArray()
+    
     
     
     override func viewDidLoad() {
@@ -71,10 +76,68 @@ class ListingViewController: UIViewController {
                 
             case 200:
                 DispatchQueue.main.async {
+                    
+                    self.array_userList.removeAllObjects()
+                    if dict_Info["shadowersVerified"] != nil{
+                        
+                        if (dict_Info.value(forKey: "shadowersVerified") as! NSDictionary).value(forKey:"count") as? NSNumber != 0{
 
-                
+                        self.array_userList = ((dict_Info.value(forKey: "shadowersVerified") as! NSDictionary).value(forKey:"requestDTOs") as! NSArray).mutableCopy() as! NSMutableArray
+                            
+                        }else{
+                            
+                            self.showAlert(Message: "No Data Found", vc: self)
+
+                        }
+                    }
                     
+                    if dict_Info["shadowedByShadowUser"] != nil{
+                        
+                         if (dict_Info.value(forKey: "shadowedByShadowUser") as! NSDictionary).value(forKey:"count") as? NSNumber != 0{
+                        
+                        
+                        self.array_userList = ((dict_Info.value(forKey: "shadowedByShadowUser") as! NSDictionary).value(forKey:"requestDTOs") as! NSArray).mutableCopy() as! NSMutableArray
+                         }else{
+                            self.showAlert(Message: "No Data Found", vc: self)
+
+                        }
+                    }
                     
+                    if dict_Info["schoolOrCompanyWithTheseOccupations"] != nil{
+                        
+                        if (dict_Info.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary).value(forKey:"count") as? NSNumber != 0{
+                          
+                            
+                            if (dict_Info.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary).value(forKey:"schoolList") != nil {
+                            
+                        self.array_userList = ((dict_Info.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary).value(forKey:"schoolList") as! NSArray).mutableCopy() as! NSMutableArray
+                            }
+                            
+                            if (dict_Info.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary).value(forKey:"companyList") != nil {
+                                
+                                self.array_userList = ((dict_Info.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary).value(forKey:"companyList") as! NSArray).mutableCopy() as! NSMutableArray
+                            }
+                        }
+                        else{
+                            
+                            self.showAlert(Message: "No Data Found", vc: self)
+
+                        }
+                    }
+                    if dict_Info["schoolOrCompanyWithTheseUsers"] != nil{
+                        
+                        if (dict_Info.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary).value(forKey:"count") as? NSNumber != 0 {
+                        
+                        self.array_userList = ((dict_Info.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary).value(forKey:"userList") as! NSArray).mutableCopy() as! NSMutableArray
+                        }
+                        else{
+                            self.showAlert(Message: "No Data Found", vc: self)
+                        }
+                    }
+
+                    
+                    self.tbl_View.reloadData()
+
                 }
                 break
                 
@@ -121,12 +184,18 @@ extension ListingViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-    return 10
+    return self.array_userList.count
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-          let cell = tableView.dequeueReusableCell(withIdentifier: "cell_listing", for: indexPath) as! ListingTableViewCell
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell_listing", for: indexPath) as! ListingTableViewCell
+        
+        
+        cell.dataToCell(dictionay: self.array_userList[indexPath.row] as! NSDictionary)
+        
+        
         return cell
      
     }

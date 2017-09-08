@@ -1084,13 +1084,13 @@ class ProfileVC: UIViewController {
         if sender.tag == 0{//shadowers
             
             type = Global.macros.kShadow
-            navigationTitle = Global.macros.kShadow
+            navigationTitle = "Shadowers"
             
             
         }else if sender.tag == 1{//shadowed
             
            type = Global.macros.kShadowed
-            navigationTitle = Global.macros.kShadowed
+            navigationTitle = "Shadowed Users"
 
             
         }

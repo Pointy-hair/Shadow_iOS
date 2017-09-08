@@ -1238,33 +1238,34 @@ class ComapanySchoolViewController: UIViewController{
         if sender.tag == 0{//shadowers
             
             type = Global.macros.kShadow
-            navigation_title =  Global.macros.kShadow
+            navigation_title =  "Shadowers"
             
         }else if sender.tag == 1{//shadowed
             
             type = Global.macros.kShadowed
-            navigation_title =  Global.macros.kShadowed
+            navigation_title = "Shadowed Users"
 
             
         }else if sender.tag == 2{//occupations
             
             type = Global.macros.k_Occupation
-            navigation_title = ""
+            navigation_title = "Users with these Occupation"
         
             
         }
         else {//users
             
             type = Global.macros.k_User
-            navigation_title = ""
+            navigation_title = "Users List"
             
             
         }
         
         
-        
-        
-        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "listing") as! ListingViewController
+        vc.type = type
+        vc.navigation_title = navigation_title
+        _ = self.navigationController?.pushViewController(vc, animated: true)
         
     }
     
