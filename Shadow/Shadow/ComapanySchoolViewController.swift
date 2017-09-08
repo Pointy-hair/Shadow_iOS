@@ -945,8 +945,13 @@ class ComapanySchoolViewController: UIViewController{
                         for value in tmp_arr_occ{
                             
                             let name_interest = (value as! NSDictionary).value(forKey: "name") as? String
+                            let id = (value as! NSDictionary).value(forKey: "occupationTypeId") as? NSNumber
+
                             let dict = NSMutableDictionary()
                             dict.setValue(name_interest, forKey: "name")
+                            dict.setValue(id, forKey: "id")
+
+                            
                             if self.array_UserOccupations.contains(dict) {
                                 break
                             }
@@ -1315,6 +1320,18 @@ extension ComapanySchoolViewController:UICollectionViewDelegate,UICollectionView
         self.Scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height:  self.k_Constraint_ViewDescriptionHeight.constant + self.kheightViewBehindOccupation.constant + 400)
         }
          return count!
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+       
+            
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+            vc.occupationId = (array_UserOccupations[indexPath.row] as! NSDictionary)["id"]! as? NSNumber
+            _ = self.navigationController?.pushViewController(vc, animated: true)
+            
+       
+        
     }
     
     
