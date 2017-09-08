@@ -1188,6 +1188,39 @@ class ComapanySchoolViewController: UIViewController{
         SetWebViewUrl (index: 2)
     }
     
+    
+    @IBAction func action_OpenList(_ sender: UIButton) {
+        
+        var type:String?
+        
+        if sender.tag == 0{
+            
+            type = Global.macros.kshadow
+            
+        }else if sender.tag == 1{
+            
+             type = Global.macros.kshadowed
+            
+        }else if sender.tag == 2{
+            
+            
+        }
+        else {
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation

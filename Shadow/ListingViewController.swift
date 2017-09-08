@@ -10,6 +10,10 @@ import UIKit
 
 class ListingViewController: UIViewController {
 
+    var type:String?
+    var navigation_title:String?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,6 +27,84 @@ class ListingViewController: UIViewController {
     }
     
 
+    override func viewWillAppear(_ animated: Bool) {
+        
+        DispatchQueue.main.async {
+            self.navigationItem.title = self.navigation_title
+            self.navigationItem.setHidesBackButton(false, animated:true)
+            self.CreateNavigationBackBarButton()
+            self.tabBarController?.tabBar.isHidden = true
+        }
+        
+        
+        if type != nil{
+            self.getlistofusers()
+        }
+        
+    }
+    
+    
+    
+    //MARK: - Functions
+    
+    func getlistofusers()  {
+        
+        
+        let dict = NSMutableDictionary()
+        dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
+        dict.setValue(self.type!, forKey: Global.macros.k_type)
+
+        print(dict)
+        
+        if checkInternetConnection(){
+            DispatchQueue.main.async {
+                self.pleaseWait()
+            
+            }
+        OpenList_API.sharedInstance.getListOfUsers(completion_block: { (status, dict_Info) in
+            
+            DispatchQueue.main.async {
+                self.clearAllNotice()
+            }
+            
+            switch status{
+                
+            case 200:
+                DispatchQueue.main.async {
+
+                
+                    
+                    
+                }
+                break
+                
+            case 401:
+                
+                break
+                
+                
+            default:
+                
+                
+                break
+                
+                
+            }
+            
+        }, error_block: { (error) in
+            DispatchQueue.main.async {
+                self.clearAllNotice()
+                self.showAlert(Message: Global.macros.kError, vc: self)
+            }
+        }, dict: dict)
+        }else{
+            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
+        }
+        
+    }
+    
+    
+    
     /**
     // MARK: - Navigation
 

@@ -77,6 +77,10 @@ class Global: NSObject {
         static let kotherUsersShadowYou:String = "otherUsersShadowYou"
         static let kprofileImage:String = "profileImage"
         static let kbio:String = "bio"
+         static let kshadow:String = "shadow"
+         static let kshadowed:String = "shadowed"
+//         static let kbio:String = "bio"
+//         static let kbio:String = "bio"
 
         
         static let KStatus:String = "status"

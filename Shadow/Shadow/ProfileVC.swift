@@ -353,9 +353,7 @@ class ProfileVC: UIViewController {
                             self.lbl_Company.isHidden = false
                             self.imgView_Company.isHidden = false
                             self.btn_overCompany.isUserInteractionEnabled = true
-                          //  self.ktopCompanylbl.constant = self.txtView_Description.frame.size.height + 2
-                           // self.ktopbtnCompanyName.constant = self.txtView_Description.frame.size.height + 2
-                           // self.ktopCompanyImageView.constant = self.txtView_Description.frame.size.height + 6
+ 
                             
                              if (response.1).value(forKey: "schoolName")as? String != "" &&  (response.1).value(forKey: "schoolName") != nil && (response.1).value(forKey: "schoolName")as? String != " "{
                                 
@@ -392,7 +390,7 @@ class ProfileVC: UIViewController {
                                 }else{
                                     DispatchQueue.main.async {
                                     self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = 150//self.txtView_Description.frame.size.height + 90
+                                    self.k_Constraint_ViewDescHeight.constant = 150
                                     }
 
                                 }
@@ -1068,6 +1066,36 @@ class ProfileVC: UIViewController {
         
     }
 
+    
+    @IBAction func action_OpenShadowers(_ sender: UIButton) {
+        
+        
+        var type:String?
+        var navigationTitle:String?
+        if sender.tag == 0{
+            
+            type = Global.macros.kshadow
+            navigationTitle = Global.macros.kshadow
+            
+            
+        }else if sender.tag == 1{
+            
+           type = Global.macros.kshadowed
+            navigationTitle = Global.macros.kshadowed
+
+            
+        }
+        
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "listing") as! ListingViewController
+        vc.type = type
+        vc.navigation_title = navigationTitle
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+       
+        
+    }
+    
+    
     
     
     // MARK: - Navigation
