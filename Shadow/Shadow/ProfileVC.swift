@@ -90,7 +90,7 @@ class ProfileVC: UIViewController {
     //Array that stores actual list of skills
     fileprivate var array_UserSkills:NSMutableArray =  NSMutableArray()
     fileprivate var array_UserInterests:NSMutableArray = NSMutableArray()
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,6 +101,7 @@ class ProfileVC: UIViewController {
             self.tabBarController?.delegate = self
 
             if self.revealViewController() != nil {
+                
                 self.menu_btn.target = self.revealViewController()
                 self.menu_btn.action = #selector(SWRevealViewController.revealToggle(_:))
                 self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
@@ -881,9 +882,9 @@ class ProfileVC: UIViewController {
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
         
-        if self.revealViewController() != nil {
-            self.revealViewController().revealToggle(animated: true)
-        }
+            if self.revealViewController() != nil {
+                self.revealViewController().rightRevealToggle(animated: false)
+            }
         
         DispatchQueue.main.async {
             
@@ -1075,7 +1076,7 @@ class ProfileVC: UIViewController {
     @IBAction func action_OpenShadowers(_ sender: UIButton) {
         
         if self.revealViewController() != nil {
-            self.revealViewController().revealToggle(animated: true)
+            self.revealViewController().rightRevealToggle(animated: false)
         }
         
         var type:String?
@@ -1387,8 +1388,7 @@ extension ProfileVC:UITabBarControllerDelegate{
         
         if tabBarController.selectedIndex == 0{
             if self.revealViewController() != nil {
-                
-                self.revealViewController().revealToggle(animated: true)
+                self.revealViewController().rightRevealToggle(animated: false)
             }
         }
     }
