@@ -1080,16 +1080,16 @@ class ProfileVC: UIViewController {
         
         var type:String?
         var navigationTitle:String?
-        if sender.tag == 0{
+        if sender.tag == 0{//shadowers
             
-            type = Global.macros.kshadow
-            navigationTitle = Global.macros.kshadow
+            type = Global.macros.kShadow
+            navigationTitle = Global.macros.kShadow
             
             
-        }else if sender.tag == 1{
+        }else if sender.tag == 1{//shadowed
             
-           type = Global.macros.kshadowed
-            navigationTitle = Global.macros.kshadowed
+           type = Global.macros.kShadowed
+            navigationTitle = Global.macros.kShadowed
 
             
         }
