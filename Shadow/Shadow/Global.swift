@@ -77,10 +77,10 @@ class Global: NSObject {
         static let kotherUsersShadowYou:String = "otherUsersShadowYou"
         static let kprofileImage:String = "profileImage"
         static let kbio:String = "bio"
-         static let kshadow:String = "Shadow"
-         static let kshadowed:String = "Shadowed"
-//         static let kbio:String = "bio"
-//         static let kbio:String = "bio"
+         static let kShadow:String = "Shadow"
+         static let kShadowed:String = "Shadowed"
+         static let k_Occupation:String = "Occupation"
+         static let k_User:String = "User"
 
         
         static let KStatus:String = "status"

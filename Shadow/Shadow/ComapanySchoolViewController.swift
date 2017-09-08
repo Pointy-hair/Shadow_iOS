@@ -94,7 +94,8 @@ class ComapanySchoolViewController: UIViewController{
             //giving border to Profile image
             self.imgView_ProfilePic.layer.cornerRadius = 60.0
             self.imgView_ProfilePic.clipsToBounds = true
-            
+            self.tabBarController?.delegate = self
+
             //Calling toggle of side bar button
             if self.revealViewController() != nil {
                 
@@ -501,6 +502,13 @@ class ComapanySchoolViewController: UIViewController{
                             //  if it is company
                             if r == "COMPANY"{
                                 
+                                //setting titles of labels
+                                self.lbl_title__cmpnyschool_withthesesoccupation.text = "School with these occupations"
+                                
+                                self.lbl_title_Users.text = "Users employed"
+                                
+                                
+                                
                                 //setting name of company
                                 if (response.1).value(forKey: Global.macros.kcompanyName) as? String != nil {
                                     
@@ -598,6 +606,13 @@ class ComapanySchoolViewController: UIViewController{
                                 
                             }else{//coming from search if it is school
                                 
+                                
+                                //setting titles of labels
+                                self.lbl_title__cmpnyschool_withthesesoccupation.text = "Company with these occupations"
+                                
+                                self.lbl_title_Users.text = "Users attended this school"
+                                
+                                
                                 if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kschoolName) as? String != "" {
                                     
                                     
@@ -694,6 +709,12 @@ class ComapanySchoolViewController: UIViewController{
                             // if company
                             if SavedPreferences.value(forKey: Global.macros.krole) as? String == "COMPANY"{
                                 
+                                //setting titles of labels
+                                self.lbl_title__cmpnyschool_withthesesoccupation.text = "School with these occupations"
+                                
+                                self.lbl_title_Users.text = "Users employed"
+                                
+                                
                                 
                                 // setting company name on direct profile
                                 if (response.1).value(forKey: Global.macros.kcompanyName) as? String != nil {
@@ -787,6 +808,13 @@ class ComapanySchoolViewController: UIViewController{
                                 }
                             }
                             else{
+                                
+                                
+                                //setting titles of labels
+                                self.lbl_title__cmpnyschool_withthesesoccupation.text = "Company with these occupations"
+                                self.lbl_title_Users.text = "Users attended this school"
+
+                                
                                 
                                 // setting school name on direct profile
                                 if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kschoolName) as? String != "" {
@@ -1121,6 +1149,9 @@ class ComapanySchoolViewController: UIViewController{
     
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
+        if self.revealViewController() != nil {
+            self.revealViewController().revealToggle(animated: true)
+        }
         DispatchQueue.main.async {
             
             
@@ -1196,21 +1227,36 @@ class ComapanySchoolViewController: UIViewController{
     
     @IBAction func action_OpenList(_ sender: UIButton) {
         
-        var type:String?
         
-        if sender.tag == 0{
+        if self.revealViewController() != nil {
+            self.revealViewController().revealToggle(animated: true)
+        }
+        var type:String?
+        var navigation_title:String?
+
+        
+        if sender.tag == 0{//shadowers
             
-            type = Global.macros.kshadow
+            type = Global.macros.kShadow
+            navigation_title =  Global.macros.kShadow
             
-        }else if sender.tag == 1{
+        }else if sender.tag == 1{//shadowed
             
-             type = Global.macros.kshadowed
+            type = Global.macros.kShadowed
+            navigation_title =  Global.macros.kShadowed
+
             
-        }else if sender.tag == 2{
+        }else if sender.tag == 2{//occupations
             
+            type = Global.macros.k_Occupation
+            navigation_title = ""
+        
             
         }
-        else {
+        else {//users
+            
+            type = Global.macros.k_User
+            navigation_title = ""
             
             
         }
@@ -1461,5 +1507,18 @@ extension ComapanySchoolViewController:UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return 28
+    }
+}
+
+extension ComapanySchoolViewController:UITabBarControllerDelegate{
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        if tabBarController.selectedIndex == 0{
+            if self.revealViewController() != nil {
+                
+                self.revealViewController().revealToggle(animated: true)
+            }
+        }
     }
 }
