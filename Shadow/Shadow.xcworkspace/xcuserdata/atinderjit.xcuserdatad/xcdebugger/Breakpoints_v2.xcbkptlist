@@ -59,6 +59,38 @@
             endingLineNumber = "2056"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shadow.CustomSearchViewController.tableView (__ObjC.UITableView, cellForRowAt : Foundation.IndexPath) -&gt; __ObjC.UITableViewCell"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
+                  timestampString = "526547071.760778"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2056"
+                  endingLineNumber = "2056"
+                  offsetFromSymbolStart = "703">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shadow.CustomSearchViewController.(tableView (__ObjC.UITableView, cellForRowAt : Foundation.IndexPath) -&gt; __ObjC.UITableViewCell).(closure #1)"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
+                  timestampString = "526547071.765174"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2058"
+                  endingLineNumber = "2058"
+                  offsetFromSymbolStart = "30">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -100,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/ProfileVC.swift"
-            timestampString = "526536474.900992"
+            timestampString = "526545978.332708"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1001"
-            endingLineNumber = "1001"
+            startingLineNumber = "1005"
+            endingLineNumber = "1005"
             landmarkName = "Action_openSchoolCompany(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,6 +186,38 @@
             startingLineNumber = "469"
             endingLineNumber = "469"
             landmarkName = "GetCompanySchoolProfile()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/ProfileVC.swift"
+            timestampString = "526546011.330728"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1268"
+            endingLineNumber = "1268"
+            landmarkName = "collectionView(_:didSelectItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/ProfileVC.swift"
+            timestampString = "526547055.800403"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "593"
+            endingLineNumber = "593"
+            landmarkName = "GetUserProfile()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

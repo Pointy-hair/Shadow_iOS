@@ -547,10 +547,10 @@ class ProfileVC: UIViewController {
                             for value in tmp_arr_occ{
                                 
                                 let name = (value as! NSDictionary).value(forKey: "name") as? String
-                              //  let id = (value as! NSDictionary).value(forKey: "id") as? NSNumber
+                                let id = (value as! NSDictionary).value(forKey: "occupationTypeId") as? NSNumber
                                 let dict = NSMutableDictionary()
                                 dict.setValue(name, forKey: "name")
-                             //   dict.setValue(id, forKey: "id")
+                                dict.setValue(id, forKey: "id")
                                  print(dict)
                                 if self.array_UserSkills.contains(dict) {
                                     break
@@ -590,8 +590,12 @@ class ProfileVC: UIViewController {
                             for value in tmp_arr_occ{
                                 
                                 let name = (value as! NSDictionary).value(forKey: "name") as? String
+                                let id = (value as! NSDictionary).value(forKey: "interestTypeId") as? NSNumber
+
                                 let dict = NSMutableDictionary()
                                 dict.setValue(name, forKey: "name")
+                                dict.setValue(id, forKey: "id")
+
                                 if self.array_UserInterests.contains(dict) {
                                     break
                                 }
@@ -1263,8 +1267,15 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
         
         if collectionView == collectionView_Skills {
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
-        vc.occupationId = (array_UserSkills[indexPath.row] as! NSDictionary)["occupationTypeId"]! as? NSNumber
+        vc.occupationId = (array_UserSkills[indexPath.row] as! NSDictionary)["id"]! as? NSNumber
         _ = self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else {
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+            vc.occupationId = (array_UserInterests[indexPath.row] as! NSDictionary)["id"]! as? NSNumber
+            _ = self.navigationController?.pushViewController(vc, animated: true)
+
+            
         }
        
     }
