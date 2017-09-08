@@ -18,7 +18,7 @@ public var ratingType : String?
 
 
 
-class SearchViewController: UIViewController,UITabBarControllerDelegate {
+class SearchViewController: UIViewController {
     
     //Making secondary Searchbar
     var searchBar = UISearchBar()
@@ -30,7 +30,6 @@ class SearchViewController: UIViewController,UITabBarControllerDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.tabBarController?.delegate = self
         if self.revealViewController() != nil {
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
         }
@@ -209,17 +208,7 @@ class SearchViewController: UIViewController,UITabBarControllerDelegate {
     
     
     
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        
-        if self.revealViewController() != nil {
-            
-            
-            
-            self.revealViewController().revealToggle(animated: true)
-            
-        }
-        
-    }
+    
     
  
     

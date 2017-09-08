@@ -24,9 +24,7 @@ class ProfileVC: UIViewController {
     @IBOutlet var ktopCompanyImageView: NSLayoutConstraint!
     @IBOutlet var ktopCompanylbl: NSLayoutConstraint!
     @IBOutlet var ktopbtnCompanyName: NSLayoutConstraint!
-    
     @IBOutlet weak var k_topSchoolButton: NSLayoutConstraint!
-    
     @IBOutlet var btn_OverSchool: UIButton!
     @IBOutlet var btn_overCompany: UIButton!
     @IBOutlet var imgView_Company: UIImageView!
@@ -64,11 +62,8 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var lbl_NoOfRating: UILabel!
     @IBOutlet weak var kheightViewBehindInterest: NSLayoutConstraint!
     @IBOutlet weak var kheightViewBehindSkill: NSLayoutConstraint!
-    
     @IBOutlet weak var kheightCollectionViewOccupation: NSLayoutConstraint!
     @IBOutlet weak var kheightCollectionViewInterestHeight: NSLayoutConstraint!
-    
-    
     @IBOutlet weak var kheightDescription: NSLayoutConstraint!
     
     var imageView1 : UIImageView?
@@ -103,6 +98,8 @@ class ProfileVC: UIViewController {
         
         DispatchQueue.main.async {
             
+            self.tabBarController?.delegate = self
+
             if self.revealViewController() != nil {
                 self.menu_btn.target = self.revealViewController()
                 self.menu_btn.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -132,10 +129,10 @@ class ProfileVC: UIViewController {
             DispatchQueue.main.async {
                 
                 if self.revealViewController() != nil {
-                    
                     self.revealViewController().panGestureRecognizer().isEnabled = false
                 
                 }
+                
                 self.scrollbar.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
                 self.automaticallyAdjustsScrollViewInsets = false
                 self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
@@ -143,7 +140,6 @@ class ProfileVC: UIViewController {
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.view.endEditing(true)
                 self.CreateNavigationBackBarButton() //Create custom back button
-                
                 
                 self.user_IdMyProfile = userIdFromSearch
                 let btn2 = UIButton(type: .custom)
@@ -1383,5 +1379,18 @@ extension ProfileVC:UITableViewDelegate,UITableViewDataSource{
     }
     
     
+}
+
+extension ProfileVC:UITabBarControllerDelegate{
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        if tabBarController.selectedIndex == 0{
+            if self.revealViewController() != nil {
+                
+                self.revealViewController().revealToggle(animated: true)
+            }
+        }
+    }
 }
 
