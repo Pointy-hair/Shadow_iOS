@@ -7,6 +7,7 @@
 //
 
 import UIKit
+var bool_ComingFromList : Bool = false
 
 class ListingViewController: UIViewController {
 
@@ -16,13 +17,16 @@ class ListingViewController: UIViewController {
     var type:String?
     var navigation_title:String?
     fileprivate var array_userList = NSMutableArray()
-    
+    var ListuserId : NSNumber?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        tbl_View.tableFooterView = UIView()  //Set table extra rows eliminate
     }
     
 
@@ -56,11 +60,12 @@ class ListingViewController: UIViewController {
         
         
         let dict = NSMutableDictionary()
-        dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
+        dict.setValue(ListuserId, forKey: Global.macros.kUserId)
         dict.setValue(self.type!, forKey: Global.macros.k_type)
 
         print(dict)
         
+       if ListuserId == SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
         if checkInternetConnection(){
             DispatchQueue.main.async {
                 self.pleaseWait()
@@ -163,7 +168,14 @@ class ListingViewController: UIViewController {
         }else{
             self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
         }
-        
+    }
+    else{
+        self.tbl_View.isHidden = true
+        bool_ComingFromList = false
+
+    self.showAlert(Message: "Coming Soon", vc: self)
+
+    }
     }
     
     
@@ -198,6 +210,45 @@ extension ListingViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
      
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+     
+        bool_ComingFromList = true
+        var user_dict = NSDictionary()
+        user_dict = self.array_userList[indexPath.row] as! NSDictionary
+        if user_dict["userDTO"] != nil{
+            
+            user_dict = user_dict.value(forKey: "userDTO") as! NSDictionary
+        }
+       
+        let role = user_dict.value(forKey: Global.macros.krole) as? String
+        
+        if role == "COMPANY" || role == "SCHOOL"
+        {
+            DispatchQueue.main.async {
+                userIdFromSearch = user_dict["userId"] as? NSNumber
+
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
+            _ = self.navigationController?.pushViewController(vc, animated: true)
+            vc.extendedLayoutIncludesOpaqueBars = true
+            self.automaticallyAdjustsScrollViewInsets = false
+            }
+        }
+        else {
+            DispatchQueue.main.async {
+                userIdFromSearch = user_dict["userId"] as? NSNumber
+
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "user") as! ProfileVC
+                _ = self.navigationController?.pushViewController(vc, animated: true)
+                vc.extendedLayoutIncludesOpaqueBars = true
+                self.automaticallyAdjustsScrollViewInsets = false
+                //self.navigationController?.navigationBar.isTranslucent = false
+            }
+        }
+  
+        
     }
     
     

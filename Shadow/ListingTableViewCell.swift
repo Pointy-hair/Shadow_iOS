@@ -48,7 +48,7 @@ class ListingTableViewCell: UITableViewCell {
             
             let role = user_dict.value(forKey: Global.macros.krole) as? String
             
-            if role == "COMPANY"{
+            if role == "COMPANY" {
                 
                 //setting name
                 if user_dict ["name"] != nil{
@@ -56,6 +56,7 @@ class ListingTableViewCell: UITableViewCell {
                     self.lbl_username.text = (user_dict.value(forKey: "name") as? String)?.capitalized
                 }
                 else{
+                    
                     self.lbl_username.text = (user_dict.value(forKey: "companyName") as? String)?.capitalized
 
                 }

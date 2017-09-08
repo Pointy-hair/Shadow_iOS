@@ -134,9 +134,9 @@ class ProfileVC: UIViewController {
                 
                 }
                 
-                self.scrollbar.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+                self.scrollbar.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
                 self.automaticallyAdjustsScrollViewInsets = false
-                self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
+                self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: -15), animated: false)
                 
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.view.endEditing(true)
@@ -161,6 +161,44 @@ class ProfileVC: UIViewController {
                     self.GetUserProfile()
                 }
             }
+        }
+        else if bool_ComingFromList == true {
+            
+            DispatchQueue.main.async {
+                
+                if self.revealViewController() != nil {
+                    self.revealViewController().panGestureRecognizer().isEnabled = false
+                    
+                }
+                
+//                self.scrollbar.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+//                self.automaticallyAdjustsScrollViewInsets = false
+//                self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
+                
+                self.navigationController?.setNavigationBarHidden(false, animated: false)
+                self.view.endEditing(true)
+                self.CreateNavigationBackBarButton() //Create custom back button
+                
+                self.user_IdMyProfile = userIdFromSearch
+                let btn2 = UIButton(type: .custom)
+                btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
+                btn2.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 25, height: 25)
+                btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
+                let item2 = UIBarButtonItem(customView: btn2)
+                
+                let btn3 = UIButton(type: .custom)
+                btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
+                btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
+                btn3.addTarget(self, action: #selector(self.Calender_SearchBtnPressed(sender:)), for: .touchUpInside)
+                let item3 = UIBarButtonItem(customView: btn3)
+                
+                self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
+                
+                DispatchQueue.global(qos: .background).async {
+                    self.GetUserProfile()
+                }
+            }
+
         }
         else {
             
@@ -211,12 +249,19 @@ class ProfileVC: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
        
+        DispatchQueue.main.async {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
+        bool_ComingFromList = false
+        
+        self.scrollbar.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
 
         
-        dicUrl.removeAllObjects()
+        self.dicUrl.removeAllObjects()
         ratingview_ratingNumber = ""
+        }
     }
     
     
@@ -893,7 +938,14 @@ class ProfileVC: UIViewController {
                 let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
                 _ = self.navigationController?.pushViewController(vc, animated: true)
                 
-            }else{
+            }
+            else if bool_ComingFromList == true {
+                
+                
+                self.showAlert(Message: "Coming Soon", vc: self)
+            }
+            
+            else{
                 if self.lbl_NoOfRating.text != "0"{
                     
                     let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
@@ -1004,6 +1056,8 @@ class ProfileVC: UIViewController {
     
     @IBAction func Action_openSchoolCompany(_ sender: UIButton) {
         
+        if bool_UserIdComingFromSearch == false {
+        
         if sender.tag == 0{
             
            idFromProfileVC = ((dictionary_user_Info.value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "id") as? NSNumber)!
@@ -1018,6 +1072,11 @@ class ProfileVC: UIViewController {
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController//UINavigationController
         check_for_previousview = "FromProfileVC"
         _ = self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else{
+            self.showAlert(Message: "Coming Soon.", vc: self)
+
+        }
 
     }
     
@@ -1078,7 +1137,8 @@ class ProfileVC: UIViewController {
         if self.revealViewController() != nil {
             self.revealViewController().rightRevealToggle(animated: false)
         }
-        
+        if bool_UserIdComingFromSearch == false {
+
         var type:String?
         var navigationTitle:String?
         if sender.tag == 0{//shadowers
@@ -1098,9 +1158,25 @@ class ProfileVC: UIViewController {
         
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "listing") as! ListingViewController
         vc.type = type
+        vc.ListuserId = self.user_IdMyProfile
         vc.navigation_title = navigationTitle
+            if vc.ListuserId != SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
+                
+                self.showAlert(Message: "Coming Soon.", vc: self)
+                vc.ListuserId = NSNumber()
+                vc.navigation_title = ""
+
+            }
+            else {
         _ = self.navigationController?.pushViewController(vc, animated: true)
-       
+            }
+        }
+        
+        else{
+            
+            self.showAlert(Message: "Coming Soon.", vc: self)
+
+        }
         
     }
     
@@ -1256,7 +1332,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
     
         }
          DispatchQueue.main.async {
-            if bool_UserIdComingFromSearch == true {
+            if bool_UserIdComingFromSearch == true || bool_ComingFromList == true {
                 self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: 360 + self.k_Constraint_ViewDescHeight.constant + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant)
             }
                 

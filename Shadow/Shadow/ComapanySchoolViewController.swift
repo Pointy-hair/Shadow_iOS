@@ -120,26 +120,27 @@ class ComapanySchoolViewController: UIViewController{
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
-       // self.Scroll_View.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-       // self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
+        self.Scroll_View.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.automaticallyAdjustsScrollViewInsets = false
+        self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
        
         dicUrl.removeAllObjects()
         ratingview_ratingNumber = ""
-        
+       bool_ComingFromList = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
-        // self.custom_StarView ()
-
+       
         if bool_UserIdComingFromSearch == true {            //if coming from search view
             
             DispatchQueue.main.async {
                 
-                self.Scroll_View.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+                self.Scroll_View.contentInset = UIEdgeInsets(top: 26, left: 0, bottom: 0, right: 0)
                 self.automaticallyAdjustsScrollViewInsets = false
-                self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
+                self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: -15), animated: false)
                 
+              
                 if self.revealViewController() != nil {
                     
                     self.revealViewController().panGestureRecognizer().isEnabled = false
@@ -179,9 +180,62 @@ class ComapanySchoolViewController: UIViewController{
                 }
             }
         }
+        else if bool_ComingFromList == true {
+            
+            DispatchQueue.main.async {
+//                let desiredOffset = CGPoint(x: 0, y: self.Scroll_View.contentInset.top)
+//                self.Scroll_View.setContentOffset(desiredOffset, animated: true)
+//   
+//                self.Scroll_View.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+//                self.automaticallyAdjustsScrollViewInsets = false
+//                self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
+                
+                if self.revealViewController() != nil {
+                    
+                    self.revealViewController().panGestureRecognizer().isEnabled = false
+                    
+                }
+                
+                
+                
+                self.navigationController?.setNavigationBarHidden(false, animated: false)
+                self.navigationItem.setHidesBackButton(false, animated:true)
+                self.CreateNavigationBackBarButton()        //Create custom back button
+                self.tabBarController?.tabBar.isHidden = true
+                
+                
+                let btn2 = UIButton(type: .custom)
+                btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
+                btn2.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 25, height: 25)
+                btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
+                let item2 = UIBarButtonItem(customView: btn2)
+                
+                let btn3 = UIButton(type: .custom)
+                btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
+                btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
+                btn3.addTarget(self, action: #selector(self.Calender_SearchBtnPressed), for: .touchUpInside)
+                let item3 = UIBarButtonItem(customView: btn3)
+                
+                
+                //right nav btns
+                self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
+                
+                
+                self.user_IdMyProfile = userIdFromSearch
+                DispatchQueue.global(qos: .background).async {
+                    
+                    self.GetCompanySchoolProfile()
+                    
+                }
+            }
+
+            
+        }
+
         else {
             
             DispatchQueue.main.async {
+                
                 
                 self.tabBarController?.tabBar.isHidden = false
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -703,6 +757,215 @@ class ComapanySchoolViewController: UIViewController{
                                 }
                             }
                         }
+                        else if bool_ComingFromList == true {
+                           
+                                
+                                let r = (response.1).value(forKey: Global.macros.krole) as? String
+                                //  if it is company
+                                if r == "COMPANY"{
+                                    
+                                    //setting titles of labels
+                                    self.lbl_title__cmpnyschool_withthesesoccupation.text = "School with these occupations"
+                                    
+                                    self.lbl_title_Users.text = "Users employed"
+                                    
+                                    
+                                    
+                                    //setting name of company
+                                    if (response.1).value(forKey: Global.macros.kcompanyName) as? String != nil {
+                                        
+                                        self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalizingFirstLetter()
+                                        
+                                        
+                                    }
+                                    
+                                    //setting rating number
+                                    ratingview_name = (response.1).value(forKey: Global.macros.kcompanyName) as? String
+                                    
+                                    
+                                    //setting company url
+                                    if (response.1).value(forKey: Global.macros.kCompanyURL) as? String != nil &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != "" &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != " "{
+                                        
+                                        self.lbl_company_schoolUrl.isHidden = false
+                                        self.imgView_Url.isHidden = false
+                                        self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kCompanyURL) as? String
+                                        
+                                        
+                                        if array_public_UserSocialSites.count > 0{//social sites not nil
+                                            self.tblView_SocialSites.isHidden = false
+                                            
+                                            
+                                            if array_public_UserSocialSites.count == 1 {//social site count 1
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 50.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 180.0
+                                                
+                                                
+                                            }
+                                            else  if array_public_UserSocialSites.count == 2{//social site count 2
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 100.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 210.0
+                                                
+                                            }
+                                            else{//social site count 3
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 150.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 230.0
+                                            }
+                                            
+                                            
+                                            self.tblView_SocialSites.reloadData()
+                                        }
+                                        else{//social sites nil
+                                            
+                                            self.tblView_SocialSites.isHidden = true
+                                            self.k_Constraint_ViewDescriptionHeight.constant = 157
+                                            
+                                        }
+                                    }
+                                    else {
+                                        
+                                        self.lbl_company_schoolUrl.isHidden = true
+                                        self.imgView_Url.isHidden = true
+                                        
+                                        
+                                        if array_public_UserSocialSites.count > 0{//social sites not nil
+                                            self.tblView_SocialSites.isHidden = false
+                                            self.k_Constraint_Top_yblView.constant = -25
+                                            
+                                            if array_public_UserSocialSites.count == 1 {//social site count 1
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 50.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 160.0
+                                                
+                                                
+                                            }
+                                            else  if array_public_UserSocialSites.count == 2{//social site count 2
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 100.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 180.0
+                                                
+                                            }
+                                            else{//social site count 3
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 150.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 210.0
+                                            }
+                                            
+                                            
+                                            self.tblView_SocialSites.reloadData()
+                                        }
+                                        else{//social sites nil
+                                            
+                                            self.tblView_SocialSites.isHidden = true
+                                            self.k_Constraint_ViewDescriptionHeight.constant = 135
+                                            
+                                        }
+                                        
+                                    }
+                                    
+                                    
+                                }else{//coming from search if it is school
+                                    
+                                    
+                                    //setting titles of labels
+                                    self.lbl_title__cmpnyschool_withthesesoccupation.text = "Company with these occupations"
+                                    
+                                    self.lbl_title_Users.text = "Users attended this school"
+                                    
+                                    
+                                    if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kschoolName) as? String != "" {
+                                        
+                                        
+                                        self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalizingFirstLetter()
+                                        
+                                    }
+                                    
+                                    //getting school ratin gto send to next view
+                                    ratingview_name = (response.1).value(forKey: Global.macros.kschoolName) as? String
+                                    
+                                    
+                                    //setting school url
+                                    if (response.1).value(forKey: Global.macros.kSchoolURL) as? String != nil && (response.1).value(forKey: Global.macros.kSchoolURL) as? String != "" &&  (response.1).value(forKey: Global.macros.kSchoolURL) as? String != " "{
+                                        
+                                        self.lbl_company_schoolUrl.isHidden = false
+                                        self.imgView_Url.isHidden = false
+                                        self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kSchoolURL) as? String
+                                        
+                                        if array_public_UserSocialSites.count > 0{//social sites not nil
+                                            self.tblView_SocialSites.isHidden = false
+                                            
+                                            
+                                            if array_public_UserSocialSites.count == 1 {//social site count 1
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 50.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 180.0
+                                                
+                                                
+                                            }
+                                            else  if array_public_UserSocialSites.count == 2{//social site count 2
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 100.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 210.0
+                                                
+                                            }
+                                            else{//social site count 3
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 150.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 230.0
+                                            }
+                                            
+                                            self.tblView_SocialSites.reloadData()
+                                        }
+                                        else{//social sites nil
+                                            
+                                            self.tblView_SocialSites.isHidden = true
+                                            self.k_Constraint_ViewDescriptionHeight.constant = 167
+                                            
+                                        }
+                                    }
+                                        
+                                    else {
+                                        self.lbl_company_schoolUrl.isHidden = true
+                                        self.imgView_Url.isHidden = true
+                                        
+                                        
+                                        if array_public_UserSocialSites.count > 0{//social sites not nil
+                                            self.tblView_SocialSites.isHidden = false
+                                            self.k_Constraint_Top_yblView.constant = -25
+                                            
+                                            if array_public_UserSocialSites.count == 1 {//social site count 1
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 50.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 160.0
+                                                
+                                                
+                                            }
+                                            else  if array_public_UserSocialSites.count == 2{//social site count 2
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 100.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 180.0
+                                                
+                                            }
+                                            else{//social site count 3
+                                                
+                                                self.k_Constraint_Height_tblView.constant = 150.0
+                                                self.k_Constraint_ViewDescriptionHeight.constant = 210.0
+                                            }
+                                            
+                                            self.tblView_SocialSites.reloadData()
+                                        }
+                                        else{//social sites nil
+                                            
+                                            self.tblView_SocialSites.isHidden = true
+                                            self.k_Constraint_ViewDescriptionHeight.constant = 135
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                      
                             
                         else{ //opening direct profile
                             
@@ -1161,6 +1424,11 @@ class ComapanySchoolViewController: UIViewController{
                 _ = self.navigationController?.pushViewController(vc, animated: true)
                 
             }
+            else if bool_ComingFromList == true {
+                
+                self.showAlert(Message: "Coming Soon", vc: self)
+
+            }
             else{
                 
                 if self.lbl_totalRatingCount.text != "0"{
@@ -1231,6 +1499,10 @@ class ComapanySchoolViewController: UIViewController{
         if self.revealViewController() != nil {
             self.revealViewController().rightRevealToggle(animated: false)
         }
+        
+        
+        if bool_UserIdComingFromSearch == false {
+
         var type:String?
         var navigation_title:String?
 
@@ -1264,9 +1536,25 @@ class ComapanySchoolViewController: UIViewController{
         
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "listing") as! ListingViewController
         vc.type = type
-        vc.navigation_title = navigation_title
+        vc.ListuserId = self.user_IdMyProfile
+            vc.navigation_title = navigation_title
+
+            if vc.ListuserId != SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
+                
+                self.showAlert(Message: "Coming Soon.", vc: self)
+                vc.ListuserId = NSNumber()
+                vc.navigation_title = ""
+                
+            }
+            else {
         _ = self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
         
+        else {
+            self.showAlert(Message: "Coming Soon.", vc: self)
+
+        }
     }
     
     
