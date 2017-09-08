@@ -1061,6 +1061,19 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     }
     
     
+    @IBAction func UserWithOccupationOnOccupationView(_ sender: Any) {
+    }
+    
+    
+    
+    @IBAction func UserThatShadowedOnOccupationView(_ sender: Any) {
+    }
+    
+    
+    
+    
+    
+    
     //MARK:Scroll View Delegate Methods and Pagination
     
     
