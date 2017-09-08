@@ -25,7 +25,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     @IBOutlet var scrollView: UIScrollView!
     
     var user_Name:String?
-    var user_location:String?
+    //var user_location:String?
     var request_id_fromRequestDetail:NSNumber?
     var check_comingFromRequestDetail:String = "NO"
     
@@ -100,12 +100,13 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
         self.imgView_Virtually.image = UIImage.init(named: "unchecked")
         
         self.btn_SelectLocation.isHidden = false
-        if user_location != nil {
+        
+    /*   if user_location != nil {
         self.btn_SelectLocation.setTitle(self.user_location!, for: .normal)
         }else{
             self.btn_SelectLocation.setTitle("Select Location", for: .normal)
  
-        }
+        }*/
         //  self.btn_SelectVirtualOption.isHidden = true
         
         

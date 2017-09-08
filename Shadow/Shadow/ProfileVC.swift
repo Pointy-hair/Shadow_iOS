@@ -884,6 +884,11 @@ class ProfileVC: UIViewController {
     
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
+        
+        if self.revealViewController() != nil {
+            self.revealViewController().revealToggle(animated: true)
+        }
+        
         DispatchQueue.main.async {
             
             if bool_UserIdComingFromSearch == true{
@@ -1073,6 +1078,9 @@ class ProfileVC: UIViewController {
     
     @IBAction func action_OpenShadowers(_ sender: UIButton) {
         
+        if self.revealViewController() != nil {
+            self.revealViewController().revealToggle(animated: true)
+        }
         
         var type:String?
         var navigationTitle:String?
