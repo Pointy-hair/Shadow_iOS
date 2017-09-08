@@ -462,13 +462,13 @@ class ProfileVC: UIViewController {
 
 
                                  if array_public_UserSocialSites.count > 0 {//social site not nil
-                                     self.k_Constraint_tblViewTop.constant = -10.0
+                                     self.k_Constraint_tblViewTop.constant = -2.0
                                     self.tblView_SocialSites.isHidden = false
                                     
                                     if array_public_UserSocialSites.count == 1 {//social site count 1
                                         
                                         self.k_Constraint_Height_TableView.constant = 50.0
-                                        self.k_Constraint_ViewDescHeight.constant = 150.0
+                                        self.k_Constraint_ViewDescHeight.constant = 140.0
                                         
                                         
                                     }
@@ -488,7 +488,7 @@ class ProfileVC: UIViewController {
                                  }else{//social site nil
                                     
                                     self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = 130.0
+                                    self.k_Constraint_ViewDescHeight.constant = 115.0
                                     
                                 }
                             }

@@ -970,6 +970,43 @@ class ComapanySchoolViewController: UIViewController{
                 case 401:
                     self.AlertSessionExpire()
                     
+                case 304:
+                    
+                    let TitleString = NSAttributedString(string: "Shadow", attributes: [
+                        NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+                        NSForegroundColorAttributeName : Global.macros.themeColor_pink
+                        ])
+                    let MessageString = NSAttributedString(string: "User does not exist.", attributes: [
+                        NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+                        NSForegroundColorAttributeName : Global.macros.themeColor_pink
+                        ])
+                    
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        
+                        let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {(action) in
+                            
+                           _ = self.navigationController?.popViewController(animated: true)
+                            
+                        
+                        }))
+                        alert.view.layer.cornerRadius = 10.0
+                        alert.view.clipsToBounds = true
+                        alert.view.backgroundColor = UIColor.white
+                        alert.view.tintColor = Global.macros.themeColor_pink
+                        
+                        alert.setValue(TitleString, forKey: "attributedTitle")
+                        alert.setValue(MessageString, forKey: "attributedMessage")
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
+
+                    
+                    
+                    
+                    break
+                    
                 default:
                     self.showAlert(Message: Global.macros.kError, vc: self)
                     break
