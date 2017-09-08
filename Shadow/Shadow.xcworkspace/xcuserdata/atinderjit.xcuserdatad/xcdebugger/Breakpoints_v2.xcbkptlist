@@ -27,6 +27,38 @@
             endingLineNumber = "1689"
             landmarkName = "scrollViewDidEndDecelerating(_:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shadow.CustomSearchViewController.(scrollViewDidEndDecelerating (__ObjC.UIScrollView) -&gt; ()).(closure #3)"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
+                  timestampString = "526559325.907576"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1690"
+                  endingLineNumber = "1690"
+                  offsetFromSymbolStart = "100505">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shadow.CustomSearchViewController.(scrollViewDidEndDecelerating (__ObjC.UIScrollView) -&gt; ()).(closure #3).(closure #1)"
+                  moduleName = "Shadow"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
+                  timestampString = "526559325.910951"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1692"
+                  endingLineNumber = "1692"
+                  offsetFromSymbolStart = "26">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -68,7 +100,7 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
-                  timestampString = "526553727.733635"
+                  timestampString = "526559325.92423"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "2056"
@@ -83,7 +115,7 @@
                   moduleName = "Shadow"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/Data/Shadow/Shadow_iOS/Shadow/Shadow/CustomSearchViewController.swift"
-                  timestampString = "526553727.737192"
+                  timestampString = "526559325.926552"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "2058"
@@ -169,7 +201,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1267"
             endingLineNumber = "1267"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -185,6 +217,22 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1329"
             endingLineNumber = "1329"
+            landmarkName = "collectionView(_:numberOfItemsInSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shadow/OccupationDetailViewController.swift"
+            timestampString = "526559353.479527"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "405"
+            endingLineNumber = "405"
             landmarkName = "collectionView(_:didSelectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -196,11 +244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shadow/OccupationDetailViewController.swift"
-            timestampString = "526553674.932351"
+            timestampString = "526559618.993049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "412"
-            endingLineNumber = "412"
+            startingLineNumber = "411"
+            endingLineNumber = "411"
             landmarkName = "collectionView(_:didSelectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>

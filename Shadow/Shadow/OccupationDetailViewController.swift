@@ -11,7 +11,7 @@ import Charts
 
 class OccupationDetailViewController: UIViewController {
     
-  //   var NoOfEmployees: [String]!
+    //   var NoOfEmployees: [String]!
     
     
     @IBOutlet weak var barChartView: BarChartView!
@@ -25,8 +25,8 @@ class OccupationDetailViewController: UIViewController {
     @IBOutlet weak var collectionViewCompany: UICollectionView!
     @IBOutlet weak var collectionViewSchool: UICollectionView!
     var dic_Occupation = NSMutableDictionary()
-     var arr_school = NSMutableArray()
-     var arr_company = NSMutableArray()
+    var arr_school = NSMutableArray()
+    var arr_company = NSMutableArray()
     
     var arr_NoOfEmployees = NSMutableArray() //x axis
     var arr_Salary = NSMutableArray() //y axis
@@ -42,11 +42,11 @@ class OccupationDetailViewController: UIViewController {
     
     @IBOutlet weak var kheight_DescriptionView: NSLayoutConstraint!
     @IBOutlet weak var kHeightlblDescription: NSLayoutConstraint!
-
+    
     
     @IBOutlet weak var lbl_RatingCount: UILabel!
     @IBOutlet weak var lbl_About: UILabel!
-
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -54,7 +54,7 @@ class OccupationDetailViewController: UIViewController {
         DispatchQueue.main.async {
             self.GetData()
         }
-
+        
         
         self.barChartView.xAxis.drawGridLinesEnabled = false
         self.barChartView.rightAxis.drawGridLinesEnabled = false
@@ -65,28 +65,28 @@ class OccupationDetailViewController: UIViewController {
         self.barChartView.leftAxis.drawLabelsEnabled = false
         self.barChartView.xAxis.drawAxisLineEnabled = false
         self.barChartView.xAxis.drawLabelsEnabled = false
-             //chartDataSet.colors = [.green, .yellow, .red]
+        //chartDataSet.colors = [.green, .yellow, .red]
         self.barChartView.legend.enabled = false
-       self.barChartView.highlightPerTapEnabled = false
+        self.barChartView.highlightPerTapEnabled = false
         self.barChartView.highlightFullBarEnabled = false
         
-      
-
-
+        
+        
+        
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
-//        self.navigationItem.setHidesBackButton(false, animated:true)
-//        self.tabBarController?.tabBar.isHidden = true
-     
+        //        self.navigationItem.setHidesBackButton(false, animated:true)
+        //        self.tabBarController?.tabBar.isHidden = true
+        
         let myBackButton:UIButton = UIButton()
         myBackButton.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
         myBackButton.setImage(UIImage(named:"back-new"), for: UIControlState())
         myBackButton.addTarget(self, action: #selector(self.PopToRootViewController), for: UIControlEvents.touchUpInside)
         let leftBackBarButton:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem = leftBackBarButton
-       
+        
         // Do any additional setup after loading the view.
- 
+        
     }
     
     func GetData() {
@@ -94,7 +94,7 @@ class OccupationDetailViewController: UIViewController {
         let dict = NSMutableDictionary()
         dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
         dict.setValue(occupationId, forKey: "occupationId")
-
+        
         print(dict)
         
         if self.checkInternetConnection(){
@@ -116,55 +116,53 @@ class OccupationDetailViewController: UIViewController {
                     print(response)
                     
                     self.dic_Occupation = (response.value(forKey: "data") as! NSDictionary).mutableCopy() as! NSMutableDictionary
-                       DispatchQueue.main.async {
-                    
-                    self.navigationItem.title = (self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter()
-                    self.lbl_About.text = "About" + " " + ((self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter())!
-                    self.lbl_avgRating.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
-                     self.lbl_RatingCount.text = "\((self.dic_Occupation.value(forKey: "ratingCount")!))"
-                    // self.lbl_AvgSalary.text = (self.dic_Occupation.value(forKey: "salary") as? String)
-                      // print(self.suffixNumber(number: NSNumber(long: 24000)));
+                    DispatchQueue.main.async {
                         
-                      
+                        self.navigationItem.title = (self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter()
+                        self.lbl_About.text = "About" + " " + ((self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter())!
+                        self.lbl_avgRating.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
+                        self.lbl_RatingCount.text = "\((self.dic_Occupation.value(forKey: "ratingCount")!))"
+                        
                         
                         self.lbl_UsersWithThisOccupation.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
                         self.lbl_UserThatShadowedThis.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
-                      
+                        
                         self.txtfield_Occupation.text = (self.dic_Occupation.value(forKey: "description") as? String)
+                        
                         DispatchQueue.main.async {
-                       self.txtfield_Occupation.frame.size.height = self.txtfield_Occupation.intrinsicContentSize.height
-                        self.kheight_DescriptionView.constant = self.txtfield_Occupation.frame.size.height + 42
+                            self.txtfield_Occupation.frame.size.height = self.txtfield_Occupation.intrinsicContentSize.height
+                            self.kheight_DescriptionView.constant = self.txtfield_Occupation.frame.size.height + 42
                         }
                         
                         let morePrecisePI = Double((self.dic_Occupation.value(forKey: "salary") as? String)!)
-
-                         let myInteger = Int(morePrecisePI!)
-                            let myNumber = NSNumber(value:myInteger)
-                            print(myNumber)
-                            self.lbl_AvgSalary.text = self.suffixNumber(number: myNumber) as String
-                            print(self.lbl_AvgSalary.text!) //companys
+                        
+                        let myInteger = Int(morePrecisePI!)
+                        let myNumber = NSNumber(value:myInteger)
+                        print(myNumber)
+                        self.lbl_AvgSalary.text = self.suffixNumber(number: myNumber) as String
+                        print(self.lbl_AvgSalary.text!) //companys
                         
                         if self.dic_Occupation.value(forKey: "companys") != nil {
-                        self.arr_company = (self.dic_Occupation.value(forKey: "companys") as! NSArray).mutableCopy() as! NSMutableArray
+                            self.arr_company = (self.dic_Occupation.value(forKey: "companys") as! NSArray).mutableCopy() as! NSMutableArray
                             print("atinder")
                             print( self.arr_company)
                             
-                            }
-                       if  self.arr_company.count == 0 {
+                        }
+                        if  self.arr_company.count == 0 {
                             
                             self.collectionViewCompany.isHidden = true
                         }
-                            
-                      if self.dic_Occupation.value(forKey: "schools") != nil {
-                        self.arr_school = (self.dic_Occupation.value(forKey: "schools") as! NSArray).mutableCopy() as! NSMutableArray
-                            }
-                      if self.arr_school.count == 0 {
                         
-                         self.collectionViewSchool.isHidden = true
+                        if self.dic_Occupation.value(forKey: "schools") != nil {
+                            self.arr_school = (self.dic_Occupation.value(forKey: "schools") as! NSArray).mutableCopy() as! NSMutableArray
                         }
-
+                        if self.arr_school.count == 0 {
+                            
+                            self.collectionViewSchool.isHidden = true
+                        }
+                        
                         self.setChart()
-
+                        
                         self.collectionViewSchool.reloadData()
                         self.collectionViewCompany.reloadData()
                     }
@@ -195,7 +193,7 @@ class OccupationDetailViewController: UIViewController {
         }else{
             self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
         }
-
+        
         
     }
     
@@ -235,30 +233,30 @@ class OccupationDetailViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         bool_Occupation = true
-
+        
     }
     
     override func viewDidLayoutSubviews() {
         scroll_View.contentSize = CGSize.init(width: view.frame.size.width, height:  900)
     }
     
- 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
@@ -295,7 +293,7 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
                         //let dict = (self.arr_company[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as! NSMutableDictionary
                         
                         company_cell.lbl_CompanyName.text = dict.value(forKey: "companyName") as? String
-
+                        
                     }
                     
                 }
@@ -311,9 +309,9 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             if arr_school.count > 0 {
                 if  let dict =  (arr_school[indexPath.row]as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
                     DispatchQueue.main.async {
-               
-                
-               school_cell.lbl_SchoolName.text = dict.value(forKey: "schoolName") as? String
+                        
+                        
+                        school_cell.lbl_SchoolName.text = dict.value(forKey: "schoolName") as? String
                     }
                 }
             }
@@ -321,8 +319,8 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             cell = school_cell
             
         }
-
-      return cell
+        
+        return cell
         
     }
     
@@ -393,47 +391,49 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             }
         }
         
-         DispatchQueue.main.async {
-        self.scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: 350 + self.kheight_DescriptionView.constant + self.kheightViewBehindCompany.constant + self.kheightViewBehindSchool.constant)
+        DispatchQueue.main.async {
+            self.scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: 350 + self.kheight_DescriptionView.constant + self.kheightViewBehindCompany.constant + self.kheightViewBehindSchool.constant)
         }
         
         return count!
-        
-
-   }
-    
-    
+    }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         
-         bool_UserIdComingFromSearch = true
+        bool_UserIdComingFromSearch = true
         
         
-          if collectionView == collectionViewCompany{
+        if collectionView == collectionViewCompany {
             if  let dict =  (arr_company[indexPath.row] as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
-                userIdFromSearch = dict.value(forKey: "id") as? NSNumber
+                let dic = dict.value(forKey: "companyDTO") as? NSDictionary
+                userIdFromSearch = dic?.value(forKey: "companyUserId") as? NSNumber
+                print(userIdFromSearch!)
             }
         }
-        
-          else {
+            
+        else {
             
             if  let dict =  (arr_school[indexPath.row] as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
-                userIdFromSearch = dict.value(forKey: "id") as? NSNumber
+                let dic = dict.value(forKey: "schoolDTO") as? NSDictionary
+
+                userIdFromSearch = dict.value(forKey: "schoolUserId") as? NSNumber
             }
         }
-        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
         
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
         _ = self.navigationController?.pushViewController(vc, animated: true)
         
         
         
     }
 }
+
+
 extension BarChartView {
     
-     class BarChartFormatter: NSObject, IAxisValueFormatter {
+    class BarChartFormatter: NSObject, IAxisValueFormatter {
         
         var labels: [String] = []
         
@@ -469,7 +469,7 @@ extension BarChartView {
         
         self.data = chartData
         
-       
+        
     }
 }
 

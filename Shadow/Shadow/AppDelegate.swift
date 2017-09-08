@@ -15,6 +15,8 @@ var deviceTokenString = String()       // Device token string used in login and 
 
 public var DeviceType:String = "0"
 public var bool_Backntn : Bool = false
+public var bool_PushComingFromAppDelegate : Bool = false
+
 public var str_Confirmation:String = ""
 
 public var myCurrentLat : Double?
@@ -179,23 +181,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         UIPasteboard.general.string = deviceTokenString
     }
     
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        
+        if application.applicationState != .active {
+            perform(#selector(self.pushTONext), with: nil, afterDelay: 1.0)
+        }
+
+        
+        
+    }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         deviceTokenString = "b43c88327277116c7eb398395a96907e744d04ebb288efc970658b63498014ec"
         
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
-     
-//        let badgeCount = 0
-//        UIApplication.shared.applicationIconBadgeNumber += badgeCount
-        print(userInfo)
-        
-        //  bool_FromNotification = true
-       // Notificationview.sharedInstance.createNotificationview(win: window!)
-      //  Notificationview.sharedInstance.showNotificationView(userInfo as NSDictionary)
-        
-        // if let notification = userInfo["apsinfo"] as? NSDictionary
-        
+    func pushTONext() {
+
+        bool_PushComingFromAppDelegate = true
+        let navigationController: SWRevealViewController? = (window?.rootViewController as? SWRevealViewController)
+        let controller: RequestDetailsViewController? = (Global.macros.Storyboard.instantiateViewController(withIdentifier: "myrequests_to_requestdetail") as? RequestDetailsViewController)
+        navigationController?.frontViewController = controller
+        navigationController?.setFrontViewPosition(FrontViewPosition.left, animated: true)
     }
     
 }

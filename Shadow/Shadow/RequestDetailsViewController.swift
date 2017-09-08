@@ -56,7 +56,22 @@ class RequestDetailsViewController: UIViewController {
             
             // self.navigationItem.title = self.username!
             self.navigationItem.setHidesBackButton(false, animated:true)
-            self.CreateNavigationBackBarButton()
+            
+            let myBackButton:UIButton = UIButton()
+            myBackButton.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+            myBackButton.setImage(UIImage(named:"back-new"), for: UIControlState())
+            let leftBackBarButton:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
+            self.navigationItem.leftBarButtonItem = leftBackBarButton
+            
+            if  bool_PushComingFromAppDelegate == true {
+                myBackButton.addTarget(self, action: #selector(self.PopToRootVC), for: UIControlEvents.touchUpInside)
+
+            }
+            else {
+                myBackButton.addTarget(self, action: #selector(self.PopToRootViewController), for: UIControlEvents.touchUpInside)
+
+            }
+
             
             self.imgView_UserProfile.layer.cornerRadius = 60.0
             self.imgView_UserProfile.clipsToBounds = true
@@ -96,6 +111,16 @@ class RequestDetailsViewController: UIViewController {
         
         
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        bool_PushComingFromAppDelegate = false
+    }
+    func PopToRootVC() {
+        DispatchQueue.main.async {
+            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "SWRevealViewController") as!  SWRevealViewController
+            Global.macros.kAppDelegate.window?.rootViewController = vc
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
