@@ -1150,7 +1150,7 @@ class ComapanySchoolViewController: UIViewController{
     @IBAction func Action_OpenRatingView(_ sender: Any) {
         
         if self.revealViewController() != nil {
-            self.revealViewController().revealToggle(animated: true)
+            self.revealViewController().rightRevealToggle(animated: false)
         }
         DispatchQueue.main.async {
             
@@ -1229,7 +1229,7 @@ class ComapanySchoolViewController: UIViewController{
         
         
         if self.revealViewController() != nil {
-            self.revealViewController().revealToggle(animated: true)
+            self.revealViewController().rightRevealToggle(animated: false)
         }
         var type:String?
         var navigation_title:String?
@@ -1516,8 +1516,7 @@ extension ComapanySchoolViewController:UITabBarControllerDelegate{
         
         if tabBarController.selectedIndex == 0{
             if self.revealViewController() != nil {
-                
-                self.revealViewController().revealToggle(animated: true)
+                self.revealViewController().rightRevealToggle(animated: false)
             }
         }
     }
