@@ -401,6 +401,35 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
         
 
    }
+    
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+         bool_UserIdComingFromSearch = true
+        
+        
+          if collectionView == collectionViewCompany{
+            if  let dict =  (arr_company[indexPath.row] as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
+                userIdFromSearch = dict.value(forKey: "id") as? NSNumber
+            }
+        }
+        
+          else {
+            
+            if  let dict =  (arr_school[indexPath.row] as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
+                userIdFromSearch = dict.value(forKey: "id") as? NSNumber
+            }
+        }
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController
+        
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        
+        
+        
+    }
 }
 extension BarChartView {
     
