@@ -1213,7 +1213,6 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
                 
                 if count == 3 {
                     self.kheightViewBehindSkill.constant = 150
-                    
                 }
                 
                 
@@ -1266,9 +1265,11 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == collectionView_Skills {
+            
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
         vc.occupationId = (array_UserSkills[indexPath.row] as! NSDictionary)["id"]! as? NSNumber
         _ = self.navigationController?.pushViewController(vc, animated: true)
+            
         }
         else {
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController

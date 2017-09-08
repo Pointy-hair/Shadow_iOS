@@ -31,7 +31,6 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
         myBackButton.addTarget(self, action: #selector(self.PopToRootViewController), for: UIControlEvents.touchUpInside)
         let leftBackBarButton:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem = leftBackBarButton
-        
         self.SetButtonCustomAttributes(btn_Next)
         
     }
@@ -119,6 +118,7 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
                 self.showAlert(Message: "Can't find your location.Try again later.", vc: self)
             }
         })
+        
     }
     
     func RegisterWithCompany() {
