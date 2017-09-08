@@ -1248,21 +1248,26 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
     
         }
          DispatchQueue.main.async {
-       self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: 300 + self.k_Constraint_ViewDescHeight.constant + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant)
-        }
+            if bool_UserIdComingFromSearch == true {
+                self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: 360 + self.k_Constraint_ViewDescHeight.constant + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant)
+            }
+                
+            else {
+                self.scrollbar.contentSize = CGSize(width: self.view.frame.size.width, height: 300 + self.k_Constraint_ViewDescHeight.constant + self.kheightViewBehindSkill.constant + self.kheightViewBehindInterest.constant)
+            }        }
         
         return count!
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        
-//        if collectionView == collectionView_Skills {
-//        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
-//        vc.occupationId = (array_UserSkills[indexPath.row] as! NSDictionary)["id"]! as? NSNumber
-//        _ = self.navigationController?.pushViewController(vc, animated: true)
-//        }
-//       
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if collectionView == collectionView_Skills {
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
+        vc.occupationId = (array_UserSkills[indexPath.row] as! NSDictionary)["occupationTypeId"]! as? NSNumber
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        }
+       
+    }
     
     
 }
