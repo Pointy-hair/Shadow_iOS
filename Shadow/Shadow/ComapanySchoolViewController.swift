@@ -1127,7 +1127,7 @@ class ComapanySchoolViewController: UIViewController{
             }
             else{
                 
-                if self.lbl_Count_Users.text != "0"{
+                if self.lbl_totalRatingCount.text != "0"{
                     
                     let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
                     _ = self.navigationController?.pushViewController(vc, animated: true)

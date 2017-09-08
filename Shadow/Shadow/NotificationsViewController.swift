@@ -41,7 +41,6 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
             //adding view to table footer
             self.tblView_Notifications.tableFooterView = UIView()
             
-            
         }
     }
     
@@ -123,67 +122,97 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
     
     
   @objc fileprivate func btn_Clear(){
+    
+    
+    let TitleString = NSAttributedString(string: "Shadow", attributes: [
+        NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+        NSForegroundColorAttributeName : Global.macros.themeColor_pink
+        ])
+    let MessageString = NSAttributedString(string: "Are you sure you want to clear all notifications?", attributes: [
+        NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+        NSForegroundColorAttributeName : Global.macros.themeColor_pink
+        ])
+    
+    DispatchQueue.main.async {
+        self.clearAllNotice()
         
-        let dict = NSMutableDictionary()
-        dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
-        print(dict)
-        
-        if self.checkInternetConnection(){
+        let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: {(action) in
             
-            DispatchQueue.main.async {
-                self.pleaseWait()
+            let dict = NSMutableDictionary()
+            dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
+            print(dict)
+            
+            if self.checkInternetConnection(){
+                
+                DispatchQueue.main.async {
+                    self.pleaseWait()
+                }
+                
+                Notification_API.sharedInstance.clearNotifications(dict: dict, completionBlock: { (response) in
+                    print(response)
+                    
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                    }
+                    let status = response.value(forKey: "status") as? NSNumber
+                    switch(status!){
+                        
+                    case 200:
+                        
+                        self.array_allNotifications.removeAllObjects()
+                        DispatchQueue.main.async {
+                            self.tblView_Notifications.reloadData()
+                            self.tblView_Notifications.isHidden = true
+                            self.lbl_NoNotifications.isHidden = false
+                        }
+                        
+                        break
+                        
+                    case 404:
+                        DispatchQueue.main.async {
+                            
+                            self.showAlert(Message: "Already cleared", vc: self)
+                            self.tblView_Notifications.isHidden = true
+                            self.lbl_NoNotifications.isHidden = false
+                        }
+                        
+                        break
+                        
+                    default:
+                        self.showAlert(Message: Global.macros.kError, vc: self)
+                        break
+                        
+                        
+                    }
+                    
+                }, errorBlock: { (error) in
+                    DispatchQueue.main.async {
+                        self.clearAllNotice()
+                        self.showAlert(Message: Global.macros.kError, vc: self)
+                    }
+                })
+                
+                
+                
+            }
+            else{
+                
+                self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
             }
             
-            Notification_API.sharedInstance.clearNotifications(dict: dict, completionBlock: { (response) in
-                print(response)
-                
-                DispatchQueue.main.async {
-                    self.clearAllNotice()
-                }
-                let status = response.value(forKey: "status") as? NSNumber
-                switch(status!){
-                    
-                case 200:
-                    
-                    self.array_allNotifications.removeAllObjects()
-                    DispatchQueue.main.async {
-                        self.tblView_Notifications.reloadData()
-                        self.tblView_Notifications.isHidden = true
-                        self.lbl_NoNotifications.isHidden = false
-                    }
-                    
-                    break
-                    
-                case 404:
-                    DispatchQueue.main.async {
-                        
-                        self.showAlert(Message: "Already cleared", vc: self)
-                        self.tblView_Notifications.isHidden = true
-                        self.lbl_NoNotifications.isHidden = false
-                    }
-                    
-                    break
-                    
-                default:
-                    self.showAlert(Message: Global.macros.kError, vc: self)
-                    break
-                    
-                    
-                }
-                
-            }, errorBlock: { (error) in
-                DispatchQueue.main.async {
-                    self.clearAllNotice()
-                    self.showAlert(Message: Global.macros.kError, vc: self)
-                }
-            })
-            
-            
-
-        }else{
-            self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
-        }
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil))
+        alert.view.layer.cornerRadius = 10.0
+        alert.view.clipsToBounds = true
+        alert.view.backgroundColor = UIColor.white
+        alert.view.tintColor = Global.macros.themeColor_pink
         
+        alert.setValue(TitleString, forKey: "attributedTitle")
+        alert.setValue(MessageString, forKey: "attributedMessage")
+        self.present(alert, animated: true, completion: nil)
+
+             }
     }
     
     
