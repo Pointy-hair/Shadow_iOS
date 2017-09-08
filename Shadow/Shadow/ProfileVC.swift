@@ -25,6 +25,7 @@ class ProfileVC: UIViewController {
     @IBOutlet var ktopCompanylbl: NSLayoutConstraint!
     @IBOutlet var ktopbtnCompanyName: NSLayoutConstraint!
     
+    @IBOutlet weak var k_topSchoolButton: NSLayoutConstraint!
     
     @IBOutlet var btn_OverSchool: UIButton!
     @IBOutlet var btn_overCompany: UIButton!
@@ -319,10 +320,10 @@ class ProfileVC: UIViewController {
                             
                             self.txtView_Description.text = "\((response.1).value(forKey: Global.macros.kbio) as! String)"
                             
-                            DispatchQueue.main.async {
-                                self.txtView_Description.frame.size.height = self.txtView_Description.intrinsicContentSize.height
-                                
-                            }
+//                            DispatchQueue.main.async {
+//                                self.txtView_Description.frame.size.height = self.txtView_Description.intrinsicContentSize.height
+//                                
+//                            }
                             
                             self.lbl_Placeholder.isHidden = true
                         }
@@ -352,9 +353,9 @@ class ProfileVC: UIViewController {
                             self.lbl_Company.isHidden = false
                             self.imgView_Company.isHidden = false
                             self.btn_overCompany.isUserInteractionEnabled = true
-                            self.ktopCompanylbl.constant = self.txtView_Description.frame.size.height + 2
-                            self.ktopbtnCompanyName.constant = self.txtView_Description.frame.size.height + 2
-                            self.ktopCompanyImageView.constant = self.txtView_Description.frame.size.height + 6
+                          //  self.ktopCompanylbl.constant = self.txtView_Description.frame.size.height + 2
+                           // self.ktopbtnCompanyName.constant = self.txtView_Description.frame.size.height + 2
+                           // self.ktopCompanyImageView.constant = self.txtView_Description.frame.size.height + 6
                             
                              if (response.1).value(forKey: "schoolName")as? String != "" &&  (response.1).value(forKey: "schoolName") != nil && (response.1).value(forKey: "schoolName")as? String != " "{
                                 
@@ -391,7 +392,7 @@ class ProfileVC: UIViewController {
                                 }else{
                                     DispatchQueue.main.async {
                                     self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 90
+                                    self.k_Constraint_ViewDescHeight.constant = 150//self.txtView_Description.frame.size.height + 90
                                     }
 
                                 }
@@ -436,7 +437,7 @@ class ProfileVC: UIViewController {
                                     DispatchQueue.main.async{
                     
                                     self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 80
+                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 65
                                     }
                                     
                                 }
@@ -454,14 +455,16 @@ class ProfileVC: UIViewController {
                                 
                                 self.lbl_School.isHidden = false
                                 self.imgView_School.isHidden = false
-                                self.k_Constraint_TopLblSchool.constant = -28.0
-                                self.k_Constraint_TopImageViewSchool.constant = -23.0
+                                self.k_Constraint_TopLblSchool.constant = -22.0//-25.0
+                                self.k_Constraint_TopImageViewSchool.constant = -20.0
+                                self.k_topSchoolButton.constant = -22.0
                                 self.btn_OverSchool.isUserInteractionEnabled = true
 
 
                                  if array_public_UserSocialSites.count > 0 {//social site not nil
-                                    
+                                     self.k_Constraint_tblViewTop.constant = -10.0
                                     self.tblView_SocialSites.isHidden = false
+                                    
                                     if array_public_UserSocialSites.count == 1 {//social site count 1
                                         
                                         self.k_Constraint_Height_TableView.constant = 50.0
@@ -472,13 +475,13 @@ class ProfileVC: UIViewController {
                                     else  if array_public_UserSocialSites.count == 2{//social site count 2
                                         
                                         self.k_Constraint_Height_TableView.constant = 100.0
-                                        self.k_Constraint_ViewDescHeight.constant = 180.0
+                                        self.k_Constraint_ViewDescHeight.constant = 170.0
                                         
                                     }
                                     else{//social site count 3
                                         
                                         self.k_Constraint_Height_TableView.constant = 150.0
-                                        self.k_Constraint_ViewDescHeight.constant = 210.0
+                                        self.k_Constraint_ViewDescHeight.constant = 200.0
                                     }
                                     self.tblView_SocialSites.reloadData()
                                     
@@ -512,13 +515,13 @@ class ProfileVC: UIViewController {
                                     else  if array_public_UserSocialSites.count == 2{//social site count 2
                                         
                                         self.k_Constraint_Height_TableView.constant = 100.0
-                                        self.k_Constraint_ViewDescHeight.constant = 160.0
+                                        self.k_Constraint_ViewDescHeight.constant = 150.0
                                         
                                     }
                                     else{//social site count 3
                                         
                                         self.k_Constraint_Height_TableView.constant = 150.0
-                                        self.k_Constraint_ViewDescHeight.constant = 190.0
+                                        self.k_Constraint_ViewDescHeight.constant = 180.0
                                     }
                                     self.tblView_SocialSites.reloadData()
                                     

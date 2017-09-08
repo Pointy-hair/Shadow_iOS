@@ -1225,7 +1225,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                 print(array_public_UserSocialSites)
                                 
                                 
-                                if str_role == "USER" {              //For users UI and data Checks
+                                if str_role == "USER" { //For users UI and data Checks
                                     
                                     cell?.lbl_Count_NumberOfUsers.isHidden = true
                                     cell?.lbl_Count_CompanySchoolWithOccupations.isHidden = true
