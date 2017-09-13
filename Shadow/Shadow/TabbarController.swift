@@ -23,13 +23,15 @@ class TabbarController: UITabBarController {
             
             SearchScreen.tabBarItem = tabOneBarItem
             
-            // Create Tab two//notification
-//            let NotificationScreen = Global.macros.Storyboard.instantiateViewController(withIdentifier:"nav_Notification") as! UINavigationController
-//            let tabTwoBarItem2 = UITabBarItem(title: "", image: UIImage(named: "Notification_Purple"), selectedImage: UIImage(named: ""))
-//            tabTwoBarItem2.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)//
-//            
-//            NotificationScreen.tabBarItem = tabTwoBarItem2
-//            
+            
+            let NotificationScreen = Global.macros.Storyboard.instantiateViewController(withIdentifier:"nav_Notification") as! UINavigationController
+            let tabOneBarItem1 = UITabBarItem(title: "", image: UIImage(named: "Notification_Purple"), selectedImage: UIImage(named: ""))
+            tabOneBarItem1.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)//TLBR
+            NotificationScreen.tabBarItem = tabOneBarItem1
+            
+            
+            
+
             
             // Create Tab three//user
             let HomeScreen = Global.macros.Storyboard.instantiateViewController(withIdentifier:"nav_user") as! UINavigationController
@@ -37,8 +39,8 @@ class TabbarController: UITabBarController {
             HomeScreen.tabBarItem = tabTwoBarItem3
             tabTwoBarItem3.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)//TLBR
             
-            self.viewControllers = [SearchScreen, HomeScreen]
-            self.selectedIndex = 1
+            self.viewControllers = [SearchScreen,NotificationScreen, HomeScreen]
+            self.selectedIndex = 2
             bool_UserIdComingFromSearch = false
             
         }
@@ -53,11 +55,10 @@ class TabbarController: UITabBarController {
             SearchScreen.tabBarItem = tabOneBarItem
             
             
-//            // Create Tab two//notification
-//            let NotificationScreen = Global.macros.Storyboard.instantiateViewController(withIdentifier:"nav_Notification") as! UINavigationController
-//            let tabTwoBarItem2 = UITabBarItem(title: "", image: UIImage(named: "Notification_Purple"), selectedImage: UIImage(named: ""))
-//            tabTwoBarItem2.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)//
-//            NotificationScreen.tabBarItem = tabTwoBarItem2
+            let NotificationScreen = Global.macros.Storyboard.instantiateViewController(withIdentifier:"nav_Notification") as! UINavigationController
+            let tabOneBarItem1 = UITabBarItem(title: "", image: UIImage(named: "Notification_Purple"), selectedImage: UIImage(named: ""))
+            tabOneBarItem1.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)//TLBR
+            NotificationScreen.tabBarItem = tabOneBarItem1
             
             
             
@@ -67,8 +68,8 @@ class TabbarController: UITabBarController {
             HomeScreen.tabBarItem = tabTwoBarItem3
             tabTwoBarItem3.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)//TLBR
             
-            self.viewControllers = [SearchScreen, HomeScreen]
-            self.selectedIndex = 1
+            self.viewControllers = [SearchScreen,NotificationScreen, HomeScreen]
+            self.selectedIndex = 2
             bool_UserIdComingFromSearch = false
 
             

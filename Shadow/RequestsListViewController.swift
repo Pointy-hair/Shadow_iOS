@@ -10,7 +10,7 @@ import UIKit
 
 var My_Request_Selected_Status:Bool = true
 
-class RequestsListViewController: UIViewController {
+class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
 
     
     @IBOutlet var scrollView: UIScrollView!
@@ -25,7 +25,7 @@ class RequestsListViewController: UIViewController {
     @IBOutlet var lbl_btn_Declined: UILabel!
     @IBOutlet var tblView_Requests: UITableView!
     @IBOutlet var lbl_NoRequests: UILabel!
-    
+    var int_selectedBtn:Int = 1
     
     
     //Variables
@@ -39,16 +39,128 @@ class RequestsListViewController: UIViewController {
         
         
         super.viewDidLoad()
-       
         
+        int_selectedBtn  = 1
+       
+        let swipeleft = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeleft))
+        swipeleft.direction = .left
+        tblView_Requests.addGestureRecognizer(swipeleft)
+        
+        let swiperight = UISwipeGestureRecognizer(target: self, action: #selector(self.swiperight))
+        swiperight.direction = .right
+        tblView_Requests.addGestureRecognizer(swiperight)
+        
+        DispatchQueue.main.async {
+            //setting default selected button for request
+            self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+            self.btn_ShadowRequest.setTitleColor(UIColor.black, for: .normal)
+            
+            
+            //setting default selected filter button
+            //Showing line and color of accepted button
+            self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
+            self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
+            
+            //hiding the lines and changing color unselected buttons
+            self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
+            self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
+            
+            self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
+            self.lbl_btn_Declined.backgroundColor = self.colorCode_light
+        }
+
+        //initialy my request keyword at server end is "send"
+        My_Request_Selected_Status = true
+        self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
+
         // Do any additional setup after loading the view.
     }
+ 
+    func swipeleft(_ gestureRecognizer: UISwipeGestureRecognizer) { //NEXT
+        
+        lbl_btn_All.frame.size.width = btn_All.frame.size.width
+        
+        if int_selectedBtn < 3 {
+            
+            let transition = CATransition()
+            transition.duration = 0.5
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromRight
+            
+            
+            UIView.animate(withDuration: 0.5, animations: { // 3.0 are the seconds
+                
+                // Write your code here for e.g. Increasing any Subviews height.
+                if self.int_selectedBtn == 1 {
+                    self.int_selectedBtn = self.int_selectedBtn + 1
+                    self.lbl_btn_All.frame.origin.x = 260
+                    
+                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    self.tblView_Requests.layer.add(transition, forKey: nil)
+                    self.Action_Declined(self.btn_Declined)
+                }
+                else if self.int_selectedBtn == 0 {
+                    self.int_selectedBtn = self.int_selectedBtn + 1
+                    self.lbl_btn_All.frame.origin.x = 130
+                    
+                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    self.tblView_Requests.layer.add(transition, forKey: nil)
+                     self.Action_All(self.btn_All)
+                }
+        
+                
+            })
+            
+        }
+        
+    }
+    
+    func swiperight(_ gestureRecognizer: UISwipeGestureRecognizer) { //PREVIOUS
+        lbl_btn_All.frame.size.width = btn_All.frame.size.width
+
+        
+        if int_selectedBtn > 0   {
+            
+            let transition = CATransition()
+            transition.duration = 0.5
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromLeft
+            
+            UIView.animate(withDuration: 0.5, animations: { // 3.0 are the seconds
+                
+                // Write your code here for e.g. Increasing any Subviews height.
+                
+                if self.int_selectedBtn == 2 {
+                    self.int_selectedBtn = self.int_selectedBtn - 1
+                    self.lbl_btn_All.frame.origin.x = 130
+                    
+                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    self.tblView_Requests.layer.add(transition, forKey: nil)
+                    self.Action_All(self.btn_All)
+                
+                }
+                else if self.int_selectedBtn == 1 {
+                    
+                    self.int_selectedBtn = self.int_selectedBtn - 1
+                    self.lbl_btn_All.frame.origin.x = 0
+                    
+                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    self.tblView_Requests.layer.add(transition, forKey: nil)
+                    self.Action_Accepted(self.btn_Accepted)
+
+                }
+               
+                
+            })
+            
+        }
+
+            }
     
     override func viewWillAppear(_ animated: Bool) {
         
         DispatchQueue.main.async {
-            
-            
+           
             self.navigationItem.title = "Received Request"//self.user_Name!
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
@@ -71,30 +183,12 @@ class RequestsListViewController: UIViewController {
             self.view_MainButtons.layer.borderWidth = 1.5
             self.view_MainButtons.layer.borderColor = Global.macros.themeColor.cgColor
             
-            //setting default selected button for request
-            self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-            self.btn_ShadowRequest.setTitleColor(UIColor.black, for: .normal)
-            
-            
-            //setting default selected filter button
-            //Showing line and color of accepted button
-            self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-            self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
-            
-            //hiding the lines and changing color unselected buttons
-            self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
-            self.lbl_btn_Accepted.backgroundColor = self.colorCode_light
-
-            self.btn_Declined.setTitleColor(UIColor.black, for: .normal)
-            self.lbl_btn_Declined.backgroundColor = self.colorCode_light
+           
 
             
         }
 
-        //initialy my request keyword at server end is "send"
-        My_Request_Selected_Status = true
-        self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
-
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -107,6 +201,9 @@ class RequestsListViewController: UIViewController {
     
     
     @IBAction func Action_MyRequests(_ sender: UIButton) {//requests to me
+        
+        self.int_selectedBtn =  1
+        self.lbl_btn_All.frame.origin.x = 130
         
         self.navigationItem.title = "Received Requests"
         self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
@@ -131,6 +228,9 @@ class RequestsListViewController: UIViewController {
     }
 
     @IBAction func Action_ShadowRequests(_ sender: UIButton) {//requests that I have send
+        
+        self.int_selectedBtn =  1
+        self.lbl_btn_All.frame.origin.x = 130
         
         self.navigationItem.title = "Sent Requests"
         self.btn_MyRequest.setTitleColor(UIColor.black, for: .normal)
@@ -165,7 +265,7 @@ class RequestsListViewController: UIViewController {
         
         //hiding the lines and changing color unselected buttons
         self.btn_All.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_All.backgroundColor = self.colorCode_light
+       // self.lbl_btn_All.backgroundColor = self.colorCode_light
 
 
         
@@ -190,7 +290,7 @@ class RequestsListViewController: UIViewController {
         
         //Showing line and color of accepted button
         self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
+    //    self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
 
         
         //hiding the lines and changing color unselected buttons
@@ -204,6 +304,7 @@ class RequestsListViewController: UIViewController {
         
         //getting requests according to type(My request or shadow request)
         if My_Request_Selected_Status == true{//My request is selected
+            
             self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
             
         }
@@ -218,7 +319,7 @@ class RequestsListViewController: UIViewController {
         
         //Showing line and color of accepted button
         self.btn_Declined.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-        self.lbl_btn_Declined.backgroundColor = Global.macros.themeColor_pink
+      //  self.lbl_btn_Declined.backgroundColor = Global.macros.themeColor_pink
 
         //hiding the lines and changing color unselected buttons
         self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)
@@ -226,7 +327,7 @@ class RequestsListViewController: UIViewController {
 
         
         self.btn_All.setTitleColor(UIColor.black, for: .normal)
-        self.lbl_btn_All.backgroundColor = self.colorCode_light
+    //    self.lbl_btn_All.backgroundColor = self.colorCode_light
 
 
         //getting requests according to type(My request or shadow request)
@@ -246,13 +347,17 @@ class RequestsListViewController: UIViewController {
         sender.setTitleColor(UIColor.white, for: .normal)
         sender.backgroundColor = Global.macros.themeColor_pink
         
-        
+        let visibleRect = CGRect(origin: self.tblView_Requests.contentOffset, size: self.tblView_Requests.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = self.tblView_Requests.indexPathForRow(at: visiblePoint)
+        if indexPath != nil {
+            
         //changing color of unselected button
-        let indexPath = NSIndexPath.init(row: sender.tag, section: 0)
-        let cell = tblView_Requests.cellForRow(at: indexPath as IndexPath) as! RequestsListTableViewCell
+        let cell = tblView_Requests.cellForRow(at: indexPath! as IndexPath) as! RequestsListTableViewCell
         cell.btn_Decline.setTitleColor(Global.macros.themeColor_pink, for: .normal)
         cell.btn_Decline.backgroundColor = UIColor.white
-
+            
+        }
         self.request_AcceptReject(idx: sender.tag, acceptStatus: "true", rejectStatus: "false")
         
         
@@ -316,7 +421,10 @@ class RequestsListViewController: UIViewController {
                 case 404:
                     
                     DispatchQueue.main.async {
-                        self.tblView_Requests.isHidden = true
+                     //   self.tblView_Requests.isHidden = true
+                        self.array_Requests = NSMutableArray()
+                        self.tblView_Requests.reloadData()
+
                         self.lbl_NoRequests.isHidden = false
                         
                     }
@@ -464,7 +572,7 @@ class RequestsListViewController: UIViewController {
                                 //setting default selected filter button
                                 //Showing line and color of accepted button
                                 self.btn_All.setTitleColor(Global.macros.themeColor_pink, for: .normal)
-                                self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
+                            //    self.lbl_btn_All.backgroundColor = Global.macros.themeColor_pink
                                 
                                 //hiding the lines and changing color unselected buttons
                                 self.btn_Accepted.setTitleColor(UIColor.black, for: .normal)

@@ -26,7 +26,6 @@ class ListingViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     override func viewDidDisappear(_ animated: Bool) {
-        tbl_View.tableFooterView = UIView()  //Set table extra rows eliminate
     }
     
 
@@ -43,6 +42,8 @@ class ListingViewController: UIViewController {
             self.navigationItem.setHidesBackButton(false, animated:true)
             self.CreateNavigationBackBarButton()
             self.tabBarController?.tabBar.isHidden = true
+            self.tbl_View.tableFooterView = UIView()  //Set table extra rows eliminate
+
         }
         
         

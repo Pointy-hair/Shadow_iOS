@@ -12,7 +12,7 @@ var check_for_previousview = ""
 var idFromProfileVC:NSNumber?
 
 
-class ComapanySchoolViewController: UIViewController{
+class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     @IBOutlet var tblView_SocialSites: UITableView!
@@ -114,7 +114,31 @@ class ComapanySchoolViewController: UIViewController{
             
         }
         
+        // Do any additional setup after loading the view.
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handle_Tap(_:)))
+        tap.delegate = self
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+        
     }
+    
+    // MARK: Tap gesture to hide keyboard
+    func handle_Tap(_ sender: UITapGestureRecognizer) {
+        
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+        
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        
+        if (touch.view?.isDescendant(of: collection_View))!        {
+            return false
+        }
+        return true
+    }
+
     
     override func viewDidDisappear(_ animated: Bool) {
         
@@ -262,19 +286,19 @@ class ComapanySchoolViewController: UIViewController{
                     
                     let btn1 = UIButton(type: .custom)
                     btn1.setImage(UIImage(named: "chat-icon"), for: .normal)
-                    btn1.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
+                    btn1.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 20, height: 25)
                     btn1.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
                     let item1 = UIBarButtonItem(customView: btn1)
                     
-                    let btn2 = UIButton(type: .custom)
+                  /*  let btn2 = UIButton(type: .custom)
                     btn2.setImage(UIImage(named: "notifications-button"), for: .normal)
                     btn2.frame = CGRect(x: self.view.frame.size.width - 40, y: 0, width: 20, height: 25)
                     btn2.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
-                    let item2 = UIBarButtonItem(customView: btn2)
+                    let item2 = UIBarButtonItem(customView: btn2) */
                     
                     let btn3 = UIButton(type: .custom)
                     btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
-                    btn3.frame = CGRect(x: self.view.frame.size.width - 60, y: 0, width: 20, height: 20)
+                    btn3.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 20, height: 20)
                     btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
                     let item3 = UIBarButtonItem(customView: btn3)
                     
@@ -284,7 +308,7 @@ class ComapanySchoolViewController: UIViewController{
                     
                     
                     //Right items
-                    self.navigationItem.setRightBarButtonItems([item1,item2,item3], animated: true)
+                    self.navigationItem.setRightBarButtonItems([item1,item3], animated: true)
                     
                     
                 }

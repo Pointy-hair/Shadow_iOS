@@ -18,13 +18,17 @@ public var userIdFromSearch : NSNumber?
 public var dic_DataOfProfileForOtherUser : NSMutableDictionary = NSMutableDictionary()
 public var array_public_UserSocialSites = [[String:Any]]()
 
-class ProfileVC: UIViewController {
+class ProfileVC: UIViewController, UIGestureRecognizerDelegate  {
     
+    
+    @IBOutlet weak var kDescripHeight: NSLayoutConstraint!
+    @IBOutlet weak var kcompanybtn: NSLayoutConstraint!
+    
+    @IBOutlet weak var kCompanyImage: NSLayoutConstraint!
+    
+    @IBOutlet weak var kCompanylbl: NSLayoutConstraint!
     //Outlets for company objects
-    @IBOutlet var ktopCompanyImageView: NSLayoutConstraint!
-    @IBOutlet var ktopCompanylbl: NSLayoutConstraint!
-    @IBOutlet var ktopbtnCompanyName: NSLayoutConstraint!
-    @IBOutlet weak var k_topSchoolButton: NSLayoutConstraint!
+     @IBOutlet weak var k_topSchoolButton: NSLayoutConstraint!
     @IBOutlet var btn_OverSchool: UIButton!
     @IBOutlet var btn_overCompany: UIButton!
     @IBOutlet var imgView_Company: UIImageView!
@@ -64,7 +68,8 @@ class ProfileVC: UIViewController {
     @IBOutlet weak var kheightViewBehindSkill: NSLayoutConstraint!
     @IBOutlet weak var kheightCollectionViewOccupation: NSLayoutConstraint!
     @IBOutlet weak var kheightCollectionViewInterestHeight: NSLayoutConstraint!
-    @IBOutlet weak var kheightDescription: NSLayoutConstraint!
+    
+    
     
     var imageView1 : UIImageView?
     var imageView2 : UIImageView?
@@ -118,11 +123,51 @@ class ProfileVC: UIViewController {
             self.customView(view: self.view_BehindDescription)
 
         }
+        
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileVC.HandleTap))
+//        self.view.addGestureRecognizer(tapGesture)
+   
+    
+    // Do any additional setup after loading the view.
+    let tap = UITapGestureRecognizer(target: self, action: #selector(handle_Tap(_:)))
+    tap.delegate = self
+    tap.cancelsTouchesInView = false
+    self.view.addGestureRecognizer(tap)
+        
+//        DispatchQueue.main.async {
+//            
+//            self.GetUserProfile()
+//        }
+    
+}
+
+// MARK: Tap gesture to hide keyboard
+func handle_Tap(_ sender: UITapGestureRecognizer) {
+    
+    if self.revealViewController() != nil {
+        self.revealViewController().rightRevealToggle(animated: false)
     }
+    
+}
+
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        
+    if (touch.view?.isDescendant(of: collectionView_Skills))! || (touch.view?.isDescendant(of: collectionView_Interests))!
+    {
+        return false
+        }
+        return true
+    }
+    
+   
    
     override func viewWillAppear(_ animated: Bool) {
-        
-        
+      
+        DispatchQueue.main.async {
+            self.txtView_Description.frame.size.height = self.txtView_Description.intrinsicContentSize.height
+        }
+       // tblView_SocialSites.tableFooterView = UIView()  //Set table extra rows eliminate
+
         self.navigationController?.navigationBar.isTranslucent = false
 
         if bool_UserIdComingFromSearch == true {
@@ -145,7 +190,7 @@ class ProfileVC: UIViewController {
                 self.user_IdMyProfile = userIdFromSearch
                 let btn2 = UIButton(type: .custom)
                 btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
-                btn2.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 25, height: 25)
+                btn2.frame = CGRect(x: self.view.frame.size.width - 80, y: 0, width: 25, height: 25)
                 btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
                 let item2 = UIBarButtonItem(customView: btn2)
                 
@@ -154,12 +199,16 @@ class ProfileVC: UIViewController {
                 btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
                 btn3.addTarget(self, action: #selector(self.Calender_SearchBtnPressed(sender:)), for: .touchUpInside)
                 let item3 = UIBarButtonItem(customView: btn3)
-                
                 self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
                 
-                DispatchQueue.global(qos: .background).async {
+               // DispatchQueue.global(qos: .background).async {
+                DispatchQueue.main.async {
+
                     self.GetUserProfile()
                 }
+             //   }
+
+
             }
         }
         else if bool_ComingFromList == true {
@@ -182,7 +231,7 @@ class ProfileVC: UIViewController {
                 self.user_IdMyProfile = userIdFromSearch
                 let btn2 = UIButton(type: .custom)
                 btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
-                btn2.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 25, height: 25)
+                btn2.frame = CGRect(x: self.view.frame.size.width - 80, y: 0, width: 25, height: 25)
                 btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
                 let item2 = UIBarButtonItem(customView: btn2)
                 
@@ -194,9 +243,12 @@ class ProfileVC: UIViewController {
                 
                 self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
                 
-                DispatchQueue.global(qos: .background).async {
+               // DispatchQueue.global(qos: .background).async {
+                DispatchQueue.main.async {
+
                     self.GetUserProfile()
                 }
+              //  }
             }
 
         }
@@ -207,30 +259,26 @@ class ProfileVC: UIViewController {
 
                 let btn2 = UIButton(type: .custom)
                 btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
-                btn2.frame = CGRect(x: self.view.frame.size.width - 20, y: 0, width: 20, height: 25)
+                btn2.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 20, height: 25)
                 btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
                 let item2 = UIBarButtonItem(customView: btn2)
                 
-                let btn4 = UIButton(type: .custom)
-                btn4.setImage(UIImage(named: "notifications-button"), for: .normal)
-                btn4.frame = CGRect(x:self.view.frame.size.width - 40, y: 0, width: 25, height: 25)
-                btn4.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
-                let item4 = UIBarButtonItem(customView: btn4)
+//                let btn4 = UIButton(type: .custom)
+//                btn4.setImage(UIImage(named: "notifications-button"), for: .normal)
+//                btn4.frame = CGRect(x:self.view.frame.size.width - 40, y: 0, width: 25, height: 25)
+//                btn4.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
+//                let item4 = UIBarButtonItem(customView: btn4)
                 
                 
                 let btn3 = UIButton(type: .custom)
                 btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
-                btn3.frame = CGRect(x: self.view.frame.size.width - 60, y: 0, width: 25, height: 25)
+                btn3.frame = CGRect(x: self.view.frame.size.width - 80, y: 0, width: 25, height: 25)
                 btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
                 let item3 = UIBarButtonItem(customView: btn3)
 
-                
-                
-                
-                
-                
+ 
                 //Right items
-                self.navigationItem.setRightBarButtonItems([item2,item4,item3], animated: true)
+                self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
  
                  self.user_IdMyProfile = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
               
@@ -238,11 +286,13 @@ class ProfileVC: UIViewController {
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.navigationItem.setHidesBackButton(false, animated:true)
                 
-                DispatchQueue.global(qos: .background).async {
-                    
+            //    DispatchQueue.global(qos: .background).async {
+                DispatchQueue.main.async {
+
                     self.GetUserProfile()
-                    
                 }
+               
+            //    }
             }
         }
     }
@@ -250,6 +300,15 @@ class ProfileVC: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
        
         DispatchQueue.main.async {
+            self.k_Constraint_TopLblSchool.constant = 0
+            self.k_Constraint_TopImageViewSchool.constant = 0
+            self.k_Constraint_tblViewTop.constant = 0
+            self.kCompanyImage.constant = 0
+            self.kCompanylbl.constant = 0
+            self.kcompanybtn.constant = 0
+            self.k_Constraint_Height_TableView.constant = 0
+            
+            
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
         bool_ComingFromList = false
@@ -257,7 +316,7 @@ class ProfileVC: UIViewController {
         self.scrollbar.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.automaticallyAdjustsScrollViewInsets = false
         self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
-
+        self.k_Constraint_ViewDescHeight.constant = 0
         
         self.dicUrl.removeAllObjects()
         ratingview_ratingNumber = ""
@@ -286,12 +345,14 @@ class ProfileVC: UIViewController {
                 switch response.0
                 {
                 case 200:
-                    DispatchQueue.main.async {
-                        
+                   DispatchQueue.main.async {
+
                         dictionary_user_Info = response.1
                         
                         let shadow_Status = (response.1).value(forKey: "otherUsersShadowYou") as? NSNumber
                         SavedPreferences.set(shadow_Status, forKey: Global.macros.kotherUsersShadowYou)
+                        
+                        
                         
                         
                         self.lbl_shadowedTo.text = (((response.1).value(forKey: "shadowersVerified") as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
@@ -336,7 +397,6 @@ class ProfileVC: UIViewController {
                         }
                         
                         ratingview_name = (response.1).value(forKey: Global.macros.kUserName) as? String
-                        
                          self.navigationItem.title = ((response.1).value(forKey: Global.macros.kUserName) as? String)?.capitalizingFirstLetter()
                         
                         //  profileImageUrl
@@ -357,15 +417,18 @@ class ProfileVC: UIViewController {
                         }
                         
                         
+                      
                         //setting description
                         if (response.1).value(forKey: Global.macros.kbio) as? String != nil {
+                            DispatchQueue.main.async {
+                                 self.txtView_Description.frame.size.height = self.txtView_Description.intrinsicContentSize.height
+                                 self.txtView_Description.text = "\((response.1).value(forKey: Global.macros.kbio) as! String)"
+                               
+                                //CGFloat(self.heightForView("\((response.1).value(forKey: Global.macros.kbio) as! String)", width: UIScreen.main.bounds.width - 25,font: UIFont.systemFont(ofSize: 12))) + 2
+
+
+                            }
                             
-                            self.txtView_Description.text = "\((response.1).value(forKey: Global.macros.kbio) as! String)"
-                            
-//                            DispatchQueue.main.async {
-//                                self.txtView_Description.frame.size.height = self.txtView_Description.intrinsicContentSize.height
-//                                
-//                            }
                             
                             self.lbl_Placeholder.isHidden = true
                         }
@@ -374,16 +437,15 @@ class ProfileVC: UIViewController {
                             
                         }
                         
-                        
                         //setting company name
-                        if (response.1).value(forKey: "companyName")as? String != ""  &&  (response.1).value(forKey: "companyName") != nil{
+                        if (response.1).value(forKey: "companyName")as? String != ""  &&  (response.1).value(forKey: "companyName") != nil && (response.1).value(forKey: "companyName")as? String != " " {
                             
                             self.lbl_Company.text = (response.1).value(forKey: "companyName")as? String
                         }
                        
                         
                         //setting school name
-                        if (response.1).value(forKey: "schoolName")as? String != "" &&  (response.1).value(forKey: "schoolName") != nil {
+                        if (response.1).value(forKey: "schoolName")as? String != "" &&  (response.1).value(forKey: "schoolName") != nil  && (response.1).value(forKey: "schoolName")as? String != " "{
                             
                             self.lbl_School.text = (response.1).value(forKey: "schoolName")as? String
                         }
@@ -402,37 +464,66 @@ class ProfileVC: UIViewController {
                                 self.lbl_School.isHidden = false
                                 self.imgView_School.isHidden = false
                                 self.btn_OverSchool.isUserInteractionEnabled = true
+                                DispatchQueue.main.async {
 
+                                self.kcompanybtn.constant = 2.0
+                                self.kCompanylbl.constant = 2.0
+                                self.kCompanyImage.constant = 2.0
                                 
-                                
+                                self.k_Constraint_TopLblSchool.constant = 25
+                                self.k_Constraint_TopImageViewSchool.constant = 27
+                                self.k_topSchoolButton.constant = 25
+                                    self.k_Constraint_tblViewTop.constant = -3.0
+
+                                }
                                 
                                 if array_public_UserSocialSites.count > 0 {
-                                    
+                                    DispatchQueue.main.async {
+
                                     self.tblView_SocialSites.isHidden = false
+                                    }
                                     if array_public_UserSocialSites.count == 1 {//social site count 1
                                         
-                                        self.k_Constraint_Height_TableView.constant = 50.0
-                                        self.k_Constraint_ViewDescHeight.constant = 180.0
-                                        
-                                        
+                                        DispatchQueue.main.async {
+                                            self.tblView_SocialSites.reloadData()
+                                            self.k_Constraint_Height_TableView.constant = 50.0
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 60
+
+                                        }
                                     }
+                                        
+                                    
                                     else  if array_public_UserSocialSites.count == 2{//social site count 2
                                         
+                                    DispatchQueue.main.async {
+                                        self.tblView_SocialSites.reloadData()
+
                                         self.k_Constraint_Height_TableView.constant = 100.0
-                                        self.k_Constraint_ViewDescHeight.constant = 205.0
-                                        
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 44
+
+                                    }
+
+                                    
                                     }
                                     else{//social site count 3
-                                        
-                                        self.k_Constraint_Height_TableView.constant = 150.0
-                                        self.k_Constraint_ViewDescHeight.constant = 230.0
-                                    }
-                                    self.tblView_SocialSites.reloadData()
-                                    
-                                }else{
                                     DispatchQueue.main.async {
+                                        self.tblView_SocialSites.reloadData()
+
+                                        self.k_Constraint_Height_TableView.constant = 150.0
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 20
+
+                                    }
+                                    
+
+                                    }
+                                    
+                                }else {
+                                    DispatchQueue.main.async {
+                                        self.tblView_SocialSites.reloadData()
+
                                     self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = 150
+                                   self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 87
+
                                     }
 
                                 }
@@ -440,44 +531,72 @@ class ProfileVC: UIViewController {
                             }
                              else{
                                 
-                                self.lbl_School.isHidden = true
-                                self.imgView_School.isHidden = true
-                                self.btn_OverSchool.isUserInteractionEnabled = false
+                               
 
+                                
+                                DispatchQueue.main.async {
+                                    
+                                    self.lbl_School.isHidden = true
+                                    self.imgView_School.isHidden = true
+                                    self.btn_OverSchool.isUserInteractionEnabled = false
+                                    
+                                    self.kcompanybtn.constant = 4.0
+                                    self.kCompanylbl.constant = 4.0
+                                    self.kCompanyImage.constant = 6.0
+                                    
+                                    
+                                }
                                 
                                 
                                 if array_public_UserSocialSites.count > 0 {//social site nil
                                     
+                                   DispatchQueue.main.async {
                                     self.tblView_SocialSites.isHidden = false
-                                    self.k_Constraint_tblViewTop.constant = -25.0
-                                    
+                                    self.k_Constraint_tblViewTop.constant = -33.0
+                                    }
                                     if array_public_UserSocialSites.count == 1 {//social site count 1
                                         
-                                        self.k_Constraint_Height_TableView.constant = 50.0
-                                        self.k_Constraint_ViewDescHeight.constant = 150.0
+                                        
+                                            DispatchQueue.main.async {
+                                                self.tblView_SocialSites.reloadData()
+                                                self.k_Constraint_Height_TableView.constant = 50.0
+                                                self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 36
+                                                
+                                            }
+                                       
                                         
                                         
                                     }
                                     else  if array_public_UserSocialSites.count == 2{//social site count 2
                                         
-                                        self.k_Constraint_Height_TableView.constant = 100.0
-                                        self.k_Constraint_ViewDescHeight.constant = 180.0
-                                        
+                                        DispatchQueue.main.async {
+                                            self.tblView_SocialSites.reloadData()
+                                            
+                                            self.k_Constraint_Height_TableView.constant = 100.0
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 22
+                                            
+                                        }
                                     }
                                     else{//social site count 3
+                                        DispatchQueue.main.async {
+                                            self.tblView_SocialSites.reloadData()
+                                            
+                                            self.k_Constraint_Height_TableView.constant = 150.0
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant
+                                            
+                                        }
                                         
-                                        self.k_Constraint_Height_TableView.constant = 150.0
-                                        self.k_Constraint_ViewDescHeight.constant = 210.0
                                     }
-                                    self.tblView_SocialSites.reloadData()
                                     
                                 }
                                 else{//social site nil
                                     
-                                    DispatchQueue.main.async{
-                    
-                                    self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 65
+                                    DispatchQueue.main.async {
+                                        self.tblView_SocialSites.reloadData()
+                                        
+                                        self.tblView_SocialSites.isHidden = true
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 60
+                                        
                                     }
                                     
                                 }
@@ -485,91 +604,122 @@ class ProfileVC: UIViewController {
                             
                         }
                         else{//if company is nil
-                            
+                            DispatchQueue.main.async {
+ 
                             self.lbl_Company.isHidden = true
                             self.imgView_Company.isHidden = true
                             self.btn_overCompany.isUserInteractionEnabled = false
-
+                            }
                             
                             if (response.1).value(forKey: "schoolName")as? String != "" &&  (response.1).value(forKey: "schoolName") != nil &&  (response.1).value(forKey: "schoolName")as? String != " "{
-                                
+                                DispatchQueue.main.async {
+ 
                                 self.lbl_School.isHidden = false
                                 self.imgView_School.isHidden = false
-                                self.k_Constraint_TopLblSchool.constant = -22.0//-25.0
-                                self.k_Constraint_TopImageViewSchool.constant = -20.0
-                                self.k_topSchoolButton.constant = -22.0
+                                self.k_Constraint_TopLblSchool.constant = 3
+                              self.k_Constraint_TopImageViewSchool.constant = 5
+                                self.k_topSchoolButton.constant = 3
                                 self.btn_OverSchool.isUserInteractionEnabled = true
-
-
-                                 if array_public_UserSocialSites.count > 0 {//social site not nil
-                                     self.k_Constraint_tblViewTop.constant = -2.0
-                                    self.tblView_SocialSites.isHidden = false
                                     
-                                    if array_public_UserSocialSites.count == 1 {//social site count 1
-                                        
-                                        self.k_Constraint_Height_TableView.constant = 50.0
-                                        self.k_Constraint_ViewDescHeight.constant = 140.0
-                                        
-                                        
+                                }
+
+                                 if array_public_UserSocialSites.count > 0 { //social site not nil
+                                    DispatchQueue.main.async {
+
+                                   self.k_Constraint_tblViewTop.constant = -2.0
+                                    self.tblView_SocialSites.isHidden = false
                                     }
-                                    else  if array_public_UserSocialSites.count == 2{//social site count 2
+                                    if array_public_UserSocialSites.count == 1 { //social site count 1
+                                        DispatchQueue.main.async {
+
+                                        self.k_Constraint_Height_TableView.constant = 50.0
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 35
+                                        }
+                                    }
                                         
+                                    else if array_public_UserSocialSites.count == 2 {//social site count 2
+                                        DispatchQueue.main.async {
+
                                         self.k_Constraint_Height_TableView.constant = 100.0
-                                        self.k_Constraint_ViewDescHeight.constant = 170.0
-                                        
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 35
+                                        }
                                     }
                                     else{//social site count 3
-                                        
+                                        DispatchQueue.main.async {
+ 
                                         self.k_Constraint_Height_TableView.constant = 150.0
-                                        self.k_Constraint_ViewDescHeight.constant = 200.0
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant
+                                        }
                                     }
                                     self.tblView_SocialSites.reloadData()
                                     
                                  }else{//social site nil
-                                    
-                                    self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = 115.0
-                                    
+                                    DispatchQueue.main.async {
+
+                                   self.tblView_SocialSites.isHidden = true
+                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 60
+                                    }
                                 }
                             }
-                            else{
-                                
+                            else{ //Company and school nil
+                        //        DispatchQueue.main.async {
+
                                 self.lbl_School.isHidden = true
                                 self.imgView_School.isHidden = true
                                 self.btn_OverSchool.isUserInteractionEnabled = false
 
-                                
-                                if array_public_UserSocialSites.count > 0 {//social sites not nil
-                                    
-                                    self.tblView_SocialSites.isHidden = false
-                                    self.k_Constraint_tblViewTop.constant = -50.0
-                                    
-                                    
+                              //  }
+                                if array_public_UserSocialSites.count > 0 {
+                                    DispatchQueue.main.async {
+                                        
+                                        self.tblView_SocialSites.isHidden = false
+                                       // self.k_Constraint_tblViewTop.constant = -14
+                                        self.tblView_SocialSites.frame = CGRect(x: self.tblView_SocialSites.frame.origin.x, y: self.self.txtView_Description.frame.origin.x + 2, width: self.tblView_SocialSites.frame.size.width, height: self.tblView_SocialSites.frame.size.height)
+
+                                    }
                                     if array_public_UserSocialSites.count == 1 {//social site count 1
                                         
-                                        self.k_Constraint_Height_TableView.constant = 50.0
-                                        self.k_Constraint_ViewDescHeight.constant = 130.0
-                                        
-                                        
+                                        DispatchQueue.main.async {
+                                            self.tblView_SocialSites.reloadData()
+                                            self.k_Constraint_Height_TableView.constant = 50.0
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 18
+                                            
+                                        }
                                     }
+                                        
+                                        
                                     else  if array_public_UserSocialSites.count == 2{//social site count 2
                                         
-                                        self.k_Constraint_Height_TableView.constant = 100.0
-                                        self.k_Constraint_ViewDescHeight.constant = 150.0
+                                        DispatchQueue.main.async {
+                                            self.tblView_SocialSites.reloadData()
+                                            
+                                            self.k_Constraint_Height_TableView.constant = 80.0
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 15
+                                            
+                                        }
+                                        
                                         
                                     }
                                     else{//social site count 3
+                                        DispatchQueue.main.async {
+                                            self.tblView_SocialSites.reloadData()
+                                            
+                                            self.k_Constraint_Height_TableView.constant = 130.0
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant
+                                            
+                                        }
                                         
-                                        self.k_Constraint_Height_TableView.constant = 150.0
-                                        self.k_Constraint_ViewDescHeight.constant = 180.0
+                                        
                                     }
-                                    self.tblView_SocialSites.reloadData()
                                     
-                                }
-                                else{//everything nil
-                                    
-                                    self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = 100.0
+                                }else{
+                                    DispatchQueue.main.async {
+                                        self.tblView_SocialSites.reloadData()
+                                        
+                                        self.tblView_SocialSites.isHidden = true
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height  + 57
+                                        
+                                    }
                                     
                                 }
                             }
@@ -577,7 +727,7 @@ class ProfileVC: UIViewController {
                         }
                         
        
-                  
+
                         
                         if (response.1).value(forKey: "occupations")as? NSArray != nil {
                             
@@ -622,7 +772,9 @@ class ProfileVC: UIViewController {
                             self.lbl_NoOccupationsYet.isHidden = false
                             
                         }
-                        
+            
+                    
+
                         if (response.1).value(forKey: "interest")as? NSArray != nil {
                             
                             self.array_UserInterests.removeAllObjects()
@@ -664,9 +816,9 @@ class ProfileVC: UIViewController {
                             self.collectionView_Interests.isHidden = true
                             self.lbl_NoInterestsYet.isHidden = false
                             
-                        }
+                        
+                }
                     }
-                    
                 case 401:
                     self.AlertSessionExpire()
                     
@@ -694,6 +846,19 @@ class ProfileVC: UIViewController {
         }
     }
 
+    func heightForView(_ text:String, width:CGFloat,font:UIFont) -> Int{
+        
+        let label:UILabel = UILabel()
+        label.frame = CGRect(x: 0, y: 0, width: width, height: label.intrinsicContentSize.height)
+        label.numberOfLines = 20000
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        
+        label.font = font
+        label.text = text
+        
+        label.sizeToFit()
+        return Int(label.frame.height)
+    }
     
     //custom view to set borders of views
     func customView(view : UIView) {
@@ -812,13 +977,13 @@ class ProfileVC: UIViewController {
     }
     
     
-    func notificationBtnPressed(sender: AnyObject){
-        
-        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Notifications") as! NotificationsViewController
-        _ = self.navigationController?.pushViewController(vc, animated: true)
-        
-        
-    }
+//    func notificationBtnPressed(sender: AnyObject){
+//        
+//        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Notifications") as! NotificationsViewController
+//        _ = self.navigationController?.pushViewController(vc, animated: true)
+//        
+//        
+//    }
     
     func chatBtnPressed(sender: AnyObject){
         self.showAlert(Message: "Coming Soon", vc: self)
@@ -1064,7 +1229,7 @@ class ProfileVC: UIViewController {
             
         }
         else if sender.tag == 1{
-            idFromProfileVC = ((dictionary_user_Info.value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "id") as? NSNumber)!
+        //    idFromProfileVC = ((dictionary_user_Info.value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "schoolUserId") as? NSNumber)!
 
         }
         

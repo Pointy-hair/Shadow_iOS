@@ -27,7 +27,7 @@ class NotificationsViewController: UIViewController,UITableViewDelegate,UITableV
         DispatchQueue.main.async {
             self.navigationItem.title = "Notifications"
             self.navigationItem.setHidesBackButton(false, animated:true)
-            self.CreateNavigationBackBarButton()
+          //  self.CreateNavigationBackBarButton()
             self.getAllNotifications()
             
             //navigation clear button

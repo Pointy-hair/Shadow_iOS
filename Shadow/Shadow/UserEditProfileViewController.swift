@@ -770,7 +770,8 @@ class UserEditProfileViewController: UIViewController {
             self.view.endEditing(true)
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "SWRevealViewController")as!  SWRevealViewController
             Global.macros.kAppDelegate.window?.rootViewController = vc
-            
+
+          
         }
     }
     

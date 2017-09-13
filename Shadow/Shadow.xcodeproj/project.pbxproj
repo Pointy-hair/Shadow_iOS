@@ -1053,7 +1053,7 @@
 				TargetAttributes = {
 					9A3BB9491EDC014C00772FF5 = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = QTPW9SY47V;
+						DevelopmentTeam = HE7TDTH6H9;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -1061,7 +1061,7 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -1458,10 +1458,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Shadow/Shadow.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Seasia Infotech Private Limited";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seasia Infotech Private Limited";
-				DEVELOPMENT_TEAM = QTPW9SY47V;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Gaurav Mantrao (3CJJMGUGEH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gaurav Mantrao (3CJJMGUGEH)";
+				DEVELOPMENT_TEAM = HE7TDTH6H9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
@@ -1474,10 +1473,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.shadow;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.alacustomer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5e8e7401-32c0-46df-bd0e-d2252392847c";
-				PROVISIONING_PROFILE_SPECIFIER = ShadowDistInHouseProfile;
+				PROVISIONING_PROFILE = "160d7275-d15c-4dc1-8700-f804e22dfa6c";
+				PROVISIONING_PROFILE_SPECIFIER = Ala_customer;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shadow/Shadow-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1490,10 +1489,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Shadow/Shadow.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Seasia Infotech Private Limited";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seasia Infotech Private Limited";
-				DEVELOPMENT_TEAM = QTPW9SY47V;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Gaurav Mantrao (3CJJMGUGEH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gaurav Mantrao (3CJJMGUGEH)";
+				DEVELOPMENT_TEAM = HE7TDTH6H9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
@@ -1506,10 +1504,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shadow",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.shadow;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seasia.alacustomer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5e8e7401-32c0-46df-bd0e-d2252392847c";
-				PROVISIONING_PROFILE_SPECIFIER = ShadowDistInHouseProfile;
+				PROVISIONING_PROFILE = "160d7275-d15c-4dc1-8700-f804e22dfa6c";
+				PROVISIONING_PROFILE_SPECIFIER = Ala_customer;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shadow/Shadow-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
