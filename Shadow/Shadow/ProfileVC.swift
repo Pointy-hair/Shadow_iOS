@@ -12,6 +12,7 @@ import UIKit
 
 var video_url : URL?
 var bool_PlayFromProfile : Bool?
+var bool_VideoIsOfShortLength : Bool = false
 
 public var bool_UserIdComingFromSearch : Bool? = false//When we come from search screen
 public var userIdFromSearch : NSNumber?
@@ -300,24 +301,13 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
     override func viewDidDisappear(_ animated: Bool) {
        
         DispatchQueue.main.async {
-            self.k_Constraint_TopLblSchool.constant = 0
-            self.k_Constraint_TopImageViewSchool.constant = 0
-            self.k_Constraint_tblViewTop.constant = 0
-            self.kCompanyImage.constant = 0
-            self.kCompanylbl.constant = 0
-            self.kcompanybtn.constant = 0
-            self.k_Constraint_Height_TableView.constant = 0
-            
+                       
             
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
         bool_ComingFromList = false
         
-        self.scrollbar.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.automaticallyAdjustsScrollViewInsets = false
-        self.scrollbar.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
-        self.k_Constraint_ViewDescHeight.constant = 0
-        
+     
         self.dicUrl.removeAllObjects()
         ratingview_ratingNumber = ""
         }

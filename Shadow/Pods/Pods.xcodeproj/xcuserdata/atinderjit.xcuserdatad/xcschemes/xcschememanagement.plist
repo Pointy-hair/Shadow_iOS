@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ICGVideoTrimmer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Shadow.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,12 +37,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>195A6F2530659D266ADCA62E410C82F5</key>
+		<key>11DC4B4937EF65A730DE3B48DB883F44</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>77E0EAD6948A226C3FD24ED3227C6C21</key>
+		<key>66CF4C648F2EE5EB3A31578630B6A904</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>839EA49FBB9A7B4F93E983289C3205CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -47,7 +57,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AEEE5053C03FA6B8AA377957DEE2E892</key>
+		<key>922CC77E12D143D35BE859E9D96B82B1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

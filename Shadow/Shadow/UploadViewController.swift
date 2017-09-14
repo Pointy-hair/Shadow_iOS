@@ -10,9 +10,12 @@ import UIKit
 import AVKit
 import AVFoundation
 import Alamofire
+import ICGVideoTrimmer
+import MobileCoreServices
 
+var thumbnail : UIImage?
 
-class UploadViewController: UIViewController {
+class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
     
     @IBOutlet weak var img_Back: UIImageView!
     @IBOutlet weak var btn_Back: UIButton!
@@ -32,7 +35,29 @@ class UploadViewController: UIViewController {
     private var newVideoPath:String?
     public  var outputURL_new : String?
     
+    var videoPlaybackPosition:CGFloat!
+    var trimmerView = ICGVideoTrimmerView()
+    var StartTime:CGFloat!
+    var stopTime: CGFloat!
+    var storestopTime: CGFloat!
+    
+    var trimmedStart=""
+    var trimmedStop=""
+    var trimmedvideourl : URL?
+    var alertcloild = UIAlertView()
 
+    @IBOutlet weak var btn_VideoPlayFromGallery: UIButton!
+    @IBOutlet weak var img_Thumbnail: UIImageView!
+    
+    @IBOutlet weak var btn_PlayFromGallary: UIButton!
+    @IBOutlet weak var btn_UploadFromGallary: UIButton!
+    @IBOutlet weak var btn_CancelFromGallary: UIButton!
+    
+    var getthumpforvideo : String?
+    var Finalvideoplayerpath : String?
+    var playbackTimeCheckerTimer : Timer?
+    var exportSession :  AVAssetExportSession!
+    
     override var shouldAutorotate : Bool {
         // Lock autorotate
         return false
@@ -53,15 +78,13 @@ class UploadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         SetButtonCustomAttributesPurple(self.btn_PlayAgain)
         SetButtonCustomAttributes(self.btn_Upload)
         SetButtonCustomAttributesPurple(self.btn_Cancel)
         DispatchQueue.main.async {
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
 
-        if bool_PlayFromProfile == false {
+        if bool_PlayFromProfile == false  && bool_VideoFromGallary == false{
             
 
              DispatchQueue.main.async {
@@ -82,17 +105,7 @@ class UploadViewController: UIViewController {
         self.compressVideo(NSURL(fileURLWithPath:self.newVideoPath!) as URL, outputURL: CompressedURL as URL,handler: {
             (response) in
             
-//            if response.status == AVAssetExportSessionStatus.completed {
-//                
-//             DispatchQueue.main.async {
-//            self.videoData = NSData(contentsOf: CompressedURL as URL) as Data? // converting compressed video into data
-//                
-//                 self.SetButtonCustomAttributesPurple(self.btn_Upload)
-//                 self.btn_Upload.isUserInteractionEnabled = true
-//                 print("success in video compression")
-//                
-//                }
-//            }
+
         })
             do{
                 try self.playVideo()
@@ -102,7 +115,84 @@ class UploadViewController: UIViewController {
             }
         }
            }
-        else {
+            
+        else if bool_VideoFromGallary == true {
+            
+            DispatchQueue.main.async {
+                self.img_Thumbnail.isHidden = false
+                self.btn_VideoPlayFromGallery.isHidden = false
+                self.btn_PlayAgain.isHidden = true
+                self.btn_Cancel.isHidden = true
+                self.btn_Upload.isHidden = true
+                
+                self.btn_VideoPlayFromGallery.isHidden = false
+                self.btn_PlayFromGallary.isHidden = false
+                self.btn_UploadFromGallary.isHidden = false
+                self.btn_CancelFromGallary.isHidden = false
+                
+                self.SetButtonCustomAttributesPurple(self.btn_PlayFromGallary)
+                self.SetButtonCustomAttributes(self.btn_UploadFromGallary)
+                self.SetButtonCustomAttributesPurple(self.btn_CancelFromGallary)
+                self.SetButtonCustomAttributesPurple(self.btn_VideoPlayFromGallery)
+
+
+            self.img_Thumbnail.image = thumbnail
+            //self.trimmerView = ICGVideoTrimmerView()
+            self.trimmerView.frame = CGRect(x:0, y: 22, width: self.view.frame.size.width, height: 70)
+            self.view.addSubview(self.trimmerView)
+            self.view.bringSubview(toFront: self.trimmerView)
+            let asset = AVAsset(url: video_url!)
+            self.videoPlaybackPosition = 0
+            self.trimmerView.themeColor = UIColor.lightGray
+            self.trimmerView.asset = asset
+            self.trimmerView.showsRulerView = true
+            self.trimmerView.trackerColor = UIColor.cyan
+            self.trimmerView.delegate = self
+            // important: reset subviews
+            self.trimmerView.resetSubviews()
+            
+                self.btn_PlayFromGallary.setTitle("PLAY", for: .normal)
+                
+                DispatchQueue.main.async(execute: {() -> Void in
+                    if self.videoPath != nil || self.videoPath != ""{
+                        self.newVideoPath = self.videoPath
+                        _ = try! Data(contentsOf: NSURL(fileURLWithPath: self.newVideoPath!) as URL)
+                    }
+                    
+                    let formatter: DateFormatter = DateFormatter()
+                    formatter.dateFormat = "dd-MM-yyyy-HH-mm-ss"
+                    let dateTimePrefix: String = formatter.string(from: Date())
+                    let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                    let documentsDirectory = paths[0] as String
+                    
+                    let  CompressedVideoPath = "\(documentsDirectory)/\(dateTimePrefix).mov"
+                    let CompressedURL = NSURL(fileURLWithPath: CompressedVideoPath)
+                    self.compressVideo(NSURL(fileURLWithPath:self.newVideoPath!) as URL, outputURL: CompressedURL as URL,handler: {
+                        (response) in
+                        
+                        
+                    })
+                    do{
+                        self.playing = true
+                      //  try self.playVideo()
+                        
+                        
+                        
+                    }
+                    catch {
+                        print("Try Again")
+                    }
+                    
+                })
+
+
+            }
+           // self.trimButton.isHidden = false //forthetime
+
+        }
+            
+            
+        else  {
             
             self.navigationController?.setNavigationBarHidden(true, animated: false)
             self.tabBarController?.tabBar.isHidden = true
@@ -115,6 +205,14 @@ class UploadViewController: UIViewController {
     
     
     
+    @IBAction func VideoPlayFromGallary(_ sender: Any) {
+       
+        DispatchQueue.main.async {
+            self.videoTrim()
+
+           
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         
         Global.macros.statusBar.isHidden = false
@@ -125,7 +223,7 @@ class UploadViewController: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        
+        bool_VideoFromGallary = false
         bool_PlayFromProfile = false
         self.navigationController?.setNavigationBarHidden(false, animated: false)
 
@@ -140,31 +238,183 @@ class UploadViewController: UIViewController {
         case invalidResource(String, String)
     }
     
+      //Video Trimmer Delegate Method
+    func trimmerView(_ trimmerView: ICGVideoTrimmerView, didChangeLeftPosition startTime: CGFloat, rightPosition endTime: CGFloat) {
+        
+        self.btn_PlayFromGallary.setTitle("PLAY", for: .normal)
+        self.avplayer.pause()
+       // self.playing = false
+        stopPlaybackTimeChecker()
+        trimmerView.hideTracker(true)
+        if StartTime != startTime {
+            //then it moved the left position, we should rearrange the bar
+            seekVideoToPos(startTime)
+        }
+        else {
+            // right has changed
+            self.playing = false
+            seekVideoToPos(endTime)
+        }
+        StartTime = startTime
+        stopTime = endTime
+
+
+    }
+    
+    //  Converted with Swiftify v1.0.6423 - https://objectivec2swift.com/
+    func stopPlaybackTimeChecker() {
+        if (playbackTimeCheckerTimer != nil) {
+            playbackTimeCheckerTimer?.invalidate()
+            playbackTimeCheckerTimer? = Timer()
+        }
+    }
+
+    
+    func seekVideoToPos(_ pos: CGFloat) {
+        self.videoPlaybackPosition = pos
+        let time: CMTime = CMTimeMakeWithSeconds(Float64(self.videoPlaybackPosition),  self.avplayer.currentTime().timescale)
+         self.avplayer.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+    }
+    
+    func startPlaybackTimeChecker() {
+        stopPlaybackTimeChecker()
+        playbackTimeCheckerTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.onPlaybackTimeCheckerTimer), userInfo: nil, repeats: true)
+    }
+
+    func onPlaybackTimeCheckerTimer() {
+        let curTime: CMTime = player.currentTime()
+        var seconds: Float64 = CMTimeGetSeconds(curTime)
+        if seconds < 0 {
+            seconds = 0
+            // this happens! dont know why.
+        }
+        videoPlaybackPosition = CGFloat(seconds)
+        trimmerView.seek(toTime: videoPlaybackPosition)
+        if videoPlaybackPosition >= stopTime {
+            videoPlaybackPosition = StartTime
+            seekVideoToPos(StartTime)
+            trimmerView.seek(toTime: StartTime)
+        }
+    }
+    
+    func deleteTempFile() {
+        let url = URL(fileURLWithPath: self.videoPath!)
+        let fm = FileManager.default
+        let exist: Bool = fm.fileExists(atPath: url.path)
+        var err: Error?
+        if exist {
+            try? fm.removeItem(at: url)
+            print("file deleted")
+            if err != nil {
+                print("file remove error, \(err?.localizedDescription)")
+            }
+        }
+        else {
+            print("no file by that name")
+        }
+    }
+
+    func videoTrim(){ //AVAssetExportPresetMediumQuality
+        
+        self.deleteTempFile()
+        let asset = AVAsset(url: video_url!)
+        let compatiblePresets: [Any] = AVAssetExportSession.exportPresets(compatibleWith: asset)
+        
+        if compatiblePresets.contains(where: { (AVAssetExportPresetMediumQuality) -> Bool in
+            return true
+        }) {
+            exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
+            
+            // Implementation continues.  URL.fileURL(withPath: self.videoPath)
+            let furl = URL.init(fileURLWithPath: self.videoPath!)
+            exportSession.outputURL = furl
+            exportSession?.outputFileType = AVFileTypeQuickTimeMovie
+            
+            let start: CMTime = CMTimeMakeWithSeconds(Float64(StartTime), asset.duration.timescale)
+            let duration: CMTime = CMTimeMakeWithSeconds(Float64(stopTime) - Float64(StartTime), asset.duration.timescale)
+            let range: CMTimeRange = CMTimeRangeMake(start, duration)
+            exportSession.timeRange = range
+            
+            exportSession.exportAsynchronously(completionHandler: {() -> Void in
+                switch self.exportSession.status {
+                case .failed:
+                    print("Export failed: \(self.exportSession.error?.localizedDescription)")
+                case .cancelled:
+                    print("Export canceled")
+                default:
+                    print("NONE")
+                }
+                self.playVideoFromGallery()
+            })
+        }
+        
+    
+    }
+    
     
     //MARK: -  Button actions
     @IBAction func Action_PlayAgain(_ sender: UIButton) {
         
-        if self.avplayer.rate == 1.0 {
-            playing = false
-            btn_PlayAgain.setTitle("PLAY", for: .normal)
-            self.avplayer.pause()
-        } else {
+        img_Thumbnail.isHidden = true
+        
+        if bool_VideoFromGallary == true {
+          
             
-            if playing == true {
-                
-                do{
-                    try self.playVideo()
+            if self.avplayer.rate == 1.0 {
+                    self.playing = false
+                    self.btn_PlayFromGallary.setTitle("PLAY", for: .normal)
+                    self.avplayer.pause()
+                } else {
+                    
+                    if self.playing == true {
+                        
+                        do{
+                            try self.playVideo()
+                        }
+                        catch{
+                            print("Try Again")
+                        }
+                    }
+                    else{
+                        self.avplayer.play()
+                        self.btn_PlayFromGallary.setTitle("PAUSE", for: .normal)
+                        
+                    
                 }
-                catch{
-                    print("Try Again")
+                }
+                
+         
+        }
+            
+        else {
+            
+            if self.avplayer.rate == 1.0 {
+                playing = false
+                btn_PlayAgain.setTitle("PLAY", for: .normal)
+                self.avplayer.pause()
+                //               if bool_VideoFromGallary == true {
+                //            self.stopPlaybackTimeChecker()
+                //            }
+                //
+            } else {
+                
+                if playing == true {
+                    
+                    do{
+                        try self.playVideo()
+                    }
+                    catch{
+                        print("Try Again")
+                    }
+                }
+                else{
+                    
+                    self.avplayer.play()
+                    btn_PlayAgain.setTitle("PAUSE", for: .normal)
+                    
                 }
             }
-            else{
-                
-                self.avplayer.play()
-                btn_PlayAgain.setTitle("PAUSE", for: .normal)
-                
-            }
+            
         }
     }
     
@@ -175,6 +425,9 @@ class UploadViewController: UIViewController {
             DispatchQueue.main.async {
                 self.pleaseWait()
             }
+            
+            
+            
             
             let formatter: DateFormatter = DateFormatter()
             formatter.dateFormat = "dd-MM-yyyy-HH-mm-ss"
@@ -332,10 +585,12 @@ class UploadViewController: UIViewController {
     func playVideoFromProfile() {
         
         player = AVPlayer(url: video_url!)
+        if bool_PlayFromProfile == true {
         
         DispatchQueue.main.async {
             
             self.pleaseWait()
+        }
         }
         
         //  player.addObserver(self, forKeyPath: "status", options: [], context: nil)
@@ -344,11 +599,44 @@ class UploadViewController: UIViewController {
         playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
         
         self.view.layer.addSublayer(playerLayer)
-        self.view.bringSubview(toFront: btn_Back)
-        self.view.bringSubview(toFront: img_Back)
         
-        btn_Back.isHidden = false
-        img_Back.isHidden = false
+        if bool_PlayFromProfile == true {
+            DispatchQueue.main.async {
+
+        self.view.bringSubview(toFront: self.btn_Back)
+        self.view.bringSubview(toFront: self.img_Back)
+        
+        self.btn_Back.isHidden = false
+        self.img_Back.isHidden = false
+            
+                
+                
+            }
+        }
+        else{
+            DispatchQueue.main.async {
+
+            self.SetButtonCustomAttributesPurple(self.btn_Upload)
+            self.btn_Upload.isUserInteractionEnabled = true
+
+            self.view.addSubview(self.view_Popup)
+            self.view_Popup.addSubview(self.btn_PlayAgain)
+            self.view_Popup.addSubview(self.btn_Upload)
+            self.view_Popup.addSubview(self.btn_Cancel)
+                
+                self.SetButtonCustomAttributesPurple(self.btn_UploadFromGallary)
+                self.btn_UploadFromGallary.isUserInteractionEnabled = true
+                
+                self.view_Popup.addSubview(self.btn_PlayFromGallary)
+                self.view_Popup.addSubview(self.btn_UploadFromGallary)
+                self.view_Popup.addSubview(self.btn_CancelFromGallary)
+                self.view_Popup.addSubview(self.btn_VideoPlayFromGallery)
+
+                
+            }
+        }
+        
+        
         NotificationCenter.default
             .addObserver(self, selector: #selector(playerItemDidStart), name:NSNotification.Name.AVPlayerItemNewAccessLogEntry , object: nil)
         
@@ -359,10 +647,49 @@ class UploadViewController: UIViewController {
         
     }
     
+    func playVideoFromGallery() {
+        
+
+        DispatchQueue.main.async(execute: {() -> Void in
+            if self.videoPath != nil || self.videoPath != ""{
+                self.newVideoPath = self.videoPath
+                _ = try! Data(contentsOf: NSURL(fileURLWithPath: self.newVideoPath!) as URL)
+            }
+            
+            let formatter: DateFormatter = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy-HH-mm-ss"
+            let dateTimePrefix: String = formatter.string(from: Date())
+            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+            let documentsDirectory = paths[0] as String
+            
+            let  CompressedVideoPath = "\(documentsDirectory)/\(dateTimePrefix).mov"
+            let CompressedURL = NSURL(fileURLWithPath: CompressedVideoPath)
+            self.compressVideo(NSURL(fileURLWithPath:self.newVideoPath!) as URL, outputURL: CompressedURL as URL,handler: {
+                (response) in
+                
+                
+            })
+            do{
+                
+                try self.playVideo()
+                
+                
+                
+            }
+            catch {
+                print("Try Again")
+            }
+            
+        })
+
+    }
+    
     // When upload video
     func playVideo() throws {
         
         btn_PlayAgain.setTitle("PAUSE", for: .normal)
+        btn_PlayFromGallary.setTitle("PAUSE", for: .normal)
+
         
         guard let path = newVideoPath // path for the video file
             else
@@ -381,7 +708,14 @@ class UploadViewController: UIViewController {
         self.view_Popup.addSubview(self.btn_PlayAgain)
         self.view_Popup.addSubview(self.btn_Upload)
         self.view_Popup.addSubview(self.btn_Cancel)
+        self.view.bringSubview(toFront: self.trimmerView)
         
+        self.view_Popup.addSubview(self.btn_PlayFromGallary)
+        self.view_Popup.addSubview(self.btn_CancelFromGallary)
+        self.view_Popup.addSubview(self.btn_UploadFromGallary)
+        self.view_Popup.addSubview(self.btn_VideoPlayFromGallery)
+
+ 
         NotificationCenter.default
             .addObserver(self, selector: #selector(playerItemDidReachEnd), name:NSNotification.Name.AVPlayerItemDidPlayToEndTime , object: nil)
         self.avplayer.play()
@@ -390,10 +724,12 @@ class UploadViewController: UIViewController {
     
     func playerItemDidReachEnd(notification: NSNotification) {
         
-        if bool_PlayFromProfile == false {
+        if bool_PlayFromProfile == false || bool_VideoFromGallary == true {
             playing = true
             btn_PlayAgain.setTitle("PLAY", for: .normal)
+            btn_PlayFromGallary.setTitle("PLAY", for: .normal)
         }
+            
         else  {
             
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "SWRevealViewController")as!  SWRevealViewController
@@ -463,7 +799,9 @@ class UploadViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.SetButtonCustomAttributesPurple(self.btn_Upload)
                     self.btn_Upload.isUserInteractionEnabled = true
-
+ 
+                    self.SetButtonCustomAttributesPurple(self.btn_UploadFromGallary)
+                    self.btn_UploadFromGallary.isUserInteractionEnabled = true
                   
                 }
              

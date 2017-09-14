@@ -8,8 +8,13 @@
 
 import UIKit
 import RSKImageCropper
+import MobileCoreServices
+import AVKit
+import AVFoundation
 
 var dictionary_user_Info:NSDictionary = NSDictionary()
+var bool_VideoFromGallary : Bool = false
+
 
 class UserEditProfileViewController: UIViewController {
     
@@ -128,6 +133,10 @@ class UserEditProfileViewController: UIViewController {
         super.viewDidLoad()
        
         
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        bool_VideoIsOfShortLength = false
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -464,7 +473,13 @@ class UserEditProfileViewController: UIViewController {
             let tap = UITapGestureRecognizer()
             self.view_BlurrView.addGestureRecognizer(tap)
             tap.delegate = self
+            
+            if bool_VideoFromGallary == true {
+            self.showAlert(Message: "Please select video of minimum 10 seconds.", vc: self)
+            }
         }
+        
+        
        
         
         DispatchQueue.global(qos: .background).async {
@@ -472,6 +487,7 @@ class UserEditProfileViewController: UIViewController {
             self.getallOccupation()
             self.getallInterests()
         }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -755,10 +771,67 @@ class UserEditProfileViewController: UIViewController {
     
     @IBAction func RecordVideo(_ sender: Any) {
         
-        bool_PlayFromProfile = false
-        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "CameraView") as! CameraViewController
-        _ = self.navigationController?.pushViewController(vc, animated: true)
-    }
+        
+        
+        let TitleString = NSAttributedString(string: "Shadow", attributes: [
+            NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+            NSForegroundColorAttributeName : Global.macros.themeColor_pink
+            ])
+        let MessageString = NSAttributedString(string: "Do you want to open gallary?", attributes: [
+            NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+            NSForegroundColorAttributeName : Global.macros.themeColor_pink
+            ])
+        
+        DispatchQueue.main.async {
+            self.clearAllNotice()
+            
+            let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: {(action) in
+                
+                
+                    //print("video gallery")
+                    //print("Video View")
+                    if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
+                        let imagePicker = UIImagePickerController()
+                        imagePicker.delegate = self
+                        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary;
+                        imagePicker.mediaTypes = [kUTTypeMovie as String]
+                        imagePicker.videoMaximumDuration = 1.00
+                        
+                        
+                        //img.mediaTypes = [kUTTypeImage]; //whatever u want type
+                        imagePicker.allowsEditing = false
+                        self.present(imagePicker, animated: true, completion: nil)
+                    }
+               
+
+                
+            }))
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: {(action) in
+                
+                bool_PlayFromProfile = false
+
+                
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "CameraView") as! CameraViewController
+                _ = self.navigationController?.pushViewController(vc, animated: true)
+
+                
+                
+                
+            }))
+
+            alert.view.layer.cornerRadius = 10.0
+            alert.view.clipsToBounds = true
+            alert.view.backgroundColor = UIColor.white
+            alert.view.tintColor = Global.macros.themeColor_pink
+            
+            alert.setValue(TitleString, forKey: "attributedTitle")
+            alert.setValue(MessageString, forKey: "attributedMessage")
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+        
+          }
     
     
     //MARK: - Functions
@@ -1422,8 +1495,11 @@ extension UserEditProfileViewController:UIImagePickerControllerDelegate,UINaviga
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
+        
+        
         let image = info[UIImagePickerControllerOriginalImage] as? UIImage
   
+        if image != nil {
         
         picker.dismiss(animated: false, completion: { () -> Void in
             
@@ -1438,8 +1514,122 @@ extension UserEditProfileViewController:UIImagePickerControllerDelegate,UINaviga
             self.navigationController?.pushViewController(imageCropVC, animated: true)
             
         })
-
+        }
         
+        else {
+            
+            
+                let tempImage = info[UIImagePickerControllerMediaURL] as! URL!
+                let pathString = tempImage?.relativePath
+                
+                
+                if(pathString != "")
+                {
+                    DispatchQueue.main.async {
+                        bool_VideoFromGallary = true
+                        bool_PlayFromProfile = false
+                        let url=URL(fileURLWithPath: pathString! as String)
+                        video_url = url
+                       
+                        var path_String = pathString! as NSString
+                        let asset: AVAsset = AVAsset(url: url)
+                        
+                        var durationInSeconds: TimeInterval = 0.0
+                        durationInSeconds = CMTimeGetSeconds(asset.duration)
+                      
+                        if durationInSeconds < 11.0 {
+                            DispatchQueue.main.async {
+                                bool_VideoIsOfShortLength = true
+                                picker.dismiss(animated: true, completion: nil)
+
+                            }
+
+                        }
+                        else {
+
+                        let imageGenerator = AVAssetImageGenerator(asset: asset);
+                        //
+                        imageGenerator.appliesPreferredTrackTransform = true
+                        let time = CMTimeMakeWithSeconds(0.0, 600)
+                        
+                        var actualTime : CMTime = CMTimeMake(0, 1)
+                        //        var error : NSError?
+                        let myImage:CGImage? = (try? imageGenerator.copyCGImage(at: time, actualTime: &actualTime))
+                        
+                      let snapshot = UIImage(cgImage: myImage!)
+                      thumbnail = snapshot
+                        
+                        let avassest:AVURLAsset=AVURLAsset(url: URL(fileURLWithPath: (path_String as? String)!), options: nil)
+                        let compatiblepreset:NSArray=AVAssetExportSession.exportPresets(compatibleWith: avassest) as NSArray
+                        let exportsession:AVAssetExportSession=AVAssetExportSession(asset: avassest, presetName: AVAssetExportPresetHighestQuality)!
+                        
+                        let formatter:DateFormatter=DateFormatter()
+                        formatter.dateFormat = "dd-MM-yyyy-HH-mm-ss"
+                        path_String = NSHomeDirectory().appending("/Documents/output-\(formatter.string(from: NSDate() as Date)).mov") as NSString
+                        // self.videodelegate.videoplayerpath=NSHomeDirectory() + "/Documents/output-\(formatter.string(from: Date())).mp4"
+                        exportsession.outputURL=URL(fileURLWithPath: path_String as String)
+                        exportsession.outputFileType = AVFileTypeMPEG4;
+                        exportsession.exportAsynchronously(completionHandler: { () -> Void in
+                            switch (exportsession.status)
+                            {
+                            case AVAssetExportSessionStatus.failed:
+                                //print("error is  \(exportsession.error)")
+                                
+                                break;
+                                
+                            case AVAssetExportSessionStatus.cancelled:
+                                
+                                NSLog("Export canceled");
+                                
+                                break;
+                                
+                            case AVAssetExportSessionStatus.completed:
+                                
+                                NSLog("Successful! %@",path_String);
+                                
+                                
+                                
+                                path_String=path_String.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString
+                                
+                                NSLog("after triming = %@",  path_String);
+                                
+                                
+                                break;
+                                
+                            default:
+                                
+                                break;
+                                
+                            }
+                            
+                            
+                            
+                            let url1=URL(fileURLWithPath: path_String as String)
+                            //print("Myvideo\(url1)")
+                            
+                            
+                          // let geturl = URL(fileURLWithPath: path_String as String)
+                            
+                         //   let weatherData:Data?=try! Data(contentsOf: url1)
+                            
+                            //print("The data is : \(weatherData!)")
+                            
+                            
+                            DispatchQueue.main.async {
+                                let videodata:Data?=try! Data(contentsOf: url1)
+
+                                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Upload_Video") as! UploadViewController
+                                vc.videoPath = path_String as String
+                                picker.pushViewController(vc, animated: true)                            }
+                        
+                       
+                    })
+                    }
+                   
+                    }
+            
+        }
+        }
     }
     
     

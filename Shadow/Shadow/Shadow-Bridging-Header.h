@@ -10,3 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "SWRevealViewController.h"
 #import "FSCalendar.h"
+//#import "ICGRulerView.h"
+//#import "ICGThumbView.h"
+//#import "ICGVideoTrimmer.h"
+//#import "ICGVideoTrimmerView.h"
