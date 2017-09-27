@@ -705,7 +705,6 @@
 				9A0E9E2C1F13937A0019E3A5 /* SdWebImage */,
 				9A3BB97B1EDC015B00772FF5 /* AppDelegate Classes */,
 				9AC4FF061EEFF697002524DB /* Shadow-Bridging-Header.h */,
-				9A2422B91EFA55780009D911 /* FloatRatingView.swift */,
 				9AB6C37B1EF15B6900D1E729 /* TestFairySDK */,
 				9AC4FF051EEFF659002524DB /* NYTPhotoViewer */,
 				9A2276E81F32E28E0021B6A7 /* View Controllers */,
@@ -808,6 +807,7 @@
 		9AB6C37B1EF15B6900D1E729 /* TestFairySDK */ = {
 			isa = PBXGroup;
 			children = (
+				9A2422B91EFA55780009D911 /* FloatRatingView.swift */,
 				9AB6C37C1EF15B8600D1E729 /* libTestFairy.a */,
 				9AB6C37D1EF15B8600D1E729 /* TestFairy.h */,
 				9AB6C37E1EF15B8600D1E729 /* upload-dsym.sh */,
@@ -1061,6 +1061,9 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
 								enabled = 0;
 							};
 						};
