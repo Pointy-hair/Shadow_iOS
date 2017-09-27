@@ -46,13 +46,24 @@ class RequestDetailsViewController: UIViewController {
     }
     
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         DispatchQueue.main.async {
+            if self.revealViewController() != nil {
+                self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            }
             
             self.calender.appearance.headerMinimumDissolvedAlpha = 0.0
+            //self.calender.appearance.todaySelectionColor = Global.macros.themeColor_pink
+         //  self.calender.appearance.todayColor = UIColor.clear
+         //   self.calender.appearance.todaySelectionColor = Global.macros.themeColor_pink
 
+            self.txtView_Message.layer.borderColor =  UIColor.darkGray.cgColor
+            self.txtView_Message.layer.cornerRadius = 8.0
+            self.txtView_Message.layer.borderWidth = 1.0
             
             // self.navigationItem.title = self.username!
             self.navigationItem.setHidesBackButton(false, animated:true)
@@ -528,12 +539,15 @@ extension RequestDetailsViewController:FSCalendarDelegate,FSCalendarDataSource,F
 
 //    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
 //        
-//        if date < calender.currentPage {
+//        if date == calender.today
+// {
+//    
+//            return Global.macros.themeColor
+//        }
+//        else {
 //            
-//            return UIColor.clear
+//            return Global.macros.themeColor
 //        }
-//        else{
-//            return UIColor.black
-//        }
+//       
 //    }
 }

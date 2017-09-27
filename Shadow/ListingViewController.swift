@@ -8,6 +8,7 @@
 
 import UIKit
 var bool_ComingFromList : Bool = false
+//var userIdFromList :
 
 class ListingViewController: UIViewController {
 
@@ -17,7 +18,7 @@ class ListingViewController: UIViewController {
     var type:String?
     var navigation_title:String?
     fileprivate var array_userList = NSMutableArray()
-    var ListuserId : NSNumber?
+    var ListuserId : NSNumber!
     
     
     override func viewDidLoad() {
@@ -43,7 +44,7 @@ class ListingViewController: UIViewController {
             self.CreateNavigationBackBarButton()
             self.tabBarController?.tabBar.isHidden = true
             self.tbl_View.tableFooterView = UIView()  //Set table extra rows eliminate
-
+            bool_ComingRatingList = false
         }
         
         
@@ -61,12 +62,14 @@ class ListingViewController: UIViewController {
         
         
         let dict = NSMutableDictionary()
-        dict.setValue(ListuserId, forKey: Global.macros.kUserId)
+        dict.setValue(ListuserId, forKey: "otherUserId")
+        dict.setValue(SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber, forKey: Global.macros.kUserId)
+
         dict.setValue(self.type!, forKey: Global.macros.k_type)
 
         print(dict)
         
-       if ListuserId == SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
+     //  if ListuserId == SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
         if checkInternetConnection(){
             DispatchQueue.main.async {
                 self.pleaseWait()
@@ -92,7 +95,7 @@ class ListingViewController: UIViewController {
                             
                         }else{
                             
-                            self.showAlert(Message: "No Data Found", vc: self)
+                            self.showAlert(Message: "No Data Found.", vc: self)
 
                         }
                     }
@@ -104,7 +107,7 @@ class ListingViewController: UIViewController {
                         
                         self.array_userList = ((dict_Info.value(forKey: "shadowedByShadowUser") as! NSDictionary).value(forKey:"requestDTOs") as! NSArray).mutableCopy() as! NSMutableArray
                          }else{
-                            self.showAlert(Message: "No Data Found", vc: self)
+                            self.showAlert(Message: "No Data Found.", vc: self)
 
                         }
                     }
@@ -126,7 +129,7 @@ class ListingViewController: UIViewController {
                         }
                         else{
                             
-                            self.showAlert(Message: "No Data Found", vc: self)
+                            self.showAlert(Message: "No Data Found.", vc: self)
 
                         }
                     }
@@ -137,9 +140,12 @@ class ListingViewController: UIViewController {
                         self.array_userList = ((dict_Info.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary).value(forKey:"userList") as! NSArray).mutableCopy() as! NSMutableArray
                         }
                         else{
-                            self.showAlert(Message: "No Data Found", vc: self)
+                            self.showAlert(Message: "No Data Found.", vc: self)
                         }
                     }
+                    
+                    
+                    
 
                     
                     self.tbl_View.reloadData()
@@ -148,7 +154,11 @@ class ListingViewController: UIViewController {
                 break
                 
             case 401:
-                
+                DispatchQueue.main.async {
+                    self.clearAllNotice()
+                    self.AlertSessionExpire()
+                }
+
                 break
                 
                 
@@ -169,14 +179,14 @@ class ListingViewController: UIViewController {
         }else{
             self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
         }
-    }
-    else{
-        self.tbl_View.isHidden = true
-        bool_ComingFromList = false
-
-    self.showAlert(Message: "Coming Soon", vc: self)
-
-    }
+   // }
+//    else{
+//        self.tbl_View.isHidden = true
+//        bool_ComingFromList = false
+//
+//    self.showAlert(Message: "Coming Soon", vc: self)
+//
+//    }
     }
     
     

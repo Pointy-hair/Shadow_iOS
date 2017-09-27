@@ -8,12 +8,14 @@
 
 import UIKit
 
-var check_for_previousview = ""
 var idFromProfileVC:NSNumber?
-
+var bool_ComingRatingList : Bool = false
 
 class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegate {
     
+    
+    @IBOutlet weak var kTopLinkOpenSchoolCompany: NSLayoutConstraint!
+    @IBOutlet weak var btn_LinkOpenSchoolCompany: UIButton!
     
     @IBOutlet var tblView_SocialSites: UITableView!
     @IBOutlet var k_Constraint_Height_tblView: NSLayoutConstraint!
@@ -51,13 +53,14 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
     @IBOutlet var txtView_Description: UITextView!
     @IBOutlet var lbl_totalRatingCount: UILabel!
     @IBOutlet weak var kheightViewBehindOccupation: NSLayoutConstraint!
-    
+    var check_for_previousview : String?
+
     @IBOutlet weak var kHeightCollectionView: NSLayoutConstraint!
     
     //MARK: - Variables
     var linkForOpenWebsite : String?
     var rating_number  : String?
-    fileprivate var user_IdMyProfile :NSNumber?
+    var user_IdMyProfile :NSNumber?
     fileprivate var item1 = UIBarButtonItem()
     fileprivate var array_UserOccupations:NSMutableArray = NSMutableArray()
     
@@ -91,11 +94,6 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
         
         DispatchQueue.main.async {
             
-            //giving border to Profile image
-            self.imgView_ProfilePic.layer.cornerRadius = 60.0
-            self.imgView_ProfilePic.clipsToBounds = true
-            self.tabBarController?.delegate = self
-
             //Calling toggle of side bar button
             if self.revealViewController() != nil {
                 
@@ -104,6 +102,13 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                 self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
                 self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
             }
+
+            
+            //giving border to Profile image
+            self.imgView_ProfilePic.layer.cornerRadius = 60.0
+            self.imgView_ProfilePic.clipsToBounds = true
+            self.tabBarController?.delegate = self
+
             
             
             //setting border to custom views(Boundaries)
@@ -126,7 +131,9 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
     func handle_Tap(_ sender: UITapGestureRecognizer) {
         
         if self.revealViewController() != nil {
-            self.revealViewController().rightRevealToggle(animated: false)
+            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
         }
         
     }
@@ -144,18 +151,29 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
-        self.Scroll_View.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.automaticallyAdjustsScrollViewInsets = false
-        self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: 0), animated: false)
-       
+        idFromProfileVC = nil
         dicUrl.removeAllObjects()
         ratingview_ratingNumber = ""
-       bool_ComingFromList = false
+        
+  
+            bool_ComingFromList = false
+            bool_ComingRatingList = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
+        bool_Occupation = false
+        
        
+
+      
+        if self.revealViewController() != nil {
+            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+ 
+        
         if bool_UserIdComingFromSearch == true {            //if coming from search view
             
             DispatchQueue.main.async {
@@ -165,12 +183,6 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                 self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: -15), animated: false)
                 
               
-                if self.revealViewController() != nil {
-                    
-                    self.revealViewController().panGestureRecognizer().isEnabled = false
-                    
-                }
-                
                 
                 
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -179,6 +191,15 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                 self.tabBarController?.tabBar.isHidden = true
                 
                 
+                if self.user_IdMyProfile == nil {
+
+                    self.user_IdMyProfile = userIdFromSearch
+                    
+                    
+                }
+
+                if self.user_IdMyProfile != SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
+
                 let btn2 = UIButton(type: .custom)
                 btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
                 btn2.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 25, height: 25)
@@ -193,10 +214,11 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                 
                 
                 //right nav btns
-                self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
+                    self.navigationItem.setRightBarButtonItems([item2,item3], animated: true) }
+                
+              
                 
                 
-                self.user_IdMyProfile = userIdFromSearch
                 DispatchQueue.global(qos: .background).async {
                     
                     self.GetCompanySchoolProfile()
@@ -214,13 +236,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
 //                self.automaticallyAdjustsScrollViewInsets = false
 //                self.Scroll_View.setContentOffset(CGPoint.init(x: 0, y: -30), animated: false)
                 
-                if self.revealViewController() != nil {
-                    
-                    self.revealViewController().panGestureRecognizer().isEnabled = false
-                    
-                }
-                
-                
+                              
                 
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.navigationItem.setHidesBackButton(false, animated:true)
@@ -243,14 +259,21 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                 
                 //right nav btns
                 self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
+                if self.user_IdMyProfile == nil {
+                    
+                    self.user_IdMyProfile = userIdFromSearch
+                    
+                    
+                }
+
                 
-                
-                self.user_IdMyProfile = userIdFromSearch
+              
                 DispatchQueue.global(qos: .background).async {
                     
                     self.GetCompanySchoolProfile()
                     
                 }
+                bool_ComingFromList = false
             }
 
             
@@ -266,23 +289,30 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                 self.navigationItem.setHidesBackButton(false, animated:true)
                 
                 
-                if check_for_previousview == "FromProfileVC"{
+                if self.user_IdMyProfile != nil {
                     
-                    self.user_IdMyProfile = idFromProfileVC as NSNumber?
-                    self.menuButton.tintColor = UIColor.clear
-                    self.menuButton.isEnabled = false
-                    self.CreateNavigationBackBarButton()
-                    check_for_previousview = ""
-                }else{
+                  
+                    
+                    if self.user_IdMyProfile == SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
+                        
+                        self.menuButton.tintColor = UIColor.white
+                        self.menuButton.isEnabled = true
+                    }
+                    
+                    else{
+                        
+                        self.menuButton.tintColor = UIColor.clear
+                        self.menuButton.isEnabled = false
+                        self.CreateNavigationBackBarButton()
+                        
+                    }
+                }
+                
+                else{
                     
                     self.user_IdMyProfile = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
-                    
                     self.menuButton.tintColor = UIColor.white
                     self.menuButton.isEnabled = true
-
-                    
-                    
-                    
                     
                     let btn1 = UIButton(type: .custom)
                     btn1.setImage(UIImage(named: "chat-icon"), for: .normal)
@@ -551,6 +581,33 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                         dict_userInfo = response.1
                         array_public_UserSocialSites.removeAll()
                         
+                        
+//                        let verified = (response.1).value(forKey: "emailVerified")! as? NSNumber
+//                        
+//                        if verified == 0 {
+//                            
+//                            DispatchQueue.main.async {
+//                                self.clearAllNotice()
+//                                
+//                                bool_fromMobile = false
+//                                bool_NotVerified = false
+//                                bool_LocationFilter = false
+//                                bool_PlayFromProfile = false
+//                                bool_AllTypeOfSearches = false
+//                                bool_CompanySchoolTrends = false
+//                                bool_fromVerificationMobile = false
+//                                bool_UserIdComingFromSearch = false
+//                                
+//                                SavedPreferences.set(nil, forKey: "user_verified")
+//                                SavedPreferences.set(nil, forKey: "sessionToken")
+//                                SavedPreferences.removeObject(forKey: Global.macros.kUserId)
+//                                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Login")
+//                                Global.macros.kAppDelegate.window?.rootViewController = vc
+//                                
+//                            }
+//                        }
+
+                        
                         //fetching urls
                         for v in self.array_ActualSocialSites
                         {
@@ -590,7 +647,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                 //setting name of company
                                 if (response.1).value(forKey: Global.macros.kcompanyName) as? String != nil {
                                     
-                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalizingFirstLetter()
+                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalized
                                     
                                     
                                 }
@@ -603,6 +660,8 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                 if (response.1).value(forKey: Global.macros.kCompanyURL) as? String != nil &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != "" &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != " "{
                                     
                                     self.lbl_company_schoolUrl.isHidden = false
+                                    self.btn_LinkOpenSchoolCompany.isHidden = false
+
                                     self.imgView_Url.isHidden = false
                                     self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kCompanyURL) as? String
                                     
@@ -641,7 +700,8 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     }
                                 }
                                 else {
-                                    
+                                    self.btn_LinkOpenSchoolCompany.isHidden = true
+
                                     self.lbl_company_schoolUrl.isHidden = true
                                     self.imgView_Url.isHidden = true
                                     
@@ -694,7 +754,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                 if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kschoolName) as? String != "" {
                                     
                                     
-                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalizingFirstLetter()
+                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalized
                                     
                                 }
                                 
@@ -704,7 +764,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                 
                                 //setting school url
                                 if (response.1).value(forKey: Global.macros.kSchoolURL) as? String != nil && (response.1).value(forKey: Global.macros.kSchoolURL) as? String != "" &&  (response.1).value(forKey: Global.macros.kSchoolURL) as? String != " "{
-                                    
+                                    self.btn_LinkOpenSchoolCompany.isHidden = false
                                     self.lbl_company_schoolUrl.isHidden = false
                                     self.imgView_Url.isHidden = false
                                     self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kSchoolURL) as? String
@@ -743,6 +803,8 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                 }
                                     
                                 else {
+                                    self.btn_LinkOpenSchoolCompany.isHidden = true
+
                                     self.lbl_company_schoolUrl.isHidden = true
                                     self.imgView_Url.isHidden = true
                                     
@@ -798,7 +860,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     //setting name of company
                                     if (response.1).value(forKey: Global.macros.kcompanyName) as? String != nil {
                                         
-                                        self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalizingFirstLetter()
+                                        self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalized
                                         
                                         
                                     }
@@ -810,6 +872,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     //setting company url
                                     if (response.1).value(forKey: Global.macros.kCompanyURL) as? String != nil &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != "" &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != " "{
                                         
+                                        self.btn_LinkOpenSchoolCompany.isHidden = false
                                         self.lbl_company_schoolUrl.isHidden = false
                                         self.imgView_Url.isHidden = false
                                         self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kCompanyURL) as? String
@@ -850,7 +913,9 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     }
                                     else {
                                         
+                                        self.btn_LinkOpenSchoolCompany.isHidden = true
                                         self.lbl_company_schoolUrl.isHidden = true
+
                                         self.imgView_Url.isHidden = true
                                         
                                         
@@ -894,7 +959,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     
                                     
                                     //setting titles of labels
-                                    self.lbl_title__cmpnyschool_withthesesoccupation.text = "Company with these occupations"
+                                    self.lbl_title__cmpnyschool_withthesesoccupation.text = " Company with these occupations"
                                     
                                     self.lbl_title_Users.text = "Users attended this school"
                                     
@@ -902,7 +967,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kschoolName) as? String != "" {
                                         
                                         
-                                        self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalizingFirstLetter()
+                                        self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalized
                                         
                                     }
                                     
@@ -913,6 +978,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     //setting school url
                                     if (response.1).value(forKey: Global.macros.kSchoolURL) as? String != nil && (response.1).value(forKey: Global.macros.kSchoolURL) as? String != "" &&  (response.1).value(forKey: Global.macros.kSchoolURL) as? String != " "{
                                         
+                                        self.btn_LinkOpenSchoolCompany.isHidden = false
                                         self.lbl_company_schoolUrl.isHidden = false
                                         self.imgView_Url.isHidden = false
                                         self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kSchoolURL) as? String
@@ -951,6 +1017,8 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     }
                                         
                                     else {
+                                        self.btn_LinkOpenSchoolCompany.isHidden = true
+
                                         self.lbl_company_schoolUrl.isHidden = true
                                         self.imgView_Url.isHidden = true
                                         
@@ -1006,13 +1074,14 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                 // setting company name on direct profile
                                 if (response.1).value(forKey: Global.macros.kcompanyName) as? String != nil {
                                     
-                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalizingFirstLetter()
+                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalized
                                     
                                 }
                                 
                                 //setting company url on direct profile
                                 if (response.1).value(forKey: Global.macros.kCompanyURL) as? String != nil &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != "" &&  (response.1).value(forKey: Global.macros.kCompanyURL) as? String != " "{
-                                    
+                                    self.btn_LinkOpenSchoolCompany.isHidden = false
+
                                     self.lbl_company_schoolUrl.isHidden = false
                                     self.imgView_Url.isHidden = false
                                     self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kCompanyURL) as? String
@@ -1054,7 +1123,8 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     
                                 }
                                 else {
-                                    
+                                    self.btn_LinkOpenSchoolCompany.isHidden = true
+
                                     self.lbl_company_schoolUrl.isHidden = true
                                     self.imgView_Url.isHidden = true
                                     
@@ -1107,13 +1177,21 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                 if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kschoolName) as? String != "" {
                                     
                                     
-                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalizingFirstLetter()
+                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kschoolName) as? String)?.capitalized
+                                }
+                                
+                                if (response.1).value(forKey: Global.macros.kschoolName) as? String != nil  && (response.1).value(forKey: Global.macros.kcompanyName) as? String != "" {
+                                    
+                                    
+                                    self.navigationItem.title = ((response.1).value(forKey: Global.macros.kcompanyName) as? String)?.capitalized
                                 }
                                 
                                 
                                 //setting school url on direct profile
                                 if (response.1).value(forKey: Global.macros.kSchoolURL) as? String != nil && (response.1).value(forKey: Global.macros.kSchoolURL) as? String != "" &&  (response.1).value(forKey: Global.macros.kSchoolURL) as? String != " "{
                                     
+                                    
+                                    self.btn_LinkOpenSchoolCompany.isHidden = false
                                     self.lbl_company_schoolUrl.isHidden = false
                                     self.imgView_Url.isHidden = false
                                     self.lbl_company_schoolUrl.text = (response.1).value(forKey: Global.macros.kSchoolURL) as? String
@@ -1151,9 +1229,12 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                                     }
                                 }
                                     
+                                    
+                                    
                                 else {
                                     
-                                    
+                                    self.btn_LinkOpenSchoolCompany.isHidden = true
+
                                     self.lbl_company_schoolUrl.isHidden = true
                                     self.imgView_Url.isHidden = true
                                     
@@ -1225,12 +1306,46 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                         
                         if (response.1).value(forKey: Global.macros.klocation) as? String != "" && (response.1).value(forKey: Global.macros.klocation) != nil {
                             
+                            if (((response.1).value(forKey: Global.macros.klocation) as? String)?.contains("United States"))! || (((response.1).value(forKey: Global.macros.klocation) as? String)?.contains("USA"))!
+                            {
+                                let str = (response.1).value(forKey: Global.macros.klocation) as? String
+                                
+                                var strArry = str?.components(separatedBy: ",")
+                                print(strArry!)
+                                strArry?.removeLast()
+                                print(strArry!)
+                                var tempStr:String = ""
+                                for (index,element) in (strArry?.enumerated())!
+                                {
+                                    var coma = ""
+                                    
+                                    if index == 0
+                                    {
+                                        coma = ""
+                                    }
+                                    else
+                                    {
+                                        coma = ","
+                                    }
+                                    
+                                    tempStr = tempStr + coma + element
+                                    
+                              
+                                  self.lbl_company_schoolLocation.text = tempStr
+                                   
+                                }
+                                
+                                print(tempStr)
+
+                            }
+                                
+                            else {
+                            
                             self.lbl_company_schoolLocation.text = (response.1).value(forKey: Global.macros.klocation) as? String
+                                
+                       
                         }
                             
-                            
-                        else {
-                            self.lbl_company_schoolLocation.text = "NA"
                             
                         }
                         
@@ -1239,6 +1354,10 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                         
                         
                         self.lbl_Count_cmpnyschool_withthesesoccupation.text = (((response.1).value(forKey: Global.macros.kschoolCompanyWithTheseOccupations) as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
+                        
+                        if  self.lbl_Count_cmpnyschool_withthesesoccupation.text == "" ||  self.lbl_Count_cmpnyschool_withthesesoccupation.text == " " || self.lbl_Count_cmpnyschool_withthesesoccupation.text == nil {
+                            self.lbl_Count_cmpnyschool_withthesesoccupation.text = "0"
+                        }
                         
                         self.lbl_Count_Users.text = (((response.1).value(forKey: Global.macros.kschoolCompanyWithTheseUsers) as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
                         
@@ -1413,15 +1532,22 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
     
     
     func Calender_SearchBtnPressed(sender: AnyObject){
+
         
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "send_request") as! SendRequestViewController
         vc.user_Name =  self.navigationItem.title
-        //userIdFromSearch
+        
+        if self.lbl_company_schoolLocation.text != nil {
+        vc.location_comSchool = self.lbl_company_schoolLocation.text
+            
+        }
         _ = self.navigationController?.pushViewController(vc, animated: true)
         
     }
     
     func calenderBtnPressed(sender: AnyObject){
+        
+
         
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "MyRequests") as! RequestsListViewController
         vc.user_Name =  self.navigationItem.title
@@ -1429,6 +1555,16 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
         
         
     }
+    
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if self.revealViewController() != nil {
+            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+    }
+    
 
     
     //MARK: - Button Actions
@@ -1439,6 +1575,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
         if self.revealViewController() != nil {
             self.revealViewController().rightRevealToggle(animated: false)
         }
+      //  else {
         DispatchQueue.main.async {
             
             
@@ -1449,8 +1586,10 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                 
             }
             else if bool_ComingFromList == true {
-                
-                self.showAlert(Message: "Coming Soon", vc: self)
+                bool_ComingRatingList = true
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+                _ = self.navigationController?.pushViewController(vc, animated: true)
+
 
             }
             else{
@@ -1466,7 +1605,7 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
                 }
             }
         }
-        
+       // }
     }
     
     @IBAction func Action_OpenCompaniesSchoolList(_ sender: UIButton) {
@@ -1475,19 +1614,27 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
     
     
     @IBAction func Open_ProfileImage(_ sender: UIButton) {
-        
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+            
+    //    else {
+        Global.macros.statusBar.isHidden = true
         let imgdata = UIImageJPEGRepresentation(imgView_ProfilePic.image!, 0.5)
         let photos = self.ArrayOfPhotos(data: imgdata!)
         let vc: NYTPhotosViewController = NYTPhotosViewController(photos: photos as? [NYTPhoto])
         vc.rightBarButtonItem = nil
         self.present(vc, animated: true, completion: nil)
-        
+       // }
     }
     
     @IBAction func PlayVideo(_ sender: UIButton) {
         
+        
         if video_url != nil {
             bool_PlayFromProfile = true
+            bool_VideoFromGallary = false
+
             DispatchQueue.main.async {
                 
                 let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Upload_Video") as! UploadViewController
@@ -1524,8 +1671,8 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
             self.revealViewController().rightRevealToggle(animated: false)
         }
         
-        
-        if bool_UserIdComingFromSearch == false {
+      //  else {
+     //   if bool_UserIdComingFromSearch == false {
 
         var type:String?
         var navigation_title:String?
@@ -1562,26 +1709,26 @@ class ComapanySchoolViewController: UIViewController, UIGestureRecognizerDelegat
         vc.type = type
         vc.ListuserId = self.user_IdMyProfile
             vc.navigation_title = navigation_title
+            _ = self.navigationController?.pushViewController(vc, animated: true)
 
-            if vc.ListuserId != SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
-                
-                self.showAlert(Message: "Coming Soon.", vc: self)
-                vc.ListuserId = NSNumber()
-                vc.navigation_title = ""
-                
-            }
-            else {
-        _ = self.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
-        
-        else {
-            self.showAlert(Message: "Coming Soon.", vc: self)
-
-        }
+            
+      //  }
     }
     
     
+    @IBAction func Action_LinkOpenSchoolCompany(_ sender: UIButton) {
+        
+        if let checkURL = NSURL(string: lbl_company_schoolUrl.text!) {
+            if  UIApplication.shared.openURL(checkURL as URL){
+                print("URL Successfully Opened")
+            }
+            else {
+                print("Invalid URL")
+            }
+        } else {
+            print("Invalid URL")
+        }
+    }
     
     
     
@@ -1683,12 +1830,16 @@ extension ComapanySchoolViewController:UICollectionViewDelegate,UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-       
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+            
+      //  else {
             
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
             vc.occupationId = (array_UserOccupations[indexPath.row] as! NSDictionary)["id"]! as? NSNumber
             _ = self.navigationController?.pushViewController(vc, animated: true)
-            
+    //    }
        
         
     }
@@ -1795,27 +1946,34 @@ extension ComapanySchoolViewController:UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let site_url = (array_public_UserSocialSites[indexPath.row] as NSDictionary).value(forKey: "url") as? String
-        print(site_url!)
-        DispatchQueue.main.async {
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
             
-        
-            if let checkURL = NSURL(string: site_url!) {
+      //  else {
+            
+        let site_url = (array_public_UserSocialSites[indexPath.row] as NSDictionary).value(forKey: "url") as? String
+        let trimmedString = site_url?.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        print(trimmedString!)
+        DispatchQueue.main.async {
+            if let checkURL = NSURL(string: trimmedString!) {
                 
                 if  UIApplication.shared.openURL(checkURL as URL){
                     print("URL Successfully Opened")
                 }
                 else {
-                    self.showAlert(Message: "Invalid URL", vc: self)
                     print("Invalid URL")
                 }
             } else {
-                self.showAlert(Message: "Invalid URL", vc: self)
                 print("Invalid URL")
             }
+            
         }
-        
-    }
+  
+          }
+      //  }
+   
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
@@ -1826,10 +1984,17 @@ extension ComapanySchoolViewController:UITableViewDelegate,UITableViewDataSource
 extension ComapanySchoolViewController:UITabBarControllerDelegate{
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        bool_ComingRatingList = false
         
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+
         if tabBarController.selectedIndex == 0{
             if self.revealViewController() != nil {
-                self.revealViewController().rightRevealToggle(animated: false)
+                self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                
             }
         }
     }

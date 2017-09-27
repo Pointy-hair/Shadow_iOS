@@ -463,6 +463,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                     print(self.arr_SearchData)
                     self.bool_LastResultSearch = true
                     if self.arr_SearchData.count == 0 {
+                        self.arr_SearchData.removeAllObjects()
                         self.bool_LastResultSearch = false
                     }
                     
@@ -682,7 +683,8 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     @IBAction func Action_HorizontalView(_ sender: Any) {
         
-     //   if bool_Occupation == false {
+         bool_Occupation = false
+        
             
             if arr_SearchData.count > 0 {
                 
@@ -787,6 +789,48 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     
     //MARK: - Button Actions
+    
+    
+    
+    @IBAction func Action_OpenCompany(_ sender: UIButton) {
+        
+        
+        bool_UserIdComingFromSearch = true
+        
+        let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
+        
+        
+        
+        if indexPath != nil {
+        let dict_Temp = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary
+       let dic = dict_Temp?["companyDTO"] as? NSDictionary
+        
+        idFromProfileVC = dic?.value(forKey: "companyUserId") as? NSNumber
+            
+            if idFromProfileVC != nil {
+                
+                DispatchQueue.main.async {
+                    let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController//UINavigationController
+                    vc.user_IdMyProfile = idFromProfileVC
+                    vc.extendedLayoutIncludesOpaqueBars = true
+                    self.automaticallyAdjustsScrollViewInsets = false
+                    _ = self.navigationController?.pushViewController(vc, animated: true)
+
+
+                }
+                
+                
+            }
+            
+            else {
+                self.showAlert(Message: "Company is not registered yet.", vc: self)
+            }
+        }
+        
+        
+    }
     
     
     @IBAction func Action_BackButtonOnCollectionView(_ sender: Any) {
@@ -910,6 +954,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
         view_Black.isHidden = true
         view_PopUp.isHidden = true
         self.view.endEditing(true)
+        self.arr_SearchData.removeAllObjects()
         GetSearchDataAccordingToLocation()
         
     }
@@ -926,13 +971,14 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     
     @IBAction func Action_DidSelectRow(_ sender: UIButton) {
+ 
         
         if bool_Occupation == false {
             
             if self.checkInternetConnection()
             {
                 bool_UserIdComingFromSearch = true
-                print(arr_SearchData [sender.tag] as! NSDictionary)
+                print(arr_SearchData[sender.tag] as! NSDictionary)
                 userIdFromSearch = (arr_SearchData[sender.tag] as! NSDictionary)["userId"] as? NSNumber
                 let dict_Temp = (arr_SearchData[sender.tag] as! NSDictionary)["userDTO"] as? NSDictionary
                 let str_role = dict_Temp?.value(forKey: "role") as? String
@@ -949,12 +995,6 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                         //self.navigationController?.navigationBar.isTranslucent = false
                     }
                     
-                    //self.edgesForExtendedLayout = UIRectEdgeNone;
-                    // self.edgesForExtendedLayout = UIRectEdge.top
-                    
-                    // self.tabBarController?.tabBar.isTranslucent = false
-                    // self.navigationController?.navigationBar.isTranslucent = false
-                    //arr_SearchData.removeAllObjects()
                     
                 }
                 else if str_role == "COMPANY" || str_role == "SCHOOL" {
@@ -963,10 +1003,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                     _ = self.navigationController?.pushViewController(vc, animated: true)
                     vc.extendedLayoutIncludesOpaqueBars = true
                     self.automaticallyAdjustsScrollViewInsets = false
-                    // self.tabBarController?.tabBar.isTranslucent = false
-                    // self.navigationController?.navigationBar.isTranslucent = false
-                    
-                    //arr_SearchData.removeAllObjects()
+                 
                     
                 }
                 
@@ -994,41 +1031,106 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
            // self.navigationController?.navigationBar.isTranslucent = false
             
         }
+            
+        
     }
     
     
     @IBAction func Action_OpenUrl(_ sender: UIButton) {
         
-        let str_role = ((self.arr_SearchData[(sender.tag)] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "role") as? String
-        let url:String?
-        if str_role == "COMPANY"{
-            url = ((self.arr_SearchData[(sender.tag)] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "companyUrl") as? String
-        }else{
-            url = ((self.arr_SearchData[(sender.tag)] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "schoolUrl") as? String
-        }
         
-        DispatchQueue.main.async {
+        //Custom indexpath and cell formation
+        let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
+        
+        
+        
+        if indexPath != nil {
+       var url:String?
+       var trimmedString:String?
             
-            if url != nil && url != ""{
-                if let checkURL = NSURL(string: url!) {
-                    
-                    if  UIApplication.shared.openURL(checkURL as URL){
-                        print("URL Successfully Opened")
+        let str_role = ((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "role") as? String
+        
+        if str_role == "COMPANY"{
+            url = ((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "companyUrl") as? String
+            trimmedString = url?.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            
+            
+            DispatchQueue.main.async {
+                
+                if trimmedString != nil && trimmedString != "" {
+                    if let checkURL = NSURL(string: trimmedString!) {
+                        
+                        if  UIApplication.shared.openURL(checkURL as URL){
+                            print("URL Successfully Opened")
+                        }
+                        else {
+                            self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+                        }
                     }
                     else {
-                        self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+                        
+                        self.showAlert(Message:"Invalid URL. Unable to open in browser.", vc: self)
                     }
                 }
                 else {
-                    
-                    self.showAlert(Message:"Invalid URL. Unable to open in browser.", vc: self)
+                    self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
                 }
             }
-            else {
-                self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+
+        } else  if str_role == "SCHOOL"{
+            url = ((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary)?.value(forKey: "schoolUrl") as? String
+            trimmedString = url?.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            DispatchQueue.main.async {
+                
+                if trimmedString != nil && trimmedString != "" {
+                    if let checkURL = NSURL(string: trimmedString!) {
+                        
+                        if  UIApplication.shared.openURL(checkURL as URL){
+                            print("URL Successfully Opened")
+                        }
+                        else {
+                            self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+                        }
+                    }
+                    else {
+                        
+                        self.showAlert(Message:"Invalid URL. Unable to open in browser.", vc: self)
+                    }
+                }
+                else {
+                    self.showAlert(Message: "Invalid URL. Unable to open in browser.", vc: self)
+                }
             }
+
         }
+            
+        else {
+            
+            let dict_Temp = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary
+            let dic = dict_Temp?["schoolDTO"] as? NSDictionary
+            bool_UserIdComingFromSearch = true
+
+            idFromProfileVC = dic?.value(forKey: "schoolUserId") as? NSNumber
+            
+            if idFromProfileVC != nil {
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController//UINavigationController
+                vc.user_IdMyProfile = idFromProfileVC
+                _ = self.navigationController?.pushViewController(vc, animated: true)
+            }
+                
+            else {
+                self.showAlert(Message: "School is not registered yet.", vc: self)
+            }
+            
+            
+            }
         
+ 
+        }
     }
     
     
@@ -1061,14 +1163,181 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     }
     
     
+    //Action of ocupation view
+    
     @IBAction func UserWithOccupationOnOccupationView(_ sender: Any) {
+        
+        
     }
     
+    
+    @IBAction func ActionRatingOnOccupation(_ sender: Any) {
+        
+        //Custom indexpath and cell formation
+        let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationItem.setHidesBackButton(true, animated:true)
+        self.tabBarController?.tabBar.isHidden = true
+        
+        
+   
+        
+        if indexPath != nil {
+            
+            
+             let dict_Temp = (arr_SearchData[(indexPath?.row)!] as! NSDictionary)["occupationDTO"] as? NSDictionary
+        
+        bool_FromOccupation = true
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+        vc.occ_id = dict_Temp?.value(forKey: "id") as? NSNumber
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
     
     
     @IBAction func UserThatShadowedOnOccupationView(_ sender: Any) {
+        
     }
     
+    //Actions on school, company and user slider view
+    
+    @IBAction func OpenList(_ sender: UIButton) {
+        
+        bool_UserIdComingFromSearch = true
+
+        //Custom indexpath and cell formation
+        let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
+     
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationItem.setHidesBackButton(true, animated:true)
+        self.tabBarController?.tabBar.isHidden = true
+        
+        var type:String?
+        var navigation_title:String?
+        
+        
+        if sender.tag == 1{//shadowers
+            
+            type = Global.macros.kShadow
+            navigation_title =  "Shadowers"
+            
+        }else if sender.tag == 2{//shadowed
+            
+            type = Global.macros.kShadowed
+            navigation_title = "Shadowed Users"
+            
+            
+        }else if sender.tag == 3{//occupations
+            
+            type = Global.macros.k_Occupation
+            navigation_title = "Users with these Occupation"
+            
+            
+        }
+        else {//users
+            
+            type = Global.macros.k_User
+            navigation_title = "Users List"
+            
+            
+        }
+        
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "listing") as! ListingViewController
+        vc.type = type
+        if indexPath != nil {
+            let dict_Temp = (arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary
+
+        if dict_Temp?.value(forKey: "role") as! String == "COMPANY" {
+            
+        if (dict_Temp?["companyDTO"] as? NSDictionary) != nil {
+ 
+            let dict  = dict_Temp?["companyDTO"] as! NSDictionary
+            vc.ListuserId =  dict.value(forKey: "companyUserId") as? NSNumber
+            }
+        }
+        else if dict_Temp?.value(forKey: "role") as! String == "SCHOOL" {
+            
+            if (dict_Temp?["schoolDTO"] as? NSDictionary) != nil {
+
+            let dict  = dict_Temp?["schoolDTO"] as! NSDictionary
+            vc.ListuserId =  dict.value(forKey: "schoolUserId") as? NSNumber //userId
+            }
+        }
+        else if dict_Temp?.value(forKey: "role") as! String == "USER" {
+            
+          
+                vc.ListuserId =  dict_Temp?.value(forKey: "userId") as? NSNumber //userId
+            
+            }
+        
+        vc.navigation_title = navigation_title
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    
+    @IBAction func OpenRattingListOnOccupation(_ sender: UIButton) {
+        
+        
+        bool_UserIdComingFromSearch = true
+
+        //Custom indexpath and cell formation
+        let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        let indexPath = self.customCollectionView.indexPathForItem(at: visiblePoint)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationItem.setHidesBackButton(true, animated:true)
+        self.tabBarController?.tabBar.isHidden = true
+        
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+
+        if indexPath != nil {
+            
+            let dict_Temp = (arr_SearchData[(indexPath?.row)!] as! NSDictionary)["userDTO"] as? NSDictionary
+            
+            if dict_Temp?.value(forKey: "role") as! String == "COMPANY" {
+                if (dict_Temp?["companyDTO"] as? NSDictionary) != nil {
+                    
+                    let dict  = dict_Temp?["companyDTO"] as! NSDictionary
+                    userIdFromSearch =  dict.value(forKey: "companyUserId") as? NSNumber
+                    ratingview_name = dict.value(forKey: "name")as? String
+
+                }
+            }
+            else if dict_Temp?.value(forKey: "role") as! String == "SCHOOL" {
+                
+                if (dict_Temp?["schoolDTO"] as? NSDictionary) != nil {
+                    
+                    let dict  = dict_Temp?["schoolDTO"] as! NSDictionary
+                    userIdFromSearch =  dict.value(forKey: "schoolUserId") as? NSNumber //userId
+                    ratingview_name = dict.value(forKey: "name")as? String
+
+                }
+                            }
+            else if dict_Temp?.value(forKey: "role") as! String == "USER" {
+                
+                 userIdFromSearch =  dict_Temp?.value(forKey: "userId") as? NSNumber //userId
+                ratingview_name = dict_Temp?.value(forKey: "userName")as? String
+
+            }
+            var profileurl = dict_Temp?.value(forKey: "profileImageUrl")as? String
+            profileurl = profileurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            ratingview_imgurl = profileurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+
+            
+            _ = self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+    }
     
     
     
@@ -1082,7 +1351,8 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
+        bool_FromOccupation = false
+
         //Custom indexpath and cell formation
         let visibleRect = CGRect(origin: self.customCollectionView.contentOffset, size: self.customCollectionView.bounds.size)
         let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
@@ -1107,6 +1377,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                 self.bool_Search = true
                                 if bool_AllTypeOfSearches == true {
                                     self.getSearchData()
+                                    
                                 }
                                 else if bool_LocationFilter == true {
                                     self.GetSearchDataAccordingToLocation()
@@ -1139,12 +1410,15 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                         self.bool_Search = true
                                         if bool_AllTypeOfSearches == true {
                                             self.getSearchData()
+
                                         }
                                         else if bool_LocationFilter == true {
                                             self.GetSearchDataAccordingToLocation()
+
                                         }
                                         else if bool_CompanySchoolTrends == true {
                                             self.GetOnlyCompanyData()
+
                                         }
                                     }
                                 }
@@ -1181,7 +1455,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                             if self.arr_SearchData.count > 0 {
                                 self.dicUrl.removeAllObjects()
                                 if (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] != nil || (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String != "" {
-                                   cell?.lbl_CompanySchoolUserName.text = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String
+                                   cell?.lbl_CompanySchoolUserName.text = ((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String)?.capitalized
                                 }
                                 else {
                                     cell?.lbl_CompanySchoolUserName.text = "NA"
@@ -1261,7 +1535,8 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                         cell?.imgView_Location.isHidden = false
                                         
                                         if dict_Temp?.value(forKey: "schoolName") != nil &&  dict_Temp?.value(forKey: "schoolName") as? String != "" && dict_Temp?.value(forKey: "schoolName") as? String != " "{//school is not nil in user
-                                            
+                                            cell?.btn_OpenUrl.isUserInteractionEnabled = true
+
                                             cell?.lbl_Url.text = dict_Temp?.value(forKey: "schoolName") as? String
                                             cell?.imgView_Url.image = UIImage.init(named: "school-icon")
                                             cell?.lbl_Url.isHidden = false
@@ -1349,8 +1624,10 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                         cell?.lbl_Location.isHidden = true
                                         cell?.imgView_Location.isHidden = true
                                         
-                                        if dict_Temp?.value(forKey: "schoolName") != nil &&  dict_Temp?.value(forKey: "schoolName") as? String != "" {//school is not nil in user
+                                        if dict_Temp?.value(forKey: "schoolName") != nil &&  dict_Temp?.value(forKey: "schoolName") as? String != "" && dict_Temp?.value(forKey: "schoolName") as? String != " "{//school is not nil in user
                                             
+                                            cell?.btn_OpenUrl.isUserInteractionEnabled = true
+
                                             cell?.lbl_Url.isHidden = false
                                             cell?.imgView_Url.isHidden = false
                                             cell?.k_Constraint_Top_labelUrl.constant = -28.0
@@ -1444,19 +1721,20 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                     cell?.kHeight_BehindDetailView.constant = 118
                                     
                                     if dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") != nil {
-                                        cell?.lbl_Count_CompanySchoolWithOccupations.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary)["count"]!)"
+                                        cell?.lbl_Count_NumberOfUsers.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary)["count"]!)"
                                     }
                                     else {
-                                        cell?.lbl_Count_CompanySchoolWithOccupations.text = "0"
+                                        
+                                        cell?.lbl_Count_NumberOfUsers.text = "0"
                                     }
                                     
                                     if dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations")  != nil {
                                         
-                                        cell?.lbl_Count_NumberOfUsers.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary)["count"]!)"
+                                        cell?.lbl_Count_CompanySchoolWithOccupations.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary)["count"]!)"
                                     }
                                         
                                     else {
-                                        cell?.lbl_Count_NumberOfUsers.text = "0"
+                                        cell?.lbl_Count_CompanySchoolWithOccupations.text = "0"
                                     }
                                     
                                     cell?.imgView_Location.image = UIImage.init(named: "location-pin")
@@ -1465,9 +1743,45 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
 
                                     
                                     if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" {
-                                        cell?.lbl_Location.text = dict_Temp?.value(forKey: "location") as? String
+                                       // cell?.lbl_Location.text = dict_Temp?.value(forKey: "location") as? String
+                                        cell?.lbl_Location.isHidden = false
                                         
+                                        
+                                        if ((dict_Temp?.value(forKey: Global.macros.klocation) as? String)!.contains("United States")) || ((dict_Temp?.value(forKey: Global.macros.klocation) as? String)!.contains("USA"))
+                                        {
+                                            let str = dict_userInfo.value(forKey: Global.macros.klocation) as? String
+                                            
+                                            var strArry = str?.components(separatedBy: ",")
+                                            strArry?.removeLast()
+                                            var tempStr:String = ""
+                                            for (index,element) in (strArry?.enumerated())!
+                                            {
+                                                var coma = ""
+                                                
+                                                if index == 0
+                                                {
+                                                    coma = ""
+                                                }
+                                                else
+                                                {
+                                                    coma = ","
+                                                }
+                                                
+                                                tempStr = tempStr + coma + element
+                                                cell?.lbl_Location.text = tempStr
+                                                
+                                            }
+                                            
+                                            
+                                        }
+                                            
+                                        else {
+                                            
+                                            cell?.lbl_Location.text = dict_Temp?.value(forKey: Global.macros.klocation) as? String
+                                            
+                                        }
                                     }
+                                        
                                     else {
                                         cell?.lbl_Location.text = "NA"
                                     }
@@ -1561,8 +1875,10 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                         
                                     }else{
                                         
-                                        if dict_Temp?.value(forKey: "schoolUrl") as? String != nil && dict_Temp?.value(forKey: "schoolUrl") as? String != " "{
+                                        if dict_Temp?.value(forKey: "schoolUrl") as? String != nil && dict_Temp?.value(forKey: "schoolUrl") as? String != " " && dict_Temp?.value(forKey: "schoolUrl") as? String != ""{
                                             
+                                            cell?.btn_OpenUrl.isUserInteractionEnabled = true
+
                                             cell?.lbl_Url.text = dict_Temp?.value(forKey: "schoolUrl") as? String
                                             cell?.btn_OpenUrl.isUserInteractionEnabled = true
                                             
@@ -1657,19 +1973,19 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                 
                                 
                                 if dict_Temp?.value(forKey: "shadowedByShadowUser") != nil {   //Mutual data set on user, school and company
-                                    cell?.lbl_Count_ShadowersVerified.text = "\((dict_Temp?.value(forKey: "shadowedByShadowUser") as! NSDictionary)["count"]!)"
+                                    cell?.lbl_Count_ShadowedByShadowUser.text = "\((dict_Temp?.value(forKey: "shadowedByShadowUser") as! NSDictionary)["count"]!)"
                                 }
                                     
                                 else {
-                                    cell?.lbl_Count_ShadowersVerified.text = "0"
+                                    cell?.lbl_Count_ShadowedByShadowUser.text = "0"
                                 }
                                 
-                                if dict_Temp?.value(forKey: "shadowersVerified")  != nil {
-                                    cell?.lbl_Count_ShadowedByShadowUser.text = "\((dict_Temp?.value(forKey: "shadowersVerified") as! NSDictionary)["count"]!)"
+                                if dict_Temp?.value(forKey: "shadowersVerified")  != nil { //lbl_Count_ShadowersVerified
+                                    cell?.lbl_Count_ShadowersVerified.text = "\((dict_Temp?.value(forKey: "shadowersVerified") as! NSDictionary)["count"]!)"
                                 }
                                 else {
                                     
-                                    cell?.lbl_Count_ShadowedByShadowUser.text = "0"
+                                    cell?.lbl_Count_ShadowersVerified.text = "0"
                                 }
                                 
                                 
@@ -1710,7 +2026,7 @@ class CustomSearchViewController: UIViewController, UIGestureRecognizerDelegate 
                                         self.dicUrl.removeAllObjects()
                                         
                                         if (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] != nil || (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String != "" {
-                                            cell?.lbl_CompanySchoolUserName.text = (self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String
+                                            cell?.lbl_CompanySchoolUserName.text = ((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"] as? String)?.capitalized
                                             cell?.lbl_Abt.text = "About" + " " + "\((self.arr_SearchData[(indexPath?.row)!] as! NSDictionary)["name"]!)"
                                             
                                         }
@@ -2060,6 +2376,9 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
         
         var main_cell = UITableViewCell()
         
+        bool_FromOccupation = false
+
+        
         if tableView == tblview_AllSearchResult {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell_Simple", for: indexPath) as! AllSearchesTableViewCell
@@ -2078,11 +2397,14 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                 if dict_Temp?.value(forKey: "companyName") != nil  && dict_Temp?.value(forKey: "companyName") as? String != ""  && dict_Temp?.value(forKey: "companyName") as? String != " " {
                     
                     if (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] == nil {
+                        
+                        cell.lbl_LocNcom.isHidden = false
+                        cell.img_LocNcom.isHidden = false
                     
                     let companyName =  dict_Temp?.value(forKey: "companyName") as! String
                     
                     if companyName != "" && dict_Temp?.value(forKey: "companyName") != nil && companyName != " " {
-                        cell.lbl_LocNcom.text = companyName.capitalizingFirstLetter()
+                        cell.lbl_LocNcom.text = companyName.capitalized
                         cell.img_LocNcom.image = UIImage.init(named: "company-icon")
                     }
                     else {
@@ -2105,12 +2427,15 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                     if dict_Temp?.value(forKey: "schoolName") != nil && dict_Temp?.value(forKey: "schoolName") as? String != "" && dict_Temp?.value(forKey: "schoolName") as? String != " " {
                         
                         if (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["occupationDTO"] == nil {
+                            
+                            cell.lbl_LocNcom.isHidden = false
+                            cell.img_LocNcom.isHidden = false
                         
                         let schoolName = dict_Temp?.value(forKey: "schoolName") as! String
                         
                         if schoolName != "" && dict_Temp?.value(forKey: "schoolName") != nil && schoolName != " "
                         {
-                            cell.lbl_LocNcom.text = schoolName.capitalizingFirstLetter()
+                            cell.lbl_LocNcom.text = schoolName.capitalized
                             cell.img_LocNcom.image = UIImage.init(named: "company-icon")
                             
                         }
@@ -2147,7 +2472,47 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                 
                 if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" && dict_Temp?.value(forKey: "location") as? String != " " {
                     
-                    cell.lbl_LocNcom.text = dict_Temp?.value(forKey: "location") as? String
+                    
+                    cell.lbl_LocNcom.isHidden = false
+                    cell.img_LocNcom.isHidden = false
+                    
+                    if ((dict_Temp?.value(forKey: Global.macros.klocation) as? String)!.contains("United States")) || ((dict_Temp?.value(forKey: Global.macros.klocation) as? String)!.contains("USA"))
+                    {
+                        let str = dict_userInfo.value(forKey: Global.macros.klocation) as? String
+                        
+                        var strArry = str?.components(separatedBy: ",")
+                        strArry?.removeLast()
+                        var tempStr:String = ""
+                        for (index,element) in (strArry?.enumerated())!
+                        {
+                            var coma = ""
+                            
+                            if index == 0
+                            {
+                                coma = ""
+                            }
+                            else
+                            {
+                                coma = ","
+                            }
+                            
+                            tempStr = tempStr + coma + element
+                            cell.lbl_LocNcom.text = tempStr
+                            
+                        }
+                        
+                        
+                    }
+                        
+                    else {
+                        
+                        cell.lbl_LocNcom.text = dict_Temp?.value(forKey: Global.macros.klocation) as? String
+                        
+                    }
+                    
+
+                    
+                   // cell.lbl_LocNcom.text = dict_Temp?.value(forKey: "location") as? String
                     cell.img_LocNcom.image = UIImage.init(named: "location-pin")
                     
                 }
@@ -2178,13 +2543,15 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
                     let str_distance = (self.arr_SearchData[indexPath.row] as! NSDictionary)["distance"] as? NSString
                     
                     if str_distance == "" || str_distance == nil {
-                        cell.lbl_Time.text = "0M"
+                        cell.lbl_Time.text = "10000M"
                     }
                     else {
                         cell.lbl_Time.text = String(format: "%.0f", str_distance!.floatValue) + " " + "MILES"
                     }
                     
                 }
+                
+               // cell.lbl_Time.text = self.str_radiusInMiles! + "M"
             }
                 
             else {
@@ -2197,7 +2564,7 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
             
             if self.arr_SearchData.count > 0 {
                 
-                cell.lbl_Name.text = ((arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String)?.capitalizingFirstLetter()
+                cell.lbl_Name.text = ((arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String)?.capitalized
                 let rating_number = "\((arr_SearchData[indexPath.row] as! NSDictionary)["avgRating"]!)"
                 
                 //print(rating_number)
@@ -2359,13 +2726,15 @@ extension CustomSearchViewController:UITableViewDelegate,UITableViewDataSource{
         if tableView != tblview_AllSearchResult {
             
             let site_url = (array_public_UserSocialSites[indexPath.row] as NSDictionary).value(forKey: "url") as? String
-            print(site_url!)
+            let trimmedString = site_url?.trimmingCharacters(in: .whitespacesAndNewlines)
+
+            print(trimmedString!)
             DispatchQueue.main.async {
                 
-                
-                if let checkURL = NSURL(string: site_url!) {
+                if let checkURL = NSURL(string: trimmedString!) {
                     
-                    if  UIApplication.shared.openURL(checkURL as URL){
+                    if  UIApplication.shared.openURL(checkURL as URL) {
+                       
                         print("URL Successfully Opened")
                     }
                     else {
@@ -2388,7 +2757,8 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)as! CustomCollectionViewCell
-        
+        bool_FromOccupation = false
+
         let desiredOffset = CGPoint(x: 0, y: -CGFloat((cell.customScrollView.contentInset.top )))
         cell.customScrollView.setContentOffset(desiredOffset, animated: true)
         
@@ -2414,7 +2784,7 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                     self.dicUrl.removeAllObjects()
                     
                     if (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] != nil || (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String != "" {
-                        cell.lbl_CompanySchoolUserName.text = (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String
+                        cell.lbl_CompanySchoolUserName.text = ((self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String)?.capitalized
                         
                     }
                     else {
@@ -2438,13 +2808,10 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                     
                     cell.lbl_totalRatingCount.text = "\((self.arr_SearchData[(indexPath.row)] as! NSDictionary)["ratingCount"]!)"
                     
-                    
-                    
                     let dict_Temp = (self.arr_SearchData[(indexPath.row)] as! NSDictionary)["userDTO"] as? NSDictionary
                     let str_role = dict_Temp?.value(forKey: "role") as? String
-                    
-                    
                     let str_video =  dict_Temp?.value(forKey: "videoUrl") as? String
+                    
                     if str_video != nil {
                         video_url = NSURL(string: str_video!) as URL?
                     }
@@ -2481,7 +2848,7 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                         
                         cell.kHeight_BehindDetailView.constant = 58
                         
-                        if dict_Temp?.value(forKey: "companyName") != nil && dict_Temp?.value(forKey: "companyName") as? String != ""{//company not nil
+                        if dict_Temp?.value(forKey: "companyName") != nil && dict_Temp?.value(forKey: "companyName") as? String != "" {//company not nil
                             
                             cell.lbl_Location.text = dict_Temp?.value(forKey: "companyName") as? String
                             cell.imgView_Location.image = UIImage.init(named: "company-icon")
@@ -2489,10 +2856,9 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                             cell.lbl_Location.isHidden = false
                             cell.imgView_Location.isHidden = false
                             
-                            if dict_Temp?.value(forKey: "schoolName") != nil &&  dict_Temp?.value(forKey: "schoolName") as? String != ""{
+                            if dict_Temp?.value(forKey: "schoolName") != nil &&  dict_Temp?.value(forKey: "schoolName") as? String != "" {
                                 
                                 cell.lbl_Url.text = dict_Temp?.value(forKey: "schoolName") as? String
-                                
                                 cell.imgView_Url.image = UIImage.init(named: "school-icon")
                                 cell.btn_OpenUrl.isUserInteractionEnabled = false
                                 cell.lbl_Url.isHidden = false
@@ -2582,13 +2948,14 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                             cell.lbl_Location.isHidden = true
                             cell.imgView_Location.isHidden = true
                             
-                            if dict_Temp?.value(forKey: "schoolName") != nil &&  dict_Temp?.value(forKey: "schoolName") as? String != ""{
-                                
+                            if dict_Temp?.value(forKey: "schoolName") != nil &&  dict_Temp?.value(forKey: "schoolName") as? String != ""   &&  dict_Temp?.value(forKey: "schoolName") as? String != " "{
+                                cell.btn_OpenUrl.isUserInteractionEnabled = true
+
                                 cell.lbl_Url.isHidden = false
                                 cell.imgView_Url.isHidden = false
-//                                cell.k_Constraint_Top_labelUrl.constant = -28.0
-//                                cell.k_Constraint_Top_btnUrl.constant = -28.0
-//                                cell.k_Constraint_Top_imageViewUrl.constant = -23.0
+                                cell.k_Constraint_Top_labelUrl.constant = -28.0
+                                cell.k_Constraint_Top_btnUrl.constant = -28.0
+                                cell.k_Constraint_Top_imageViewUrl.constant = -23.0
                                 
                                 if array_public_UserSocialSites.count > 0 {//social site not nil
                                     
@@ -2681,26 +3048,62 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
 
                         
                         if dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") != nil {
-                            cell.lbl_Count_CompanySchoolWithOccupations.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary)["count"]!)"
+                            cell.lbl_Count_NumberOfUsers.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseUsers") as! NSDictionary)["count"]!)"
                         }
                         else {
-                            cell.lbl_Count_CompanySchoolWithOccupations.text = "0"
+                            cell.lbl_Count_NumberOfUsers.text = "0"
                             
                         }
                         
                         if dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations")  != nil {
                             
-                            cell.lbl_Count_NumberOfUsers.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary)["count"]!)"
+                            cell.lbl_Count_CompanySchoolWithOccupations.text = "\((dict_Temp?.value(forKey: "schoolOrCompanyWithTheseOccupations") as! NSDictionary)["count"]!)"
                         }
                             
                             
                         else {
-                            cell.lbl_Count_NumberOfUsers.text = "0"
+                            cell.lbl_Count_CompanySchoolWithOccupations.text = "0"
                         }
                         
                         
                         if dict_Temp?.value(forKey: "location") != nil && dict_Temp?.value(forKey: "location") as? String != "" {
-                            cell.lbl_Location.text = dict_Temp?.value(forKey: "location") as? String
+                            cell.lbl_Location.isHidden = false
+                           // cell.lbl_Location.text = dict_Temp?.value(forKey: "location") as? String
+                            
+                            if ((dict_Temp?.value(forKey: Global.macros.klocation) as? String)!.contains("United States")) || ((dict_Temp?.value(forKey: Global.macros.klocation) as? String)!.contains("USA"))
+                            {
+                                let str = dict_userInfo.value(forKey: Global.macros.klocation) as? String
+                                
+                                var strArry = str?.components(separatedBy: ",")
+                                strArry?.removeLast()
+                                var tempStr:String = ""
+                                for (index,element) in (strArry?.enumerated())!
+                                {
+                                    var coma = ""
+                                    
+                                    if index == 0
+                                    {
+                                        coma = ""
+                                    }
+                                    else
+                                    {
+                                        coma = ","
+                                    }
+                                    
+                                    tempStr = tempStr + coma + element
+                                     cell.lbl_Location.text = tempStr
+                                    
+                                }
+                                
+                                
+                            }
+                                
+                            else {
+                                
+                                 cell.lbl_Location.text = dict_Temp?.value(forKey: Global.macros.klocation) as? String
+                                
+                            }
+  
                         }
                         else {
                             cell.lbl_Location.text = "NA"
@@ -2708,7 +3111,7 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                         
                         if str_role == "COMPANY"{
                             
-                            if dict_Temp?.value(forKey: "companyUrl") as? String != nil {
+                            if dict_Temp?.value(forKey: "companyUrl") as? String != nil && dict_Temp?.value(forKey: "companyUrl") as? String != " " {
                                 cell.lbl_Url.text = dict_Temp?.value(forKey: "companyUrl") as? String
                                 cell.btn_OpenUrl.isUserInteractionEnabled = true
                                 
@@ -2718,12 +3121,13 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                                 cell.k_Constraint_Top_btnUrl.constant = 8.0
                                 cell.k_Constraint_Top_imageViewUrl.constant = 8.0
                                 
+                                
                                 if array_public_UserSocialSites.count > 0   {   //social sites not nil
                                     cell.tbl_View_SocialSite.isHidden = false
                                     
                                     if array_public_UserSocialSites.count == 1 {   //social site count 1
                                         
-                                        cell.k_Constraint_Height_TableviewSocialSite.constant = 50.0
+                                        cell.k_Constraint_Height_TableviewSocialSite.constant = 45.0
                                         cell.k_Constraint_ViewDescriptionHeight.constant = 180.0
                                         
                                     }
@@ -2792,7 +3196,10 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                         }
                         else{
                             
-                            if dict_Temp?.value(forKey: "schoolUrl") as? String != nil{
+                            if dict_Temp?.value(forKey: "schoolUrl") as? String != nil && dict_Temp?.value(forKey: "schoolUrl") as? String != " " && dict_Temp?.value(forKey: "schoolUrl") as? String != "" {
+                                
+                                
+                                
                                 cell.lbl_Url.text = dict_Temp?.value(forKey: "schoolUrl") as? String
                                 cell.btn_OpenUrl.isUserInteractionEnabled = true
                                 
@@ -2881,20 +3288,20 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                     }
                     
                     if dict_Temp?.value(forKey: "shadowedByShadowUser") != nil {
-                        cell.lbl_Count_ShadowedByShadowUser.text = "\((dict_Temp?.value(forKey: "shadowedByShadowUser") as! NSDictionary)["count"]!)"
+                        cell.lbl_Count_ShadowersVerified.text = "\((dict_Temp?.value(forKey: "shadowedByShadowUser") as! NSDictionary)["count"]!)"
                     }
                         
                     else {
-                        cell.lbl_Count_ShadowedByShadowUser.text = "0"
+                        cell.lbl_Count_ShadowersVerified.text = "0"
                         
                     }
                     
                     if dict_Temp?.value(forKey: "shadowersVerified") != nil {
-                        cell.lbl_Count_ShadowersVerified.text = "\((dict_Temp?.value(forKey: "shadowersVerified") as! NSDictionary)["count"]!)"
+                        cell.lbl_Count_ShadowedByShadowUser.text = "\((dict_Temp?.value(forKey: "shadowersVerified") as! NSDictionary)["count"]!)"
                     }
                     else {
                         
-                        cell.lbl_Count_ShadowersVerified.text = "0"
+                        cell.lbl_Count_ShadowedByShadowUser.text = "0"
                     }
                     
                     let str_bio = dict_Temp?.value(forKey: "bio") as? String
@@ -2935,7 +3342,7 @@ extension CustomSearchViewController:UICollectionViewDelegate,UICollectionViewDa
                         
                         self.dicUrl.removeAllObjects()
                         if (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] != nil || (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String != "" {
-                            cell.lbl_CompanySchoolUserName.text = (self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String
+                            cell.lbl_CompanySchoolUserName.text = ((self.arr_SearchData[indexPath.row] as! NSDictionary)["name"] as? String)?.capitalized
                             cell.lbl_Abt.text = "About" + " " + "\((self.arr_SearchData[indexPath.row] as! NSDictionary)["name"]!)"
 
                         }

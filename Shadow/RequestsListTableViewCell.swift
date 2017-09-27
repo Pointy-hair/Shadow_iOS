@@ -112,7 +112,7 @@ class RequestsListTableViewCell: UITableViewCell {
             let dict_UserInfo = dictionary.value(forKey: "userDTO") as! NSDictionary
             
             if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "USER"{
-                self.lbl_UserName.text = (dict_UserInfo.value(forKey: "userName") as? String)?.capitalizingFirstLetter()
+                self.lbl_UserName.text = (dict_UserInfo.value(forKey: "userName") as? String)?.capitalized
             }
             else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "SCHOOL"{
                 

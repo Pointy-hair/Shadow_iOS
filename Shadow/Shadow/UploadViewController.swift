@@ -35,6 +35,9 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
     private var newVideoPath:String?
     public  var outputURL_new : String?
     
+    var playerLayer = AVPlayerLayer()
+   var avplayerlayer = AVPlayerLayer()
+    
     var videoPlaybackPosition:CGFloat!
     var trimmerView = ICGVideoTrimmerView()
     var StartTime:CGFloat!
@@ -57,6 +60,7 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
     var Finalvideoplayerpath : String?
     var playbackTimeCheckerTimer : Timer?
     var exportSession :  AVAssetExportSession!
+    var counter : Int = 1
     
     override var shouldAutorotate : Bool {
         // Lock autorotate
@@ -130,15 +134,17 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
                 self.btn_UploadFromGallary.isHidden = false
                 self.btn_CancelFromGallary.isHidden = false
                 
-                self.SetButtonCustomAttributesPurple(self.btn_PlayFromGallary)
-                self.SetButtonCustomAttributes(self.btn_UploadFromGallary)
-                self.SetButtonCustomAttributesPurple(self.btn_CancelFromGallary)
-                self.SetButtonCustomAttributesPurple(self.btn_VideoPlayFromGallery)
+                self.SetButtonCustomAttributesPurpleGallery(self.btn_PlayFromGallary)
+                self.SetButtonCustomAttributesPurpleGallery(self.btn_UploadFromGallary)
+                self.SetButtonCustomAttributesPurpleGallery(self.btn_CancelFromGallary)
+                self.SetButtonCustomAttributesPurpleGallery(self.btn_VideoPlayFromGallery)
 
 
             self.img_Thumbnail.image = thumbnail
             //self.trimmerView = ICGVideoTrimmerView()
-            self.trimmerView.frame = CGRect(x:0, y: 22, width: self.view.frame.size.width, height: 70)
+            self.trimmerView.frame = CGRect(x:0, y: 0, width: self.view.frame.size.width, height: 85)
+                self.trimmerView.maxLength = 60.0
+                self.trimmerView.minLength = 10.0
             self.view.addSubview(self.trimmerView)
             self.view.bringSubview(toFront: self.trimmerView)
             let asset = AVAsset(url: video_url!)
@@ -214,15 +220,17 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
         }
     }
     override func viewDidAppear(_ animated: Bool) {
-        
-        Global.macros.statusBar.isHidden = false
+        DispatchQueue.main.async {
+
+        Global.macros.statusBar.isHidden = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationItem.setHidesBackButton(true, animated:true)
-
+        }
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
+        
         bool_VideoFromGallary = false
         bool_PlayFromProfile = false
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -248,11 +256,14 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
         trimmerView.hideTracker(true)
         if StartTime != startTime {
             //then it moved the left position, we should rearrange the bar
+           // counter = counter + 1
             seekVideoToPos(startTime)
         }
         else {
             // right has changed
-            self.playing = false
+            counter = counter + 1
+
+            //self.playing = false
             seekVideoToPos(endTime)
         }
         StartTime = startTime
@@ -366,9 +377,11 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
                     self.avplayer.pause()
                 } else {
                     
-                    if self.playing == true {
+                    if self.playing == true  || counter == 1 {
                         
                         do{
+                             self.playing = false
+                            counter = counter + 1
                             try self.playVideo()
                         }
                         catch{
@@ -376,6 +389,7 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
                         }
                     }
                     else{
+                        
                         self.avplayer.play()
                         self.btn_PlayFromGallary.setTitle("PAUSE", for: .normal)
                         
@@ -398,7 +412,7 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
                 //
             } else {
                 
-                if playing == true {
+                if playing == true   {
                     
                     do{
                         try self.playVideo()
@@ -488,7 +502,8 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
                     self.performSegue(withIdentifier: "a", sender: self)
                     self.showAlert(Message: "Uploaded successfully", vc: self)
                     self.avplayer.pause()
-                    
+                    Global.macros.statusBar.isHidden = false
+
                     
                    }
                    
@@ -499,7 +514,8 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
                     
                     self.showAlert(Message: "Uploaded successfully", vc: self)
                     self.avplayer.pause()
-                    
+                    Global.macros.statusBar.isHidden = false
+
                    }
                                     break
                                 case 401:
@@ -541,21 +557,32 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
     }
     
     @IBAction func Action_Cancel(_ sender: UIButton) {
-        
+        DispatchQueue.main.async {
+            self.player.pause()
+            self.avplayer.pause()
+            Global.macros.statusBar.isHidden = false
+
         self.view_Popup.isHidden = true
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "SWRevealViewController")as!  SWRevealViewController
         Global.macros.kAppDelegate.window?.rootViewController = vc
-      //  _ = self.navigationController?.popViewController(animated: true)
+        }
         
     }
     
     @IBAction func Action_BackButton(_ sender: Any) {
-        
-        self.avplayer.pause()
+        DispatchQueue.main.async {
+       
+        self.playerLayer.removeFromSuperlayer()
+        self.avplayerlayer.removeFromSuperlayer()
+            self.avplayer.pause()
+            self.avplayer = AVPlayer()
+            self.player.pause()
+            self.player = AVPlayer()
+            Global.macros.statusBar.isHidden = false
+
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "SWRevealViewController")as!  SWRevealViewController
         Global.macros.kAppDelegate.window?.rootViewController = vc
-      //  _ = self.navigationController?.popViewController(animated: true)
-
+        }
     }
     
     //MARK: - AVAssetExportSession Functions
@@ -594,7 +621,7 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
         }
         
         //  player.addObserver(self, forKeyPath: "status", options: [], context: nil)
-        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame =  CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
         
@@ -624,7 +651,7 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
             self.view_Popup.addSubview(self.btn_Upload)
             self.view_Popup.addSubview(self.btn_Cancel)
                 
-                self.SetButtonCustomAttributesPurple(self.btn_UploadFromGallary)
+                self.SetButtonCustomAttributesPurpleGallery(self.btn_UploadFromGallary)
                 self.btn_UploadFromGallary.isUserInteractionEnabled = true
                 
                 self.view_Popup.addSubview(self.btn_PlayFromGallary)
@@ -699,7 +726,7 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
         let avasset = AVAsset(url: URL(fileURLWithPath: path))
         self.avplayeritem = AVPlayerItem.init(asset: avasset) // player item is initalised with the path of file
         self.avplayer = AVPlayer.init(playerItem: self.avplayeritem)// player is initialised with the player item`
-        let avplayerlayer = AVPlayerLayer.init(player: self.avplayer)    // player layer is initialised with the player
+         avplayerlayer = AVPlayerLayer.init(player: self.avplayer)    // player layer is initialised with the player
         avplayerlayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
         avplayerlayer.videoGravity = AVLayerVideoGravityResizeAspectFill
         self.view.layer.addSublayer(avplayerlayer) // sublayer is added on the view
@@ -753,6 +780,7 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
     func uploadVideo_rightOrientation(_ videoToTrimURL: URL)
     {
         let videoAsset = AVURLAsset(url: videoToTrimURL, options: nil)
+        
         let sourceAudioTrack: AVAssetTrack? = (videoAsset.tracks(withMediaType: AVMediaTypeAudio)[0])// as? AVAssetTrack
         let composition = AVMutableComposition()
         let compositionAudioTrack: AVMutableCompositionTrack? = composition.addMutableTrack(withMediaType: AVMediaTypeAudio, preferredTrackID: kCMPersistentTrackID_Invalid)
@@ -800,7 +828,7 @@ class UploadViewController: UIViewController, ICGVideoTrimmerDelegate {
                     self.SetButtonCustomAttributesPurple(self.btn_Upload)
                     self.btn_Upload.isUserInteractionEnabled = true
  
-                    self.SetButtonCustomAttributesPurple(self.btn_UploadFromGallary)
+                    self.SetButtonCustomAttributesPurpleGallery(self.btn_UploadFromGallary)
                     self.btn_UploadFromGallary.isUserInteractionEnabled = true
                   
                 }

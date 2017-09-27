@@ -28,7 +28,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     //var user_location:String?
     var request_id_fromRequestDetail:NSNumber?
     var check_comingFromRequestDetail:String = "NO"
-    
+    var location_comSchool : String?
     fileprivate var str_date_selected:String? = ""
     
     override func viewWillLayoutSubviews() {
@@ -55,6 +55,11 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             self.btn_SelectVirtualOption.layer.cornerRadius = 3.0
             self.btn_SelectVirtualOption.layer.borderColor = Global.macros.themeColor_pink.cgColor
             self.btn_SelectVirtualOption.layer.borderWidth = 1.0
+            
+          //  self.calender.appearance.todayColor = Global.macros.themeColor_pink
+            self.txtView_Message.layer.borderColor =  UIColor.darkGray.cgColor
+            self.txtView_Message.layer.cornerRadius = 8.0
+            self.txtView_Message.layer.borderWidth = 1.0
             
             
 //            self.txtView_Message.layer.cornerRadius = 5.0
@@ -83,6 +88,14 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                 self.setRequestData()
             }
             
+            if self.location_comSchool != nil && self.location_comSchool != "" {
+                
+                self.imgView_InPerson.image = UIImage.init(named: "purple")
+                self.imgView_Virtually.image = UIImage.init(named: "blank")
+                self.btn_SelectLocation.setTitle(self.location_comSchool, for: .normal)
+                self.btn_SelectLocation.isHidden = false
+            }
+            
         }
         // Do any additional setup after loading the view.
     }
@@ -96,8 +109,8 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     //MARK: - Button Actions
     @IBAction func Action_CheckBtnLocation(_ sender: UIButton) {
         
-        self.imgView_InPerson.image = UIImage.init(named: "checked")
-        self.imgView_Virtually.image = UIImage.init(named: "unchecked")
+        self.imgView_InPerson.image = UIImage.init(named: "purple")
+        self.imgView_Virtually.image = UIImage.init(named: "blank")
         
         self.btn_SelectLocation.isHidden = false
         
@@ -115,8 +128,8 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     
     @IBAction func Action_CheckBtnVirtualOption(_ sender: UIButton) {
         
-        self.imgView_Virtually.image = UIImage.init( named: "checked")
-        self.imgView_InPerson.image = UIImage.init(named: "unchecked")
+        self.imgView_Virtually.image = UIImage.init( named: "purple")
+        self.imgView_InPerson.image = UIImage.init(named: "blank")
         
         self.btn_SelectLocation.isHidden = true
         //   self.btn_SelectVirtualOption.isHidden = false
@@ -141,9 +154,9 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
     func Send(){
         
         txtView_Message.resignFirstResponder()
-        if self.imgView_Virtually.image == UIImage.init(named: "checked") || self.imgView_InPerson.image == UIImage.init(named: "checked"){
+        if self.imgView_Virtually.image == UIImage.init(named: "purple") || self.imgView_InPerson.image == UIImage.init(named: "purple"){
             
-            if self.imgView_InPerson.image == UIImage.init(named: "checked") && self.btn_SelectLocation.currentTitle != "Select Location"{
+            if self.imgView_InPerson.image == UIImage.init(named: "purple") && self.btn_SelectLocation.currentTitle != "Select Location"{
                 
                 if str_date_selected != ""{
                     if txtView_Message.text != ""  {
@@ -158,7 +171,7 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                     self.showAlert(Message: "Please select a date.", vc: self)
                 }
             }
-            else if self.imgView_Virtually.image == UIImage.init(named: "checked"){
+            else if self.imgView_Virtually.image == UIImage.init(named: "purple"){
                 if str_date_selected != ""{
                     if txtView_Message.text != ""  {
                         
@@ -199,11 +212,11 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
             dict.setValue(user_Id, forKey: Global.macros.kUserId)
             dict.setValue(userIdFromSearch, forKey:Global.macros.kotherUserId)
             
-            if imgView_InPerson.image == UIImage.init(named: "checked"){
+            if imgView_InPerson.image == UIImage.init(named: "purple"){
                 dict.setValue(btn_SelectLocation.currentTitle, forKey: Global.macros.k_location)
                 
             }
-            else if  imgView_Virtually.image == UIImage.init(named: "checked"){
+            else if  imgView_Virtually.image == UIImage.init(named: "purple"){
                 //dict.setValue(btn_SelectVirtualOption.currentTitle, forKey: Global.macros.k_mediumOfCommunication)
                 
                 dict.setValue("VideoCall", forKey: Global.macros.k_mediumOfCommunication)
@@ -292,9 +305,40 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                                 self.present(alert, animated: true, completion: nil)
                                 
                             }
+                    
+                case 406 :
+                    
+                    DispatchQueue.main.async {
                         
+                        let TitleString = NSAttributedString(string: "Shadow", attributes: [
+                            NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+                            NSForegroundColorAttributeName : Global.macros.themeColor_pink
+                            ])
+                        let MessageString = NSAttributedString(string: "Request cannot be sent, because recipient has blocked his/her shadow profile.", attributes: [
+                            NSFontAttributeName : UIFont.systemFont(ofSize: 15),
+                            NSForegroundColorAttributeName : Global.macros.themeColor_pink
+                            ])
+                        
+                        let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: {(action) in
+                            
+                            _ = self.navigationController?.popToRootViewController(animated: true)
+                            
+                        }))
+                        alert.view.layer.cornerRadius = 10.0
+                        alert.view.clipsToBounds = true
+                        alert.view.backgroundColor = UIColor.white
+                        alert.view.tintColor = Global.macros.themeColor_pink
+                        
+                        alert.setValue(TitleString, forKey: "attributedTitle")
+                        alert.setValue(MessageString, forKey: "attributedMessage")
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    }
+
+                    
                     break
-                default:
+                    default:
                     self.showAlert(Message: Global.macros.kError, vc: self)
                     break
                     
@@ -344,16 +388,16 @@ class SendRequestViewController: UIViewController,GMSAutocompleteViewControllerD
                         //if video call is selected
                         if dict_Info[Global.macros.k_mediumOfCommunication] != nil{
                             
-                        self.imgView_InPerson.image = UIImage.init(named: "unchecked")
-                        self.imgView_Virtually.image = UIImage.init(named: "checked")
+                        self.imgView_InPerson.image = UIImage.init(named: "blank")
+                        self.imgView_Virtually.image = UIImage.init(named: "purple")
                             
                             
                             
                         }
                         else if dict_Info[Global.macros.k_location] != nil{
                             
-                        self.imgView_InPerson.image = UIImage.init(named: "checked")
-                        self.imgView_Virtually.image = UIImage.init(named: "unchecked")
+                        self.imgView_InPerson.image = UIImage.init(named: "purple")
+                        self.imgView_Virtually.image = UIImage.init(named: "blank")
                         self.btn_SelectLocation.setTitle(dict_Info.value(forKey:Global.macros.k_location) as? String, for: .normal)
                             
                             

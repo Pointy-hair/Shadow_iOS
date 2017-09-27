@@ -110,8 +110,8 @@ class UserEditProfileViewController: UIViewController {
     
     
     
-    
-    
+    var bool_SelectImage : Bool = false
+    var profileurl : String?
     //MARK: - View Default methods
     override func viewWillLayoutSubviews() {
         
@@ -136,7 +136,8 @@ class UserEditProfileViewController: UIViewController {
     }
     override func viewDidDisappear(_ animated: Bool) {
         bool_VideoIsOfShortLength = false
-
+        bool_VideoFromGallary = false
+        self.bool_SelectImage = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -187,7 +188,7 @@ class UserEditProfileViewController: UIViewController {
         self.btn_Done_SocialSite.layer.borderColor = Global.macros.themeColor_pink.cgColor
         
       
-        self.title = (dictionary_user_Info.value(forKey: Global.macros.kUserName) as? String)?.capitalizingFirstLetter()
+        self.title = (dictionary_user_Info.value(forKey: Global.macros.kUserName) as? String)?.capitalized
         
         
         CustomBorder(searchbar : self.serachBar_Occupation)
@@ -208,10 +209,19 @@ class UserEditProfileViewController: UIViewController {
             
             //Set profile image
             //setting profile pic
-            let profileurl = dictionary_user_Info.value(forKey: "profileImageUrl")as? String
-            if profileurl != nil {
-                self.imgView_ProfilePic.sd_setImage(with: URL(string:profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
+            
+           if self.bool_SelectImage == false {
+            self.profileurl = dictionary_user_Info.value(forKey: "profileImageUrl")as? String
+            if self.profileurl != nil {
+                self.imgView_ProfilePic.sd_setImage(with: URL(string:self.profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
                 self.profileDummyImage.isHidden = true
+            }
+                
+            else {
+                
+                self.imgView_ProfilePic.image = nil
+                
+            }
             }
             
             //Save button
@@ -771,22 +781,22 @@ class UserEditProfileViewController: UIViewController {
     
     @IBAction func RecordVideo(_ sender: Any) {
         
-        
-        
-        let TitleString = NSAttributedString(string: "Shadow", attributes: [
-            NSFontAttributeName : UIFont.systemFont(ofSize: 18),
-            NSForegroundColorAttributeName : Global.macros.themeColor_pink
-            ])
-        let MessageString = NSAttributedString(string: "Do you want to open gallary?", attributes: [
-            NSFontAttributeName : UIFont.systemFont(ofSize: 15),
-            NSForegroundColorAttributeName : Global.macros.themeColor_pink
-            ])
-        
         DispatchQueue.main.async {
+
+        
+//        let TitleString = NSAttributedString(string: "Shadow", attributes: [
+//            NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+//            NSForegroundColorAttributeName : UIColor.black
+//            ])
+        let MessageString = NSAttributedString(string: "Choose Video", attributes: [
+            NSFontAttributeName : UIFont.systemFont(ofSize: 20),
+            NSForegroundColorAttributeName : UIColor.black
+            ])
+        
             self.clearAllNotice()
             
-            let alert = UIAlertController(title: "Shadow", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: {(action) in
+            let alert = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Gallery", style: UIAlertActionStyle.default, handler: {(action) in
                 
                 
                     //print("video gallery")
@@ -797,17 +807,21 @@ class UserEditProfileViewController: UIViewController {
                         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary;
                         imagePicker.mediaTypes = [kUTTypeMovie as String]
                         imagePicker.videoMaximumDuration = 1.00
-                        
-                        
+                       
+
                         //img.mediaTypes = [kUTTypeImage]; //whatever u want type
                         imagePicker.allowsEditing = false
                         self.present(imagePicker, animated: true, completion: nil)
+                        
+                        Global.macros.statusBar.backgroundColor = Global.macros.themeColor_pink
+                        UIApplication.shared.statusBarStyle = .lightContent
+                     // Global.macros.statusBar.isHidden = true
                     }
                
 
                 
             }))
-            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: {(action) in
+            alert.addAction(UIAlertAction(title: "Camera", style: UIAlertActionStyle.default, handler: {(action) in
                 
                 bool_PlayFromProfile = false
 
@@ -819,13 +833,21 @@ class UserEditProfileViewController: UIViewController {
                 
                 
             }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {(action) in
+                
+              
+                
+                
+                
+            }))
 
             alert.view.layer.cornerRadius = 10.0
             alert.view.clipsToBounds = true
             alert.view.backgroundColor = UIColor.white
             alert.view.tintColor = Global.macros.themeColor_pink
             
-            alert.setValue(TitleString, forKey: "attributedTitle")
+          //  alert.setValue(TitleString, forKey: "attributedTitle")
             alert.setValue(MessageString, forKey: "attributedMessage")
             self.present(alert, animated: true, completion: nil)
             
@@ -1496,7 +1518,9 @@ extension UserEditProfileViewController:UIImagePickerControllerDelegate,UINaviga
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         
-        
+        Global.macros.statusBar.backgroundColor = Global.macros.themeColor_pink
+        UIApplication.shared.statusBarStyle = .lightContent
+ 
         let image = info[UIImagePickerControllerOriginalImage] as? UIImage
   
         if image != nil {
@@ -1507,11 +1531,14 @@ extension UserEditProfileViewController:UIImagePickerControllerDelegate,UINaviga
             
             imageCropVC = RSKImageCropViewController(image: image!, cropMode: RSKImageCropMode.circle)
             
-            
-            
             imageCropVC.delegate = self
+            DispatchQueue.main.async {
+                
+                self.profileurl = nil
+
             
             self.navigationController?.pushViewController(imageCropVC, animated: true)
+            }
             
         })
         }
@@ -1642,8 +1669,12 @@ extension UserEditProfileViewController:UIImagePickerControllerDelegate,UINaviga
        _ =  self.navigationController?.popViewController(animated: true)
 
     }
+    
     func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
-        
+        DispatchQueue.main.async {
+          
+        self.profileurl = nil
+        self.bool_SelectImage = true
         let imageData = UIImageJPEGRepresentation(croppedImage , 0.1)
         let resultiamgedata = imageData!.base64EncodedData(options: NSData.Base64EncodingOptions.lineLength64Characters)
         self.str_profileImage = (NSString(data: resultiamgedata, encoding: String.Encoding.utf8.rawValue) as String?)!
@@ -1652,7 +1683,8 @@ extension UserEditProfileViewController:UIImagePickerControllerDelegate,UINaviga
        _ = self.navigationController?.popViewController(animated: true)
 
     }
-    
+    }
+
     
 }
 
@@ -2279,24 +2311,21 @@ extension UserEditProfileViewController : UITextFieldDelegate{
             textField.resignFirstResponder()
         }
         
+        
+        DispatchQueue.main.async {
+            
+            self.scroll_view.isUserInteractionEnabled = true
+            self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height:   300 + self.k_Constraint_ViewFields_Height.constant + self.kheightViewBehindOccupation.constant + self.kheightViewBehindInterest.constant)
+            
+        }
+
+        
         return true
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
 
-//        if textField == txtfield_Company {
-//            
-//             let string: NSString = (textField.text! as NSString).replacingCharacters(in: range, with: string) as NSString
-//            
-//            if (string.length <= 30) {
-//                
-//                return true
-//            }
-//            else{
-//                return false
-//            }
-//        }
         
         if self.btn_Tag_For_Search == 0{
         

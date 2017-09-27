@@ -114,13 +114,13 @@ extension UIViewController {
             _ = self.navigationController?.pushViewController(vc, animated: true)
             
         }))
-        alert.addAction(UIAlertAction(title: "via Phone Number", style: .default, handler: {(action) -> Void in
-            
-            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "PhoneNumber") as! EnterPhoneNumberVC
-            _ = self.navigationController?.pushViewController(vc, animated: true)
-            
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler:nil))
+//        alert.addAction(UIAlertAction(title: "via Phone Number", style: .default, handler: {(action) -> Void in
+//            
+//            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "PhoneNumber") as! EnterPhoneNumberVC
+//            _ = self.navigationController?.pushViewController(vc, animated: true)
+//            
+//        }))
+//        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler:nil))
         
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
@@ -351,6 +351,19 @@ extension UIViewController {
         button.layer.borderColor = UIColor.white.cgColor
         button.titleLabel!.font =  UIFont.systemFont(ofSize: 18, weight: UIFontWeightThin)
         button.titleLabel!.font =  UIFont.systemFont(ofSize: 16, weight: UIFontWeightMedium)
+        
+    }
+    
+    func SetButtonCustomAttributesPurpleGallery (_ button:UIButton)
+    {
+        button.backgroundColor = Global.macros.themeColor_pink
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.layer.cornerRadius = 5.0
+        button.layer.borderWidth = 1.0
+        button.clipsToBounds = true;
+        button.layer.borderColor = UIColor.white.cgColor
+        button.titleLabel!.font =  UIFont.systemFont(ofSize: 14, weight: UIFontWeightThin)
+        button.titleLabel!.font =  UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
         
     }
 }

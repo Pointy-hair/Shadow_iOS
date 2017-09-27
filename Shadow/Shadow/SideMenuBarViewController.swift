@@ -30,6 +30,14 @@ class SideMenuBarViewController: UIViewController {
         
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+
+        
+
+    }
+    
+    
+    
     //MARK:Button Actions
     
     @IBAction func Action_Switch(_ sender: UISwitch) {

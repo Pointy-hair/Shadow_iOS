@@ -69,7 +69,7 @@ class ProfileVC: UIViewController, UIGestureRecognizerDelegate  {
     @IBOutlet weak var kheightViewBehindSkill: NSLayoutConstraint!
     @IBOutlet weak var kheightCollectionViewOccupation: NSLayoutConstraint!
     @IBOutlet weak var kheightCollectionViewInterestHeight: NSLayoutConstraint!
-    
+    var check_for_previousview : String?
     
     
     var imageView1 : UIImageView?
@@ -79,7 +79,8 @@ class ProfileVC: UIViewController, UIGestureRecognizerDelegate  {
     var imageView5 : UIImageView?
     var linkForOpenWebsite : String?
     var rating_number  : String?
-    fileprivate  var user_IdMyProfile :NSNumber?
+    var user_IdMyProfile :NSNumber?
+    var sidebarMenuOpen : Bool = false
 
     var dicUrl: NSMutableDictionary = NSMutableDictionary()
     let array_URL = ["facebookUrl","linkedInUrl","instagramUrl","googlePlusUrl","gitHubUrl","twitterUrl"]
@@ -101,7 +102,6 @@ class ProfileVC: UIViewController, UIGestureRecognizerDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         DispatchQueue.main.async {
             
             self.tabBarController?.delegate = self
@@ -112,8 +112,9 @@ class ProfileVC: UIViewController, UIGestureRecognizerDelegate  {
                 self.menu_btn.action = #selector(SWRevealViewController.revealToggle(_:))
                 self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
                 self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+                
             }
-            
+
             self.imageView_ProfilePic.layer.cornerRadius = 60.0
             self.imageView_ProfilePic.clipsToBounds = true
             
@@ -124,10 +125,7 @@ class ProfileVC: UIViewController, UIGestureRecognizerDelegate  {
             self.customView(view: self.view_BehindDescription)
 
         }
-        
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileVC.HandleTap))
-//        self.view.addGestureRecognizer(tapGesture)
-   
+        sidebarMenuOpen = false
     
     // Do any additional setup after loading the view.
     let tap = UITapGestureRecognizer(target: self, action: #selector(handle_Tap(_:)))
@@ -135,10 +133,6 @@ class ProfileVC: UIViewController, UIGestureRecognizerDelegate  {
     tap.cancelsTouchesInView = false
     self.view.addGestureRecognizer(tap)
         
-//        DispatchQueue.main.async {
-//            
-//            self.GetUserProfile()
-//        }
     
 }
 
@@ -146,7 +140,9 @@ class ProfileVC: UIViewController, UIGestureRecognizerDelegate  {
 func handle_Tap(_ sender: UITapGestureRecognizer) {
     
     if self.revealViewController() != nil {
-        self.revealViewController().rightRevealToggle(animated: false)
+        self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        
     }
     
 }
@@ -163,7 +159,14 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
    
    
     override func viewWillAppear(_ animated: Bool) {
-      
+        
+        
+   
+        bool_Occupation = false
+        bool_VideoFromGallary = false
+        
+        let tabBarControllerItems = self.tabBarController?.tabBar.items
+
         DispatchQueue.main.async {
             self.txtView_Description.frame.size.height = self.txtView_Description.intrinsicContentSize.height
         }
@@ -175,10 +178,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
             
             DispatchQueue.main.async {
                 
-                if self.revealViewController() != nil {
-                    self.revealViewController().panGestureRecognizer().isEnabled = false
-                
-                }
+               
                 
                 self.scrollbar.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
                 self.automaticallyAdjustsScrollViewInsets = false
@@ -188,7 +188,14 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                 self.view.endEditing(true)
                 self.CreateNavigationBackBarButton() //Create custom back button
                 
-                self.user_IdMyProfile = userIdFromSearch
+               
+                if self.user_IdMyProfile == nil {
+                    
+                    self.user_IdMyProfile = userIdFromSearch
+                    
+                    
+                }
+                if self.user_IdMyProfile != SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
                 let btn2 = UIButton(type: .custom)
                 btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
                 btn2.frame = CGRect(x: self.view.frame.size.width - 80, y: 0, width: 25, height: 25)
@@ -200,7 +207,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                 btn3.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 25, height: 25)
                 btn3.addTarget(self, action: #selector(self.Calender_SearchBtnPressed(sender:)), for: .touchUpInside)
                 let item3 = UIBarButtonItem(customView: btn3)
-                self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
+                    self.navigationItem.setRightBarButtonItems([item2,item3], animated: true) }
                 
                // DispatchQueue.global(qos: .background).async {
                 DispatchQueue.main.async {
@@ -216,8 +223,14 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
             
             DispatchQueue.main.async {
                 
-                if self.revealViewController() != nil {
-                    self.revealViewController().panGestureRecognizer().isEnabled = false
+                
+            
+                    
+                    
+                if self.user_IdMyProfile == nil {
+                    
+                    self.user_IdMyProfile = userIdFromSearch
+                    
                     
                 }
                 
@@ -229,7 +242,6 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                 self.view.endEditing(true)
                 self.CreateNavigationBackBarButton() //Create custom back button
                 
-                self.user_IdMyProfile = userIdFromSearch
                 let btn2 = UIButton(type: .custom)
                 btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
                 btn2.frame = CGRect(x: self.view.frame.size.width - 80, y: 0, width: 25, height: 25)
@@ -249,6 +261,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
 
                     self.GetUserProfile()
                 }
+                bool_ComingFromList = false
               //  }
             }
 
@@ -257,32 +270,58 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
             
             DispatchQueue.main.async {
                 
+                
+                
+                
+                if self.user_IdMyProfile != nil {
+                    
+                    if self.user_IdMyProfile == SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
+                        
+                        self.menu_btn.tintColor = UIColor.white
+                        self.menu_btn.isEnabled = true
+                    }
+                        
+                    else{
+                        
+                        self.menu_btn.tintColor = UIColor.clear
+                        self.menu_btn.isEnabled = false
+                        self.CreateNavigationBackBarButton()
+                        
+                    }
+                    
+                }else {
+                    
+                    self.user_IdMyProfile = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
+                    
+                    self.menu_btn.tintColor = UIColor.white
+                    self.menu_btn.isEnabled = true
+                    
+                    
+                    let btn1 = UIButton(type: .custom)
+                    btn1.setImage(UIImage(named: "chat-icon"), for: .normal)
+                    btn1.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 20, height: 25)
+                    btn1.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
+                    let item1 = UIBarButtonItem(customView: btn1)
+                    
+                    /*  let btn2 = UIButton(type: .custom)
+                     btn2.setImage(UIImage(named: "notifications-button"), for: .normal)
+                     btn2.frame = CGRect(x: self.view.frame.size.width - 40, y: 0, width: 20, height: 25)
+                     btn2.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
+                     let item2 = UIBarButtonItem(customView: btn2) */
+                    
+                    let btn3 = UIButton(type: .custom)
+                    btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
+                    btn3.frame = CGRect(x: self.view.frame.size.width - 70, y: 0, width: 20, height: 20)
+                    btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
+                    let item3 = UIBarButtonItem(customView: btn3)
+            
+                    //Right items
+                    self.navigationItem.setRightBarButtonItems([item1,item3], animated: true)
+                    
+                    
+                }
 
-                let btn2 = UIButton(type: .custom)
-                btn2.setImage(UIImage(named: "chat-icon"), for: .normal)
-                btn2.frame = CGRect(x: self.view.frame.size.width - 25, y: 0, width: 20, height: 25)
-                btn2.addTarget(self, action: #selector(self.chatBtnPressed), for: .touchUpInside)
-                let item2 = UIBarButtonItem(customView: btn2)
-                
-//                let btn4 = UIButton(type: .custom)
-//                btn4.setImage(UIImage(named: "notifications-button"), for: .normal)
-//                btn4.frame = CGRect(x:self.view.frame.size.width - 40, y: 0, width: 25, height: 25)
-//                btn4.addTarget(self, action: #selector(self.notificationBtnPressed), for: .touchUpInside)
-//                let item4 = UIBarButtonItem(customView: btn4)
-                
-                
-                let btn3 = UIButton(type: .custom)
-                btn3.setImage(UIImage(named: "calendar"), for: .normal)//shadow-icon-1
-                btn3.frame = CGRect(x: self.view.frame.size.width - 80, y: 0, width: 25, height: 25)
-                btn3.addTarget(self, action: #selector(self.calenderBtnPressed), for: .touchUpInside)
-                let item3 = UIBarButtonItem(customView: btn3)
-
- 
-                //Right items
-                self.navigationItem.setRightBarButtonItems([item2,item3], animated: true)
- 
-                 self.user_IdMyProfile = SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber
-              
+                     
                 self.tabBarController?.tabBar.isHidden = false
                 self.navigationController?.setNavigationBarHidden(false, animated: false)
                 self.navigationItem.setHidesBackButton(false, animated:true)
@@ -305,11 +344,11 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
             
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationItem.setHidesBackButton(false, animated:true)
-        bool_ComingFromList = false
         
-     
-        self.dicUrl.removeAllObjects()
-        ratingview_ratingNumber = ""
+           bool_ComingFromList = false
+            self.dicUrl.removeAllObjects()
+            ratingview_ratingNumber = ""
+            bool_ComingRatingList = false
         }
     }
     
@@ -343,7 +382,31 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                         SavedPreferences.set(shadow_Status, forKey: Global.macros.kotherUsersShadowYou)
                         
                         
-                        
+//                        let verified = (response.1).value(forKey: "emailVerified")! as? NSNumber
+//                    
+//                    if verified == 0 {
+//                        
+//                        DispatchQueue.main.async {
+//                            self.clearAllNotice()
+//                            
+//                            bool_fromMobile = false
+//                            bool_NotVerified = false
+//                            bool_LocationFilter = false
+//                            bool_PlayFromProfile = false
+//                            bool_AllTypeOfSearches = false
+//                            bool_CompanySchoolTrends = false
+//                            bool_fromVerificationMobile = false
+//                            bool_UserIdComingFromSearch = false
+//                            
+//                            SavedPreferences.set(nil, forKey: "user_verified")
+//                            SavedPreferences.set(nil, forKey: "sessionToken")
+//                            SavedPreferences.removeObject(forKey: Global.macros.kUserId)
+//                            let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Login")
+//                            Global.macros.kAppDelegate.window?.rootViewController = vc
+//                            
+//                        }
+//                    }
+                    
                         
                         self.lbl_shadowedTo.text = (((response.1).value(forKey: "shadowersVerified") as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
                         self.lbl_ShadowedBy.text = (((response.1).value(forKey: "shadowedByShadowUser") as? NSDictionary)?.value(forKey: Global.macros.kcount) as? NSNumber)?.stringValue
@@ -387,7 +450,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                         }
                         
                         ratingview_name = (response.1).value(forKey: Global.macros.kUserName) as? String
-                         self.navigationItem.title = ((response.1).value(forKey: Global.macros.kUserName) as? String)?.capitalizingFirstLetter()
+                         self.navigationItem.title = ((response.1).value(forKey: Global.macros.kUserName) as? String)?.capitalized
                         
                         //  profileImageUrl
                         var profileurl = (response.1).value(forKey: "profileImageUrl")as? String
@@ -423,8 +486,8 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                             self.lbl_Placeholder.isHidden = true
                         }
                         else {
-                            self.lbl_Placeholder.isHidden = false
-                            
+                           // self.lbl_Placeholder.isHidden = false
+                           // self.txtView_Description.frame.size.height = 40
                         }
                         
                         //setting company name
@@ -460,9 +523,9 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                 self.kCompanylbl.constant = 2.0
                                 self.kCompanyImage.constant = 2.0
                                 
-                                self.k_Constraint_TopLblSchool.constant = 25
-                                self.k_Constraint_TopImageViewSchool.constant = 27
-                                self.k_topSchoolButton.constant = 25
+//                                self.k_Constraint_TopLblSchool.constant = 1
+//                                self.k_Constraint_TopImageViewSchool.constant = 0
+//                                self.k_topSchoolButton.constant = 1
                                     self.k_Constraint_tblViewTop.constant = -3.0
 
                                 }
@@ -477,7 +540,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         DispatchQueue.main.async {
                                             self.tblView_SocialSites.reloadData()
                                             self.k_Constraint_Height_TableView.constant = 50.0
-                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 60
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 60
 
                                         }
                                     }
@@ -489,7 +552,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         self.tblView_SocialSites.reloadData()
 
                                         self.k_Constraint_Height_TableView.constant = 100.0
-                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 44
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 44
 
                                     }
 
@@ -500,7 +563,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         self.tblView_SocialSites.reloadData()
 
                                         self.k_Constraint_Height_TableView.constant = 150.0
-                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 20
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 20
 
                                     }
                                     
@@ -512,7 +575,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         self.tblView_SocialSites.reloadData()
 
                                     self.tblView_SocialSites.isHidden = true
-                                   self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 87
+                                   self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height + 87
 
                                     }
 
@@ -542,7 +605,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                     
                                    DispatchQueue.main.async {
                                     self.tblView_SocialSites.isHidden = false
-                                    self.k_Constraint_tblViewTop.constant = -33.0
+                                    self.k_Constraint_tblViewTop.constant = -25.0
                                     }
                                     if array_public_UserSocialSites.count == 1 {//social site count 1
                                         
@@ -550,7 +613,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                             DispatchQueue.main.async {
                                                 self.tblView_SocialSites.reloadData()
                                                 self.k_Constraint_Height_TableView.constant = 50.0
-                                                self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 36
+                                                self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 36
                                                 
                                             }
                                        
@@ -563,7 +626,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                             self.tblView_SocialSites.reloadData()
                                             
                                             self.k_Constraint_Height_TableView.constant = 100.0
-                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 22
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 18
                                             
                                         }
                                     }
@@ -572,7 +635,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                             self.tblView_SocialSites.reloadData()
                                             
                                             self.k_Constraint_Height_TableView.constant = 150.0
-                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant
                                             
                                         }
                                         
@@ -585,7 +648,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         self.tblView_SocialSites.reloadData()
                                         
                                         self.tblView_SocialSites.isHidden = true
-                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 60
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height + 60
                                         
                                     }
                                     
@@ -606,9 +669,9 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
  
                                 self.lbl_School.isHidden = false
                                 self.imgView_School.isHidden = false
-                                self.k_Constraint_TopLblSchool.constant = 3
-                              self.k_Constraint_TopImageViewSchool.constant = 5
-                                self.k_topSchoolButton.constant = 3
+                                self.k_Constraint_TopLblSchool.constant = -35
+                                self.k_Constraint_TopImageViewSchool.constant = -29
+                                self.k_topSchoolButton.constant = -35
                                 self.btn_OverSchool.isUserInteractionEnabled = true
                                     
                                 }
@@ -623,7 +686,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         DispatchQueue.main.async {
 
                                         self.k_Constraint_Height_TableView.constant = 50.0
-                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 35
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 35
                                         }
                                     }
                                         
@@ -631,14 +694,14 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         DispatchQueue.main.async {
 
                                         self.k_Constraint_Height_TableView.constant = 100.0
-                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 35
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 25
                                         }
                                     }
                                     else{//social site count 3
                                         DispatchQueue.main.async {
  
                                         self.k_Constraint_Height_TableView.constant = 150.0
-                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant
                                         }
                                     }
                                     self.tblView_SocialSites.reloadData()
@@ -647,7 +710,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                     DispatchQueue.main.async {
 
                                    self.tblView_SocialSites.isHidden = true
-                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height + 60
+                                    self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height + 60
                                     }
                                 }
                             }
@@ -663,8 +726,8 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                     DispatchQueue.main.async {
                                         
                                         self.tblView_SocialSites.isHidden = false
-                                       // self.k_Constraint_tblViewTop.constant = -14
-                                        self.tblView_SocialSites.frame = CGRect(x: self.tblView_SocialSites.frame.origin.x, y: self.self.txtView_Description.frame.origin.x + 2, width: self.tblView_SocialSites.frame.size.width, height: self.tblView_SocialSites.frame.size.height)
+                                       self.k_Constraint_tblViewTop.constant = -55
+                                   
 
                                     }
                                     if array_public_UserSocialSites.count == 1 {//social site count 1
@@ -672,7 +735,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         DispatchQueue.main.async {
                                             self.tblView_SocialSites.reloadData()
                                             self.k_Constraint_Height_TableView.constant = 50.0
-                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 18
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 18
                                             
                                         }
                                     }
@@ -684,7 +747,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                             self.tblView_SocialSites.reloadData()
                                             
                                             self.k_Constraint_Height_TableView.constant = 80.0
-                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant + 15
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant + 15
                                             
                                         }
                                         
@@ -695,7 +758,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                             self.tblView_SocialSites.reloadData()
                                             
                                             self.k_Constraint_Height_TableView.constant = 130.0
-                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height +  self.k_Constraint_Height_TableView.constant
+                                            self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height +  self.k_Constraint_Height_TableView.constant
                                             
                                         }
                                         
@@ -707,7 +770,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                                         self.tblView_SocialSites.reloadData()
                                         
                                         self.tblView_SocialSites.isHidden = true
-                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.frame.size.height  + 57
+                                        self.k_Constraint_ViewDescHeight.constant = self.txtView_Description.intrinsicContentSize.height  + 47
                                         
                                     }
                                     
@@ -982,6 +1045,15 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
     
     func Calender_SearchBtnPressed(sender: AnyObject){
         
+        if self.revealViewController() != nil {
+            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+        }
+        if self.revealViewController() != nil {
+            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+        }
+        
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "send_request") as! SendRequestViewController
         vc.user_Name =  self.navigationItem.title
         //userIdFromSearch
@@ -991,6 +1063,11 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
     
     func calenderBtnPressed(sender: AnyObject){
         
+        if self.revealViewController() != nil {
+            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+
+        }
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "MyRequests") as! RequestsListViewController
         vc.user_Name =  self.navigationItem.title
         _ = self.navigationController?.pushViewController(vc, animated: true)
@@ -1086,6 +1163,8 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                 self.revealViewController().rightRevealToggle(animated: false)
             }
         
+        
+        
         DispatchQueue.main.async {
             
             if bool_UserIdComingFromSearch == true{
@@ -1097,7 +1176,12 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
             else if bool_ComingFromList == true {
                 
                 
-                self.showAlert(Message: "Coming Soon", vc: self)
+                    
+                    bool_ComingRatingList = true
+                
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+                _ = self.navigationController?.pushViewController(vc, animated: true)
+                
             }
             
             else{
@@ -1111,17 +1195,26 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
                 }
             }
         }
+                
+        
     }
     
     
     @IBAction func Open_ProfileImage(_ sender: UIButton) {
         
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+        
+        
+            
         Global.macros.statusBar.isHidden = true
         let imgdata = UIImageJPEGRepresentation(imageView_ProfilePic.image!, 0.5)
         let photos = self.ArrayOfPhotos(data: imgdata!)
         let vc: NYTPhotosViewController = NYTPhotosViewController(photos: photos as? [NYTPhoto])
         vc.rightBarButtonItem = nil
         self.present(vc, animated: true, completion: nil)
+            
        
         
     }
@@ -1184,7 +1277,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
     
     @IBAction func Action_PlayVideo(_ sender: UIButton) {
         if video_url != nil {
-
+        bool_VideoFromGallary = false
         bool_PlayFromProfile = true
 
             let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Upload_Video") as! UploadViewController
@@ -1211,28 +1304,46 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
     
     @IBAction func Action_openSchoolCompany(_ sender: UIButton) {
         
-        if bool_UserIdComingFromSearch == false {
+        
+        
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+            
+        
+     //   if bool_UserIdComingFromSearch == false {
         
         if sender.tag == 0{
             
-           idFromProfileVC = ((dictionary_user_Info.value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "id") as? NSNumber)!
+           idFromProfileVC = (dictionary_user_Info.value(forKey: "companyDTO") as? NSDictionary)?.value(forKey: "companyUserId") as? NSNumber
             
         }
         else if sender.tag == 1{
-        //    idFromProfileVC = ((dictionary_user_Info.value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "schoolUserId") as? NSNumber)!
+            idFromProfileVC = (dictionary_user_Info.value(forKey: "schoolDTO") as? NSDictionary)?.value(forKey: "schoolUserId") as? NSNumber
 
         }
         
-        print(idFromProfileVC!)
+            if idFromProfileVC != nil  {
+            
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "company") as! ComapanySchoolViewController//UINavigationController
-        check_for_previousview = "FromProfileVC"
+                vc.user_IdMyProfile = idFromProfileVC
         _ = self.navigationController?.pushViewController(vc, animated: true)
-        }
-        else{
-            self.showAlert(Message: "Coming Soon.", vc: self)
+                
+                
+                
+            }
+            
+            else {
+                
+                self.showAlert(Message: "Company/School is not registered.", vc: self)
 
-        }
-
+            }
+    //    }
+//        else{
+//            self.showAlert(Message: "Coming Soon.", vc: self)
+//
+//        }
+        
     }
     
     
@@ -1292,8 +1403,7 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
         if self.revealViewController() != nil {
             self.revealViewController().rightRevealToggle(animated: false)
         }
-        if bool_UserIdComingFromSearch == false {
-
+      //  if bool_UserIdComingFromSearch == false {
         var type:String?
         var navigationTitle:String?
         if sender.tag == 0{//shadowers
@@ -1315,26 +1425,18 @@ func handle_Tap(_ sender: UITapGestureRecognizer) {
         vc.type = type
         vc.ListuserId = self.user_IdMyProfile
         vc.navigation_title = navigationTitle
-            if vc.ListuserId != SavedPreferences.value(forKey: Global.macros.kUserId) as? NSNumber {
-                
-                self.showAlert(Message: "Coming Soon.", vc: self)
-                vc.ListuserId = NSNumber()
-                vc.navigation_title = ""
-
-            }
-            else {
+        
         _ = self.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
-        
-        else{
-            
-            self.showAlert(Message: "Coming Soon.", vc: self)
-
-        }
-        
+      
+       
     }
     
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+    }
     
     
     
@@ -1500,6 +1602,11 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+        
+        
         if collectionView == collectionView_Skills {
             
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "OccupationDetail") as! OccupationDetailViewController
@@ -1514,7 +1621,7 @@ extension ProfileVC:UICollectionViewDelegate,UICollectionViewDataSource,UICollec
 
             
         }
-       
+        
     }
     
     
@@ -1589,12 +1696,21 @@ extension ProfileVC:UITableViewDelegate,UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+            
+      
+            
       
         let site_url = (array_public_UserSocialSites[indexPath.row] as NSDictionary).value(forKey: "url") as? String
-        print(site_url!)
+        let trimmedString = site_url?.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        print(trimmedString!)
         
         DispatchQueue.main.async {
-            if let checkURL = NSURL(string: site_url!) {
+            if let checkURL = NSURL(string: trimmedString!) {
                 
                 if  UIApplication.shared.openURL(checkURL as URL){
                     print("URL Successfully Opened")
@@ -1605,23 +1721,33 @@ extension ProfileVC:UITableViewDelegate,UITableViewDataSource{
             } else {
                 print("Invalid URL")
             }
-        }
+       
         
         
     }
-    
+    }
     
 }
 
 extension ProfileVC:UITabBarControllerDelegate{
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        bool_ComingRatingList = false
         
+        if self.revealViewController() != nil {
+            self.revealViewController().rightRevealToggle(animated: false)
+        }
+
         if tabBarController.selectedIndex == 0{
             if self.revealViewController() != nil {
-                self.revealViewController().rightRevealToggle(animated: false)
+                self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+                
             }
+            
         }
     }
+    
+    
 }
 

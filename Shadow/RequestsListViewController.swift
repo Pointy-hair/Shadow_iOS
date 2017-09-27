@@ -39,18 +39,25 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
         
         
         super.viewDidLoad()
-        
+      
         int_selectedBtn  = 1
        
-        let swipeleft = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeleft))
-        swipeleft.direction = .left
-        tblView_Requests.addGestureRecognizer(swipeleft)
-        
-        let swiperight = UISwipeGestureRecognizer(target: self, action: #selector(self.swiperight))
-        swiperight.direction = .right
-        tblView_Requests.addGestureRecognizer(swiperight)
-        
+      
+
         DispatchQueue.main.async {
+            
+            
+            self.tblView_Requests.tableFooterView = UIView()
+            let swipeleft = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeleft))
+            swipeleft.direction = .left
+            self.tblView_Requests.addGestureRecognizer(swipeleft)
+            self.view.addGestureRecognizer(swipeleft)
+            
+            
+            let swiperight = UISwipeGestureRecognizer(target: self, action: #selector(self.swiperight))
+            swiperight.direction = .right
+            self.tblView_Requests.addGestureRecognizer(swiperight)
+            self.view.addGestureRecognizer(swiperight)
             //setting default selected button for request
             self.btn_MyRequest.setTitleColor(Global.macros.themeColor_pink, for: .normal)
             self.btn_ShadowRequest.setTitleColor(UIColor.black, for: .normal)
@@ -77,10 +84,12 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
     }
  
     func swipeleft(_ gestureRecognizer: UISwipeGestureRecognizer) { //NEXT
+       
+        DispatchQueue.main.async {
+
+        self.lbl_btn_All.frame.size.width = self.btn_All.frame.size.width
         
-        lbl_btn_All.frame.size.width = btn_All.frame.size.width
-        
-        if int_selectedBtn < 3 {
+        if self.int_selectedBtn < 3 {
             
             let transition = CATransition()
             transition.duration = 0.5
@@ -112,14 +121,17 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
             })
             
         }
-        
+        }
     }
     
     func swiperight(_ gestureRecognizer: UISwipeGestureRecognizer) { //PREVIOUS
-        lbl_btn_All.frame.size.width = btn_All.frame.size.width
+        
+        DispatchQueue.main.async {
+          
+        self.lbl_btn_All.frame.size.width = self.btn_All.frame.size.width
 
         
-        if int_selectedBtn > 0   {
+        if self.int_selectedBtn > 0   {
             
             let transition = CATransition()
             transition.duration = 0.5
@@ -154,12 +166,15 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
             })
             
         }
+    }
 
             }
     
     override func viewWillAppear(_ animated: Bool) {
         
         DispatchQueue.main.async {
+            
+
            
             self.navigationItem.title = "Received Request"//self.user_Name!
             self.navigationItem.setHidesBackButton(false, animated:true)
@@ -178,7 +193,6 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
             
             
             //adding view to table
-            self.tblView_Requests.tableFooterView = UIView()
             
             self.view_MainButtons.layer.borderWidth = 1.5
             self.view_MainButtons.layer.borderColor = Global.macros.themeColor.cgColor
@@ -410,6 +424,8 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
                 case 200:
                     
                     DispatchQueue.main.async {
+                      //  self.tblView_Requests.tableFooterView = UIView()
+
                         self.tblView_Requests.isHidden = false
                         self.lbl_NoRequests.isHidden = true
                         self.array_Requests = array_Info as! NSMutableArray
@@ -421,7 +437,7 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
                 case 404:
                     
                     DispatchQueue.main.async {
-                     //   self.tblView_Requests.isHidden = true
+                       self.tblView_Requests.isHidden = true
                         self.array_Requests = NSMutableArray()
                         self.tblView_Requests.reloadData()
 
@@ -486,7 +502,8 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
                 case 200:
                     
                     DispatchQueue.main.async {
-                        
+                    //    self.tblView_Requests.tableFooterView = UIView()
+
                         self.getRequestsByType(Type: Global.macros.kSend, SubType: Global.macros.kAll)
                     }
                     break
@@ -559,7 +576,8 @@ class RequestsListViewController: UIViewController, UIGestureRecognizerDelegate{
                         case 200:
                             
                             DispatchQueue.main.async {
-                                
+                            //    self.tblView_Requests.tableFooterView = UIView()
+
                                 My_Request_Selected_Status = true
                                 self.getRequestsByType(Type: Global.macros.kSend,SubType:Global.macros.kAll)
                                 

@@ -10,8 +10,12 @@ import UIKit
 import GooglePlaces
 import GooglePlacePicker
 import RSKImageCropper
+import MobileCoreServices
+import AVKit
+import AVFoundation
 
 var dict_userInfo:NSDictionary = NSDictionary()
+
 class EditProfileViewController: UIViewController, GMSAutocompleteViewControllerDelegate{
     
     
@@ -51,11 +55,8 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
     @IBOutlet weak var lbl_Counter: UILabel!
     
     @IBOutlet weak var lbl_noOccupation: UILabel!
-    
     @IBOutlet weak var kheightViewBehindOccupation: NSLayoutConstraint!
-    
     @IBOutlet weak var kheightCollection_View: NSLayoutConstraint!
-    
     
     //MARK: - Variables
     fileprivate var arrsearchActualOccupation : NSMutableArray = NSMutableArray()
@@ -96,7 +97,7 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
     fileprivate var sender_Tag:Int?
     var dict_Url:NSMutableDictionary = NSMutableDictionary()//from previous view(social sites url)
     fileprivate var Save = UIButton()
-
+    var bool_SelectImage : Bool = false
     
     //MARK: - View default Methods
     
@@ -109,6 +110,10 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+       bool_VideoFromGallary = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -173,12 +178,15 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
                     self.lbl_noOccupation.isHidden = false
                    // self.collection_View_Occupation.isHidden = true
                 }
-                
+              
+                if self.bool_SelectImage == false {
+
                 //setting profile pic
                 let profileurl = dict_userInfo.value(forKey: "profileImageUrl")as? String
                 if profileurl != nil {
                     self.imgView_Profile.sd_setImage(with: URL(string:profileurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
                     self.img_PlusIconProfile.isHidden = true
+                }
                 }
                 
                 //setting user social sites
@@ -322,13 +330,12 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
                 let role = SavedPreferences.value(forKey: Global.macros.krole) as? String
                 if role == "COMPANY"{
                     
-                    self.title = (dict_userInfo.value(forKey: Global.macros.kcompanyName) as? String)?.capitalizingFirstLetter()
+                    self.title = (dict_userInfo.value(forKey: Global.macros.kcompanyName) as? String)?.capitalized
                     
                     self.lbl_SchoolCompanyName.text = "Company Name:"
                     self.btn_SchoolComanyName.isHidden = true
                     self.lbl_SchoolCompanyUrl.text  = "Company URL:"
                     self.txtfield_SchoolName.text = dict_userInfo.value(forKey: Global.macros.kcompanyName) as? String
-                    self.txtfield_Location.text = dict_userInfo.value(forKey: Global.macros.klocation) as? String
                     
                     if dict_userInfo.value(forKey: Global.macros.kCompanyURL) as? String == " "{
                         self.txtfield_Url.text = ""
@@ -338,13 +345,12 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
                     
                 }else{
                     
-                    self.title = (dict_userInfo.value(forKey: Global.macros.kschoolName) as? String)?.capitalizingFirstLetter()
+                    self.title = (dict_userInfo.value(forKey: Global.macros.kschoolName) as? String)?.capitalized
                     
                     self.lbl_SchoolCompanyName.text = "School Name:"
                     self.btn_SchoolComanyName.isHidden = true
                     self.lbl_SchoolCompanyUrl.text  = "School URL:"
                     self.txtfield_SchoolName.text = dict_userInfo.value(forKey: Global.macros.kschoolName) as? String
-                    self.txtfield_Location.text = dict_userInfo.value(forKey: Global.macros.klocation) as? String
                     self.txtfield_Url.text = dict_userInfo.value(forKey: Global.macros.kSchoolURL) as? String
                     
                     
@@ -355,6 +361,48 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
                     }
                     
                 }
+                
+                
+                if ((dict_userInfo.value(forKey: Global.macros.klocation) as? String)!.contains("United States")) || ((dict_userInfo.value(forKey: Global.macros.klocation) as? String)!.contains("USA"))
+                {
+                    let str = dict_userInfo.value(forKey: Global.macros.klocation) as? String
+                    
+                    var strArry = str?.components(separatedBy: ",")
+                    print(strArry!)
+                    strArry?.removeLast()
+                    print(strArry!)
+                    var tempStr:String = ""
+                    for (index,element) in (strArry?.enumerated())!
+                    {
+                        var coma = ""
+                        
+                        if index == 0
+                        {
+                            coma = ""
+                        }
+                        else
+                        {
+                            coma = ","
+                        }
+                        
+                        tempStr = tempStr + coma + element
+                        
+                        
+                        self.txtfield_Location.text = tempStr
+                        
+                    }
+                    
+                    print(tempStr)
+                    
+                }
+                    
+                else {
+                    
+                    self.txtfield_Location.text = dict_userInfo.value(forKey: Global.macros.klocation) as? String
+                    
+                    
+                }
+                
                 
                 //social site done button
                 self.btn_Done_SocialSite.layer.cornerRadius = 5.0
@@ -422,6 +470,10 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
         
         DispatchQueue.global(qos: .background).async {
         self.getallOccupation()
+        }
+        
+        if bool_VideoFromGallary == true {
+            self.showAlert(Message: "Please select video of minimum 10 seconds.", vc: self)
         }
     }
     
@@ -917,10 +969,72 @@ class EditProfileViewController: UIViewController, GMSAutocompleteViewController
     @IBAction func Action_RecordVideo(_ sender: Any) {
         self.view.endEditing(true)
 
-        bool_PlayFromProfile = false
-        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "CameraView") as! CameraViewController
-        _ = self.navigationController?.pushViewController(vc, animated: true)
-        
+        DispatchQueue.main.async {
+            
+            
+            //        let TitleString = NSAttributedString(string: "Shadow", attributes: [
+            //            NSFontAttributeName : UIFont.systemFont(ofSize: 18),
+            //            NSForegroundColorAttributeName : UIColor.black
+            //            ])
+            let MessageString = NSAttributedString(string: "Choose Video", attributes: [
+                NSFontAttributeName : UIFont.systemFont(ofSize: 20),
+                NSForegroundColorAttributeName : UIColor.black
+                ])
+            
+            self.clearAllNotice()
+            
+            let alert = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Gallery", style: UIAlertActionStyle.default, handler: {(action) in
+                
+                
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary;
+                    imagePicker.mediaTypes = [kUTTypeMovie as String]
+                    imagePicker.videoMaximumDuration = 1.00
+                    Global.macros.statusBar.backgroundColor = Global.macros.themeColor_pink
+                    UIApplication.shared.statusBarStyle = .lightContent
+                    
+                    //img.mediaTypes = [kUTTypeImage]; //whatever u want type
+                    imagePicker.allowsEditing = false
+                    self.present(imagePicker, animated: true, completion: nil)
+                }
+                
+                
+                
+            }))
+            alert.addAction(UIAlertAction(title: "Camera", style: UIAlertActionStyle.default, handler: {(action) in
+                
+                bool_PlayFromProfile = false
+                
+                
+                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "CameraView") as! CameraViewController
+                _ = self.navigationController?.pushViewController(vc, animated: true)
+                
+                
+                
+                
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {(action) in
+                
+                
+                
+                
+                
+            }))
+            
+            alert.view.layer.cornerRadius = 10.0
+            alert.view.clipsToBounds = true
+            alert.view.backgroundColor = UIColor.white
+            alert.view.tintColor = Global.macros.themeColor_pink
+            
+            //  alert.setValue(TitleString, forKey: "attributedTitle")
+            alert.setValue(MessageString, forKey: "attributedMessage")
+            self.present(alert, animated: true, completion: nil)
+            
+        }
     }
     
     
@@ -1111,8 +1225,12 @@ extension EditProfileViewController:UIImagePickerControllerDelegate,UINavigation
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
+        Global.macros.statusBar.backgroundColor = Global.macros.themeColor_pink
+        UIApplication.shared.statusBarStyle = .lightContent
+        
         let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
+        if image != nil {
         
         picker.dismiss(animated: false, completion: { () -> Void in
             
@@ -1127,6 +1245,121 @@ extension EditProfileViewController:UIImagePickerControllerDelegate,UINavigation
             self.navigationController?.pushViewController(imageCropVC, animated: true)
             
         })
+        }
+        else {
+            
+            
+            let tempImage = info[UIImagePickerControllerMediaURL] as! URL!
+            let pathString = tempImage?.relativePath
+            
+            
+            if(pathString != "")
+            {
+                DispatchQueue.main.async {
+                    bool_VideoFromGallary = true
+                    bool_PlayFromProfile = false
+                    let url=URL(fileURLWithPath: pathString! as String)
+                    video_url = url
+                    
+                    var path_String = pathString! as NSString
+                    let asset: AVAsset = AVAsset(url: url)
+                    
+                    var durationInSeconds: TimeInterval = 0.0
+                    durationInSeconds = CMTimeGetSeconds(asset.duration)
+                    
+                    if durationInSeconds < 11.0 {
+                        DispatchQueue.main.async {
+                            bool_VideoIsOfShortLength = true
+                            picker.dismiss(animated: true, completion: nil)
+                            
+                        }
+                        
+                    }
+                    else {
+                        
+                        let imageGenerator = AVAssetImageGenerator(asset: asset);
+                        //
+                        imageGenerator.appliesPreferredTrackTransform = true
+                        let time = CMTimeMakeWithSeconds(0.0, 600)
+                        
+                        var actualTime : CMTime = CMTimeMake(0, 1)
+                        //        var error : NSError?
+                        let myImage:CGImage? = (try? imageGenerator.copyCGImage(at: time, actualTime: &actualTime))
+                        
+                        let snapshot = UIImage(cgImage: myImage!)
+                        thumbnail = snapshot
+                        
+                        let avassest:AVURLAsset=AVURLAsset(url: URL(fileURLWithPath: (path_String as? String)!), options: nil)
+                        let compatiblepreset:NSArray=AVAssetExportSession.exportPresets(compatibleWith: avassest) as NSArray
+                        let exportsession:AVAssetExportSession=AVAssetExportSession(asset: avassest, presetName: AVAssetExportPresetHighestQuality)!
+                        
+                        let formatter:DateFormatter=DateFormatter()
+                        formatter.dateFormat = "dd-MM-yyyy-HH-mm-ss"
+                        path_String = NSHomeDirectory().appending("/Documents/output-\(formatter.string(from: NSDate() as Date)).mov") as NSString
+                        // self.videodelegate.videoplayerpath=NSHomeDirectory() + "/Documents/output-\(formatter.string(from: Date())).mp4"
+                        exportsession.outputURL=URL(fileURLWithPath: path_String as String)
+                        exportsession.outputFileType = AVFileTypeMPEG4;
+                        exportsession.exportAsynchronously(completionHandler: { () -> Void in
+                            switch (exportsession.status)
+                            {
+                            case AVAssetExportSessionStatus.failed:
+                                //print("error is  \(exportsession.error)")
+                                
+                                break;
+                                
+                            case AVAssetExportSessionStatus.cancelled:
+                                
+                                NSLog("Export canceled");
+                                
+                                break;
+                                
+                            case AVAssetExportSessionStatus.completed:
+                                
+                                NSLog("Successful! %@",path_String);
+                                
+                                
+                                
+                                path_String=path_String.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString
+                                
+                                NSLog("after triming = %@",  path_String);
+                                
+                                
+                                break;
+                                
+                            default:
+                                
+                                break;
+                                
+                            }
+                            
+                            
+                            
+                            let url1=URL(fileURLWithPath: path_String as String)
+                            //print("Myvideo\(url1)")
+                            
+                            
+                            // let geturl = URL(fileURLWithPath: path_String as String)
+                            
+                            //   let weatherData:Data?=try! Data(contentsOf: url1)
+                            
+                            //print("The data is : \(weatherData!)")
+                            
+                            
+                            DispatchQueue.main.async {
+                                let videodata:Data?=try! Data(contentsOf: url1)
+                                
+                                let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "Upload_Video") as! UploadViewController
+                                vc.videoPath = path_String as String
+                                picker.pushViewController(vc, animated: true)                            }
+                            
+                            
+                        })
+                    }
+                    
+                }
+                
+            }
+        }
         
         
     }
@@ -1143,6 +1376,7 @@ extension EditProfileViewController:UIImagePickerControllerDelegate,UINavigation
     }
     func imageCropViewController(_ controller: RSKImageCropViewController, didCropImage croppedImage: UIImage, usingCropRect cropRect: CGRect) {
         
+        self.bool_SelectImage = true
         let imageData = UIImageJPEGRepresentation(croppedImage , 0.1)
         let resultiamgedata = imageData!.base64EncodedData(options: NSData.Base64EncodingOptions.lineLength64Characters)
         self.str_profileImage = (NSString(data: resultiamgedata, encoding: String.Encoding.utf8.rawValue) as String?)!
@@ -1548,6 +1782,14 @@ extension  EditProfileViewController : UITextFieldDelegate {
         }
         else{
             textField.resignFirstResponder()
+        }
+        
+        DispatchQueue.main.async {
+            
+            self.scroll_view.isUserInteractionEnabled = true
+            self.scroll_view.contentSize = CGSize(width: self.view.frame.size.width, height: 210
+                + self.k_contraint_ViewFields_Height.constant + self.kheightViewBehindOccupation.constant )
+            
         }
         
         return true

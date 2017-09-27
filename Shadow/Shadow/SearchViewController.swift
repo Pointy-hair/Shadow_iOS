@@ -32,12 +32,18 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         if self.revealViewController() != nil {
             self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+
         }
+        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         
         //Setting footer view
+        bool_ComingRatingList = false
+         bool_Occupation = false
         self.showSearchBar()
         
         //creating button on search

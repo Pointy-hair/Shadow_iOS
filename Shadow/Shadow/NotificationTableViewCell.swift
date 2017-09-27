@@ -49,7 +49,7 @@ class NotificationTableViewCell: UITableViewCell {
             //if role is user
             if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "USER"{
                 
-                let username = (dict_UserInfo.value(forKey: Global.macros.kUserName) as? String)?.capitalizingFirstLetter()
+                let username = (dict_UserInfo.value(forKey: Global.macros.kUserName) as? String)?.capitalized
 
                 if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 0{
                     
@@ -73,7 +73,7 @@ class NotificationTableViewCell: UITableViewCell {
             //if role is school
             else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "SCHOOL"{
                 
-                let school_name = (dict_UserInfo.value(forKey: Global.macros.kschoolName) as? String)?.capitalizingFirstLetter()
+                let school_name = (dict_UserInfo.value(forKey: Global.macros.kschoolName) as? String)?.capitalized
                 
                 if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 0{
                     
@@ -99,7 +99,7 @@ class NotificationTableViewCell: UITableViewCell {
             //if role is company
             else if dict_UserInfo.value(forKey: Global.macros.krole) as? String == "COMPANY"{
                 
-                let company_name = (dict_UserInfo.value(forKey: Global.macros.kcompanyName) as? String)?.capitalizingFirstLetter()
+                let company_name = (dict_UserInfo.value(forKey: Global.macros.kcompanyName) as? String)?.capitalized
 
                 if dict_RequestDTO.value(forKey: Global.macros.kAccept) as? NSNumber == 1 && dict_RequestDTO.value(forKey: Global.macros.kSmallReject) as? NSNumber == 0{
                     

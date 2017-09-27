@@ -93,6 +93,12 @@ class ResetPasswordVC: UIViewController {
                         self.showAlert(Message: Global.macros.kUserNotExist, vc: self)
                         
                     }
+                case 401:
+                    DispatchQueue.main.async {
+                        self.setRootView("Login")
+                    }
+                    
+  
                     
                 default:break
                     
@@ -117,9 +123,7 @@ class ResetPasswordVC: UIViewController {
             self.showAlert(Message: Global.macros.kInternetConnection, vc: self)
             
         }
-        
-        
-        
+       
     }
     
     

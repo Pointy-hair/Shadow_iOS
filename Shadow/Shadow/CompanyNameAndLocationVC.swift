@@ -247,7 +247,7 @@ class CompanyNameAndLocationVC: UIViewController,GMSAutocompleteViewControllerDe
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
-        textfield_Location.text = "\(place.name)"
+        textfield_Location.text = "\(place.formattedAddress!)"
         latlong(string: textfield_Location.text!)
         dismiss(animated: true, completion: nil)
         

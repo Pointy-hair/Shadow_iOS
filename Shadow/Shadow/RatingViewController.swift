@@ -30,7 +30,7 @@ class RatingViewController: UIViewController {
     var imageView3 : UIImageView?
     var imageView4 : UIImageView?
     var imageView5 : UIImageView?
-    
+    var occ_id      :     NSNumber?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,7 +62,7 @@ class RatingViewController: UIViewController {
         
         
         // Do any additional setup after loading the view.
-        if bool_UserIdComingFromSearch == true  {
+        if bool_UserIdComingFromSearch == true  || bool_ComingFromList == true || bool_FromOccupation == true {
             
             if  userIdFromSearch != SavedPreferences.value(forKey: Global.macros.kUserId)as? NSNumber {
                 
@@ -75,6 +75,8 @@ class RatingViewController: UIViewController {
                 
                 
             }
+                
+        
             
         }
         
@@ -82,20 +84,25 @@ class RatingViewController: UIViewController {
         tblView_Rating.tableFooterView = UIView()
         
         self.navigationItem.setHidesBackButton(false, animated:true)
-        CreateNavigationBackBarButton() //Create custom ack button
+        let myBackButton:UIButton = UIButton()
+        myBackButton.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+        myBackButton.setImage(UIImage(named:"back-new"), for: UIControlState())
+        myBackButton.addTarget(self, action: #selector(self.PopVC), for: UIControlEvents.touchUpInside)
+        let leftBackBarButton:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
+        self.navigationItem.leftBarButtonItem = leftBackBarButton
+
         ShowRatingData()
+           }
+    
+    
+    
+    func PopVC() {
         
-       // navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
-        
-//        if ratingview_name == "" || ratingview_name == nil {
-//            
-//            lbl_name.text = "NA"
-// 
-//        }
-//        else {
-//            lbl_name.text = ratingview_name
-//            self.title = ratingview_name?.capitalizingFirstLetter()
-//        }
+        bool_FromOccupation = false
+        bool_UserIdComingFromSearch = false
+        bool_ComingRatingList = true
+
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -110,18 +117,27 @@ class RatingViewController: UIViewController {
         
         if self.checkInternetConnection()
         {
-            //API To login
             DispatchQueue.main.async {
                 self.pleaseWait()
             }
             
             let dic:NSMutableDictionary = NSMutableDictionary()
             dic.setValue(SavedPreferences.value(forKey: Global.macros.kUserId)as! NSNumber, forKey: Global.macros.kUserId)
-            if bool_UserIdComingFromSearch == true  {
+            if bool_UserIdComingFromSearch == true   {
                 
                 dic.setValue(userIdFromSearch , forKey: "otherUserId")
                 
             }
+            else if  bool_ComingFromList == true {
+                dic.setValue(userIdFromSearch , forKey: "otherUserId")
+ 
+            }
+            else if bool_FromOccupation == true {
+                
+                dic.setValue(occ_id , forKey: "occupationId")
+
+            }
+            
             else{
                 dic.setValue(SavedPreferences.value(forKey: Global.macros.kUserId)as! NSNumber, forKey: "otherUserId")
             }
@@ -171,22 +187,33 @@ class RatingViewController: UIViewController {
                          self.lbl_totalRatingCount.text = "\(arr.value(forKey: "ratingCount")!)"
                         
                         //setting title
-                        if arr["ratedUserName"] != nil{
-                            //if it is user
-                        self.title = (arr.value(forKey: "ratedUserName") as? String)?.capitalizingFirstLetter()
+                        DispatchQueue.main.async {
+                            if arr["ratedUserName"] != nil{
+                                //if it is user
+                                
+                                self.title = ""
+                                self.title = (arr.value(forKey: "ratedUserName") as? String)?.capitalized
+                                
+                            }
+                            else {
+                                //if it is school or company
+                                self.title = ""
+                                self.title = (arr.value(forKey: "name") as? String)?.capitalized
+                                
+                            }
                         }
-                        else {
-                            //if it is school or company
-                            self.title = (arr.value(forKey: "name") as? String)?.capitalizingFirstLetter()
- 
-                        }
+                        
+                      if  bool_FromOccupation == true {
+                        
+                        self.imgView_Profile.image = UIImage(named:"occupation_filter")!
+                      } else {
                         
                         //set profile image
                         if ratingview_imgurl != nil {
                     
                             self.imgView_Profile.sd_setImage(with: URL(string:ratingview_imgurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
                             
-                        }
+                        } }
                     }
                     
                     //getting array of users who rated
@@ -232,27 +259,24 @@ class RatingViewController: UIViewController {
                     
                     
                     self.arr_GetRatingData.removeAllObjects()
-                    DispatchQueue.main.async {
+                
+                    //set profile image
+                    if ratingview_imgurl != nil {
                         
-                        if ratingview_imgurl != nil {
-                            
-                            self.imgView_Profile.sd_setImage(with: URL(string:ratingview_imgurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
-                            
-                        }
+                        self.imgView_Profile.sd_setImage(with: URL(string:ratingview_imgurl!), placeholderImage: UIImage(named: "profile-icon-1"))//image
                         
-                        if ratingview_name != nil {
-                            self.title = (ratingview_name!).capitalized
-                        }
-                        else{
-                            self.title = ""
-                        }
-                        
+                    }
+                    if ratingview_name != nil {
+                        self.title = ratingview_name
+                    }
+                    
+                    
                         self.lbl_totalRatingCount.text = "0"
                         self.lbl_RatingsCount.text = "0.0"
                         self.tblView_Rating.isHidden = true
                         self.tblView_Rating.reloadData()
                         
-                    }
+                  
                     
                 case 401:
                     
@@ -291,6 +315,12 @@ class RatingViewController: UIViewController {
     }
     
     func PushAddRatingScreen() {
+        
+        
+        if bool_FromOccupation == true {
+            
+            userIdFromSearch = occ_id
+        }
         let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "addrating") as! AddRatingViewController
         _ = self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -339,17 +369,17 @@ extension RatingViewController:UITableViewDelegate,UITableViewDataSource{
             
            if dict_Temp?[Global.macros.krole] as? String == "COMPANY"{
            
-            cell.lbl_name.text = (dict_Temp?.value(forKey: Global.macros.kname) as? String)?.capitalizingFirstLetter()
+            cell.lbl_name.text = (dict_Temp?.value(forKey: Global.macros.kname) as? String)?.capitalized
 
             }
            else if dict_Temp?[Global.macros.krole] as? String == "SCHOOL"{
             
-            cell.lbl_name.text = (dict_Temp?.value(forKey: Global.macros.kname) as? String)?.capitalizingFirstLetter()
+            cell.lbl_name.text = (dict_Temp?.value(forKey: Global.macros.kname) as? String)?.capitalized
             }
             
            else{
             
-            cell.lbl_name.text = (dict_Temp?.value(forKey: "userName") as? String)?.capitalizingFirstLetter()
+            cell.lbl_name.text = (dict_Temp?.value(forKey: "userName") as? String)?.capitalized
             }
             
         }

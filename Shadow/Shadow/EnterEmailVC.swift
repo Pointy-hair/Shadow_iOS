@@ -193,6 +193,11 @@ class EnterEmailVC: UIViewController {
                             DispatchQueue.main.async {
                                 self.showAlert(Message: "Email already exist.", vc: self)
                             }
+                            
+                        case 500:
+                            DispatchQueue.main.async {
+                                self.showAlert(Message: "Error occured while Otp resend.", vc: self)
+                            }
                         default:
                             break
                         }

@@ -70,8 +70,10 @@ class CustomCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var barChartView: BarChartView!
     @IBOutlet weak var lbl_Abt: UILabel!
-    
     @IBOutlet weak var lbl_RatingCount: UILabel!
+    
+    @IBOutlet weak var btn_Rating: UIButton!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

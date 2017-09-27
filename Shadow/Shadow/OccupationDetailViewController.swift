@@ -9,6 +9,9 @@
 import UIKit
 import Charts
 
+var bool_FromOccupation : Bool = false
+
+
 class OccupationDetailViewController: UIViewController {
     
     //   var NoOfEmployees: [String]!
@@ -32,29 +35,20 @@ class OccupationDetailViewController: UIViewController {
     var arr_Salary = NSMutableArray() //y axis
     
     public var occupationId : NSNumber?
-    
     @IBOutlet weak var kheightViewBehindCompany: NSLayoutConstraint!
-    
     @IBOutlet weak var kheightViewBehindSchool: NSLayoutConstraint!
-    
     @IBOutlet weak var kHeightCC: NSLayoutConstraint!
     @IBOutlet weak var kHeightSC: NSLayoutConstraint!
-    
     @IBOutlet weak var kheight_DescriptionView: NSLayoutConstraint!
     @IBOutlet weak var kHeightlblDescription: NSLayoutConstraint!
-    
-    
     @IBOutlet weak var lbl_RatingCount: UILabel!
     @IBOutlet weak var lbl_About: UILabel!
+    
+    var user_id : NSNumber?
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        DispatchQueue.main.async {
-            self.GetData()
-        }
-        
         
         self.barChartView.xAxis.drawGridLinesEnabled = false
         self.barChartView.rightAxis.drawGridLinesEnabled = false
@@ -81,11 +75,26 @@ class OccupationDetailViewController: UIViewController {
         let myBackButton:UIButton = UIButton()
         myBackButton.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
         myBackButton.setImage(UIImage(named:"back-new"), for: UIControlState())
-        myBackButton.addTarget(self, action: #selector(self.PopToRootViewController), for: UIControlEvents.touchUpInside)
+        myBackButton.addTarget(self, action: #selector(self.PopTo_RootViewController), for: UIControlEvents.touchUpInside)
         let leftBackBarButton:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem = leftBackBarButton
         
         // Do any additional setup after loading the view.
+        
+    }
+    
+    func PopTo_RootViewController()
+    {
+        bool_FromOccupation = false
+        bool_UserIdComingFromSearch = false
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        DispatchQueue.main.async {
+            self.GetData()
+        }
         
     }
     
@@ -109,6 +118,7 @@ class OccupationDetailViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.clearAllNotice()
                 }
+                
                 let status = response.value(forKey: "status") as? NSNumber
                 switch(status!){
                     
@@ -118,14 +128,27 @@ class OccupationDetailViewController: UIViewController {
                     self.dic_Occupation = (response.value(forKey: "data") as! NSDictionary).mutableCopy() as! NSMutableDictionary
                     DispatchQueue.main.async {
                         
-                        self.navigationItem.title = (self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter()
-                        self.lbl_About.text = "About" + " " + ((self.dic_Occupation.value(forKey: "name") as? String)?.capitalizingFirstLetter())!
+                        self.navigationItem.title = (self.dic_Occupation.value(forKey: "name") as? String)?.capitalized
+                        self.lbl_About.text = "About" + " " + ((self.dic_Occupation.value(forKey: "name") as? String)?.capitalized)!
                         self.lbl_avgRating.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
                         self.lbl_RatingCount.text = "\((self.dic_Occupation.value(forKey: "ratingCount")!))"
                         
+                         self.user_id =  self.dic_Occupation.value(forKey: "id") as? NSNumber
                         
-                        self.lbl_UsersWithThisOccupation.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
-                        self.lbl_UserThatShadowedThis.text = "\((self.dic_Occupation.value(forKey: "avgRating")!))"
+                        let dic = self.dic_Occupation.value(forKey: "shadowedByShadowUser") as? NSDictionary
+                        
+                        if dic != nil {
+                            self.lbl_UserThatShadowedThis.text = "\((dic?.value(forKey: "count")!))"
+
+                        }
+                        
+                        let dic_occ  = self.dic_Occupation.value(forKey: "shadowersVerified") as? NSDictionary
+                        
+                        if dic_occ != nil {
+                            self.lbl_UsersWithThisOccupation.text = "\((dic_occ?.value(forKey: "count")!))"
+                            
+                        }
+                        
                         
                         self.txtfield_Occupation.text = (self.dic_Occupation.value(forKey: "description") as? String)
                         
@@ -233,13 +256,54 @@ class OccupationDetailViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         bool_Occupation = true
-        
+
     }
     
     override func viewDidLayoutSubviews() {
-        scroll_View.contentSize = CGSize.init(width: view.frame.size.width, height:  900)
+        //scroll_View.contentSize = CGSize.init(width: view.frame.size.width, height:  900)
+        
     }
     
+    //MARK : ACTIONS
+    
+    
+    @IBAction func ActionList(_ sender: UIButton) {
+        
+        var type:String?
+        var navigation_title:String?
+
+        
+        if sender.tag == 1{//shadowers
+            
+            type = Global.macros.kShadow
+            navigation_title =  "Shadowers"
+            
+        }else if sender.tag == 2{//shadowed
+            
+            type = Global.macros.kShadowed
+            navigation_title = "Shadowed Users"
+            
+            
+        }
+        
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "listing") as! ListingViewController
+        vc.type = type
+        vc.ListuserId = self.user_id
+        vc.navigation_title = navigation_title
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+    
+  
+        
+    }
+    
+    @IBAction func RatingList(_ sender: Any) {
+        bool_FromOccupation = true
+        let vc = Global.macros.Storyboard.instantiateViewController(withIdentifier: "ratingView") as! RatingViewController
+        vc.occ_id = self.user_id
+        _ = self.navigationController?.pushViewController(vc, animated: true)
+ 
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -392,7 +456,9 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
         }
         
         DispatchQueue.main.async {
-            self.scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: 350 + self.kheight_DescriptionView.constant + self.kheightViewBehindCompany.constant + self.kheightViewBehindSchool.constant)
+
+            self.scroll_View.contentSize = CGSize(width: self.view.frame.size.width, height: 500 + self.kheight_DescriptionView.constant + self.kheightViewBehindCompany.constant + self.kheightViewBehindSchool.constant)
+       
         }
         
         return count!
@@ -418,7 +484,7 @@ extension OccupationDetailViewController:UICollectionViewDelegate,UICollectionVi
             if  let dict =  (arr_school[indexPath.row] as! NSDictionary).value(forKey: "userDTO") as? NSDictionary {
                 let dic = dict.value(forKey: "schoolDTO") as? NSDictionary
 
-                userIdFromSearch = dict.value(forKey: "schoolUserId") as? NSNumber
+                userIdFromSearch = dic?.value(forKey: "schoolUserId") as? NSNumber
             }
         }
         

@@ -50,7 +50,7 @@ class ListingTableViewCell: UITableViewCell {
             
             if role == "COMPANY" {
                 
-                //setting name
+                //setting name2335
                 if user_dict ["name"] != nil{
 
                     self.lbl_username.text = (user_dict.value(forKey: "name") as? String)?.capitalized
@@ -92,8 +92,122 @@ class ListingTableViewCell: UITableViewCell {
                 }
             }
             
-             //setting ratings
+            if user_dict["avgRating"] != nil {
+            let rating_number = "\(user_dict["avgRating"]!)"
+           
             
+            //print(rating_number)
+            
+            let dbl = 2.0
+            if  dbl.truncatingRemainder(dividingBy: 1) == 0
+            {
+                self.lbl_AvrRatingCount.text = rating_number + ".0"
+                
+            }
+            else {
+               self.lbl_AvrRatingCount.text = rating_number
+            }
+            
+            
+           self.lbl_ratingUsers.text = "\(user_dict["ratingCount"]!)"
+            }
+            
+            if role == "USER" {
+                
+                
+                if user_dict.value(forKey: "companyName") != nil  && user_dict.value(forKey: "companyName") as? String != ""  && user_dict.value(forKey: "companyName") as? String != " " {
+                    
+                    if user_dict["occupationDTO"] == nil {
+                        
+                        let companyName =  user_dict.value(forKey: "companyName") as! String
+                        
+                        if companyName != "" && user_dict.value(forKey: "companyName") != nil && companyName != " " {
+                            self.lbl_name_loc_com_school.text = companyName.capitalized
+                            self.imgView_Company_loc_school.image = UIImage.init(named: "company-icon")
+                        }
+                        else {
+                            
+                            self.lbl_name_loc_com_school.text  = ""
+                            self.imgView_Company_loc_school.isHidden = true
+                            
+                        }
+                        
+                    }
+                    else {
+                        self.lbl_name_loc_com_school.isHidden = true
+                        self.imgView_Company_loc_school.isHidden = true
+                        
+                    }
+                }
+                    
+                else {
+                    
+                    if user_dict.value(forKey: "schoolName") != nil && user_dict.value(forKey: "schoolName") as? String != "" && user_dict.value(forKey: "schoolName") as? String != " " {
+                        
+                        if user_dict["occupationDTO"] == nil {
+                            
+                            let schoolName = user_dict.value(forKey: "schoolName") as! String
+                            
+                            if schoolName != "" && user_dict.value(forKey: "schoolName") != nil && schoolName != " "
+                            {
+                                self.lbl_name_loc_com_school.text = schoolName.capitalized
+                                self.imgView_Company_loc_school.image = UIImage.init(named: "company-icon")
+                                
+                            }
+                            else {
+                                self.lbl_name_loc_com_school.text = ""
+                                self.imgView_Company_loc_school.isHidden = true
+                                
+                            }
+                            
+                        }
+                            
+                            
+                        else {
+                            self.lbl_name_loc_com_school.isHidden = true
+                            self.imgView_Company_loc_school.isHidden = true
+                            
+                        }
+                    }
+                        
+                    else {
+                        
+                        self.lbl_name_loc_com_school.isHidden = true
+                        self.imgView_Company_loc_school.isHidden = true
+                        
+                    }
+                    
+                }
+                
+            }
+                
+            else {
+                
+                if user_dict["occupationDTO"] == nil   {
+                    
+                    if user_dict.value(forKey: "location") != nil && user_dict.value(forKey: "location") as? String != "" && user_dict.value(forKey: "location") as? String != " " {
+                        
+                        self.lbl_name_loc_com_school.text = user_dict.value(forKey: "location") as? String
+                       self.imgView_Company_loc_school.image = UIImage.init(named: "location-pin")
+                        
+                    }
+                        
+                    else {
+                        
+                        self.lbl_name_loc_com_school.text = ""
+                        self.imgView_Company_loc_school.image = UIImage.init(named: "")
+                        self.imgView_Company_loc_school.isHidden = true
+                        
+                        
+                    }
+                }
+                else {
+                    self.lbl_name_loc_com_school.isHidden = true
+                    self.imgView_Company_loc_school.isHidden = true
+                    
+                }
+                
+            }
             
             
             

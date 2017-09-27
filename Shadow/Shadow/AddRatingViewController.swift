@@ -106,11 +106,19 @@ class AddRatingViewController: UIViewController,UIGestureRecognizerDelegate,Floa
     
     func API_addRating() {
         
+      
+        
         let dict = NSMutableDictionary()
         print((SavedPreferences.object(forKey: Global.macros.kUserId))!)
 
         dict.setValue("\(((SavedPreferences.object(forKey: Global.macros.kUserId))!))", forKey: "userId")
-        dict.setValue(userIdFromSearch, forKey: "ratedUserId")
+        
+        if bool_FromOccupation == true {
+            dict.setValue(userIdFromSearch, forKey: "occupationId")
+            
+        }
+        else {
+            dict.setValue(userIdFromSearch, forKey: "ratedUserId") }
         dict.setValue(str_rating, forKey: "rating")
         dict.setValue(txtview_Comment.text, forKey: "comment")
         
